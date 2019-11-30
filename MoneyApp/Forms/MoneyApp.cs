@@ -19,17 +19,21 @@ namespace MoneyApp
         public MoneyApp()
         {
             InitializeComponent();
-        }
-
-        private void MoneyApp_Load(object sender, EventArgs e)
-        {
+            Instances.MoneyApp = this;
         }
 
         private void btn_auth_Click(object sender, EventArgs e)
         {
-            Authorization auth = new Authorization();
-            auth.Activate();
-            auth.Show();
+        }
+
+        private void MoneyApp_Activated(object sender, EventArgs e)
+        {
+            if (Instances.User == null)
+            {
+                Authorization auth = new Authorization();
+                auth.Activate();
+                auth.Show();
+            }
         }
     }
 }

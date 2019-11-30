@@ -21,6 +21,7 @@ namespace MoneyApp.Forms
         public Authorization()
         {
             InitializeComponent();
+            Instances.MoneyApp.Hide();
             userRepository = new UserRepository();
         }
 
@@ -36,6 +37,9 @@ namespace MoneyApp.Forms
             if (!CheckUser(user)) return;
 
             if (!CheckPassword(user)) return;
+
+            Instances.User = user;
+            Close();
         }
 
         private void SignUpClick(object sender, EventArgs e)
@@ -77,6 +81,19 @@ namespace MoneyApp.Forms
                 return false;
             }
             return true;
+        }
+
+        private void AuthorizationFormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (Instances.User == null)
+            {
+                Instances.MoneyApp.Close();
+            } else
+            {
+                Instances.MoneyApp.Activate();
+                Instances.MoneyApp.Show();
+            }
+            Dispose();
         }
 
         private void EncryptPassword()

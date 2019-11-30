@@ -49,7 +49,7 @@
             this.Controls.Add(this.btn_auth);
             this.Name = "MoneyApp";
             this.Text = "Money App";
-            this.Load += new System.EventHandler(this.MoneyApp_Load);
+            this.Activated += new System.EventHandler(this.MoneyApp_Activated);
             this.ResumeLayout(false);
 
         }

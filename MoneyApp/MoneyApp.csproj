@@ -56,6 +56,7 @@
     <Compile Include="Forms\Authorization.Designer.cs">
       <DependentUpon>Authorization.cs</DependentUpon>
     </Compile>
+    <Compile Include="Instances.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Forms\MoneyApp.cs">
       <SubType>Form</SubType>
