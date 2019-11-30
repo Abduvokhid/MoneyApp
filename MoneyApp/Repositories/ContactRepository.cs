@@ -46,5 +46,34 @@ namespace MoneyApp.Repositories
             }
             return contacts;
         }
+
+        public bool DeleteContact(Contact contact)
+        {
+            string query = "DELETE FROM Contacts WHERE [UserID] = @UserID AND [ID] = @ID";
+            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
+
+            try
+            {
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = contact.UserID;
+                sqlCommand.Parameters.Add("@ID", SqlDbType.Int).Value = contact.ID;
+                sqlConnection.Open();
+                var i = sqlCommand.ExecuteNonQuery();
+
+                sqlConnection.Close();
+
+                if (i > 0)
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

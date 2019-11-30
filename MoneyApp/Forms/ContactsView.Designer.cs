@@ -28,23 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.lv_contacts = new System.Windows.Forms.ListView();
             this.name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btn_add = new System.Windows.Forms.Button();
             this.btn_edit = new System.Windows.Forms.Button();
             this.btn_delete = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // listView1
+            // lv_contacts
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lv_contacts.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.name});
-            this.listView1.Location = new System.Drawing.Point(12, 12);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(124, 245);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.lv_contacts.Location = new System.Drawing.Point(12, 12);
+            this.lv_contacts.Name = "lv_contacts";
+            this.lv_contacts.Size = new System.Drawing.Size(124, 245);
+            this.lv_contacts.TabIndex = 0;
+            this.lv_contacts.UseCompatibleStateImageBehavior = false;
+            this.lv_contacts.View = System.Windows.Forms.View.Details;
             // 
             // name
             // 
@@ -77,6 +77,7 @@
             this.btn_delete.TabIndex = 3;
             this.btn_delete.Text = "Delete";
             this.btn_delete.UseVisualStyleBackColor = true;
+            this.btn_delete.Click += new System.EventHandler(this.btn_delete_Click);
             // 
             // ContactsView
             // 
@@ -86,16 +87,17 @@
             this.Controls.Add(this.btn_delete);
             this.Controls.Add(this.btn_edit);
             this.Controls.Add(this.btn_add);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.lv_contacts);
             this.Name = "ContactsView";
             this.Text = "ContactsView";
+            this.Activated += new System.EventHandler(this.ContactsView_Activated);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView lv_contacts;
         private System.Windows.Forms.ColumnHeader name;
         private System.Windows.Forms.Button btn_add;
         private System.Windows.Forms.Button btn_edit;
