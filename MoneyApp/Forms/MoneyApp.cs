@@ -26,6 +26,18 @@ namespace MoneyApp
         {
         }
 
+        private void ContactsListChanged(object sender, ListChangedEventArgs e)
+        {
+            /*listView1.Items.Clear();
+            foreach (Contact contact in Instances.contactsList)
+            {
+                var row = new string[] { contact.Name };
+                var lvi = new ListViewItem(row);
+                lvi.Tag = contact;
+                listView1.Items.Add(lvi);
+            }*/
+        }
+
         private void MoneyApp_Activated(object sender, EventArgs e)
         {
             if (Instances.User == null)
