@@ -39,7 +39,9 @@
             // 
             this.lv_contacts.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.name});
+            this.lv_contacts.FullRowSelect = true;
             this.lv_contacts.Location = new System.Drawing.Point(12, 12);
+            this.lv_contacts.MultiSelect = false;
             this.lv_contacts.Name = "lv_contacts";
             this.lv_contacts.Size = new System.Drawing.Size(124, 245);
             this.lv_contacts.TabIndex = 0;
@@ -59,6 +61,7 @@
             this.btn_add.TabIndex = 1;
             this.btn_add.Text = "Add";
             this.btn_add.UseVisualStyleBackColor = true;
+            this.btn_add.Click += new System.EventHandler(this.btn_add_Click);
             // 
             // btn_edit
             // 
@@ -68,6 +71,7 @@
             this.btn_edit.TabIndex = 2;
             this.btn_edit.Text = "Edit";
             this.btn_edit.UseVisualStyleBackColor = true;
+            this.btn_edit.Click += new System.EventHandler(this.btn_edit_Click);
             // 
             // btn_delete
             // 
@@ -91,6 +95,7 @@
             this.Name = "ContactsView";
             this.Text = "ContactsView";
             this.Activated += new System.EventHandler(this.ContactsView_Activated);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ContactsView_FormClosed);
             this.ResumeLayout(false);
 
         }

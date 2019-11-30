@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MoneyApp.Models
 {
-    class Contact
+    public class Contact
     {
         public int ID { get; set; }
         public int UserID { get; set; }

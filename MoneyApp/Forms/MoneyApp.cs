@@ -22,22 +22,6 @@ namespace MoneyApp
             Instances.MoneyApp = this;
         }
 
-        private void btn_auth_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void ContactsListChanged(object sender, ListChangedEventArgs e)
-        {
-            /*listView1.Items.Clear();
-            foreach (Contact contact in Instances.contactsList)
-            {
-                var row = new string[] { contact.Name };
-                var lvi = new ListViewItem(row);
-                lvi.Tag = contact;
-                listView1.Items.Add(lvi);
-            }*/
-        }
-
         private void MoneyApp_Activated(object sender, EventArgs e)
         {
             if (Instances.User == null)
@@ -46,6 +30,13 @@ namespace MoneyApp
                 auth.Activate();
                 auth.Show();
             }
+        }
+
+        private void btn_contacts_Click(object sender, EventArgs e)
+        {
+            ContactsView contactsView = new ContactsView();
+            contactsView.Activate();
+            contactsView.Show();
         }
     }
 }

@@ -28,25 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btn_auth = new System.Windows.Forms.Button();
+            this.btn_contacts = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // btn_auth
+            // btn_contacts
             // 
-            this.btn_auth.Location = new System.Drawing.Point(260, 140);
-            this.btn_auth.Name = "btn_auth";
-            this.btn_auth.Size = new System.Drawing.Size(75, 23);
-            this.btn_auth.TabIndex = 0;
-            this.btn_auth.Text = "Auth";
-            this.btn_auth.UseVisualStyleBackColor = true;
-            this.btn_auth.Click += new System.EventHandler(this.btn_auth_Click);
+            this.btn_contacts.Location = new System.Drawing.Point(151, 82);
+            this.btn_contacts.Name = "btn_contacts";
+            this.btn_contacts.Size = new System.Drawing.Size(75, 23);
+            this.btn_contacts.TabIndex = 0;
+            this.btn_contacts.Text = "Contacts";
+            this.btn_contacts.UseVisualStyleBackColor = true;
+            this.btn_contacts.Click += new System.EventHandler(this.btn_contacts_Click);
             // 
             // MoneyApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.btn_auth);
+            this.Controls.Add(this.btn_contacts);
             this.Name = "MoneyApp";
             this.Text = "Money App";
             this.Activated += new System.EventHandler(this.MoneyApp_Activated);
@@ -56,7 +56,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btn_auth;
+        private System.Windows.Forms.Button btn_contacts;
     }
 }
 
