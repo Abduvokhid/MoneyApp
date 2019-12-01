@@ -24,6 +24,7 @@ namespace MoneyApp
 
         private void MoneyApp_Activated(object sender, EventArgs e)
         {
+            Instances.User = new User { ID = 7, Name = "Abdu", Username = "Abduvokhid" };
             if (Instances.User == null)
             {
                 Authorization auth = new Authorization();
