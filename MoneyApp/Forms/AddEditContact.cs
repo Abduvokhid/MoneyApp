@@ -41,7 +41,7 @@ namespace MoneyApp.Forms
             }
 
             contact.Name = tbx_name.Text;
-            ContactRepository contactRepository = new ContactRepository();
+            ContactRepository contactRepository = ContactRepository.Instance();
 
             bool i = contact.ID > 0 ? contactRepository.EditContact(contact) : contactRepository.AddContact(contact);
             MessageBox.Show(i ? (contact.ID > 0) ? "Edited okay" : "Added okay" : "Error");

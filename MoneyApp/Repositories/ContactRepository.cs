@@ -12,7 +12,17 @@ namespace MoneyApp.Repositories
 {
     class ContactRepository
     {
-        public ContactRepository() { }
+        private static ContactRepository instance;
+        private ContactRepository() { }
+
+        public static ContactRepository Instance()
+        {
+            if (instance == null)
+            {
+                instance = new ContactRepository();
+            }
+            return instance;
+        }
 
 
         public List<Contact> GetUserContacts(int id)

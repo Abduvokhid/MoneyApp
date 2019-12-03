@@ -35,7 +35,7 @@ namespace MoneyApp
 
         private void btn_contacts_Click(object sender, EventArgs e)
         {
-            ContactsView contactsView = new ContactsView();
+            ViewContacts contactsView = new ViewContacts();
             contactsView.Activate();
             contactsView.Show();
         }

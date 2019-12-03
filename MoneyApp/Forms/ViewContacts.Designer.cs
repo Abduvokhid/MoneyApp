@@ -1,6 +1,6 @@
 ﻿namespace MoneyApp.Forms
 {
-    partial class ContactsView
+    partial class ViewContacts
     {
         /// <summary>
         /// Required designer variable.
@@ -61,7 +61,7 @@
             this.btn_add.TabIndex = 1;
             this.btn_add.Text = "Add";
             this.btn_add.UseVisualStyleBackColor = true;
-            this.btn_add.Click += new System.EventHandler(this.btn_add_Click);
+            this.btn_add.Click += new System.EventHandler(this.AddClick);
             // 
             // btn_edit
             // 
@@ -71,7 +71,7 @@
             this.btn_edit.TabIndex = 2;
             this.btn_edit.Text = "Edit";
             this.btn_edit.UseVisualStyleBackColor = true;
-            this.btn_edit.Click += new System.EventHandler(this.btn_edit_Click);
+            this.btn_edit.Click += new System.EventHandler(this.EditClick);
             // 
             // btn_delete
             // 
@@ -81,21 +81,21 @@
             this.btn_delete.TabIndex = 3;
             this.btn_delete.Text = "Delete";
             this.btn_delete.UseVisualStyleBackColor = true;
-            this.btn_delete.Click += new System.EventHandler(this.btn_delete_Click);
+            this.btn_delete.Click += new System.EventHandler(this.DeleteClick);
             // 
-            // ContactsView
+            // ViewContacts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(230, 269);
+            this.ClientSize = new System.Drawing.Size(226, 269);
             this.Controls.Add(this.btn_delete);
             this.Controls.Add(this.btn_edit);
             this.Controls.Add(this.btn_add);
             this.Controls.Add(this.lv_contacts);
-            this.Name = "ContactsView";
+            this.Name = "ViewContacts";
             this.Text = "ContactsView";
-            this.Activated += new System.EventHandler(this.ContactsView_Activated);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ContactsView_FormClosed);
+            this.Activated += new System.EventHandler(this.ViewContactsActivated);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ViewContactsFormClosed);
             this.ResumeLayout(false);
 
         }
