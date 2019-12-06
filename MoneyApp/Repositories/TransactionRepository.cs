@@ -12,7 +12,17 @@ namespace MoneyApp.Repositories
 {
     class TransactionRepository
     {
-        public TransactionRepository() { }
+        private static TransactionRepository instance;
+        private TransactionRepository() { }
+
+        public static TransactionRepository Instance()
+        {
+            if (instance == null)
+            {
+                instance = new TransactionRepository();
+            }
+            return instance;
+        }
         public List<Transaction> GetUserTransactions(int id)
         {
             List<Transaction> transactions = new List<Transaction>();

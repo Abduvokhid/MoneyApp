@@ -11,7 +11,7 @@ namespace MoneyApp
 {
     static class Instances
     {
-        public static Form MoneyApp;
+        public static MoneyApp MoneyApp;
         public static User User = null;
     }
 }

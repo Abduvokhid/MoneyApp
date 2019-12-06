@@ -19,12 +19,13 @@ namespace MoneyApp.Forms
         {
             InitializeComponent();
             contactRepository = ContactRepository.Instance();
-            Instances.MoneyApp.Hide();
+            //Instances.MoneyApp.Hide();
             
         }
 
         private async void ViewContactsActivated(object sender, EventArgs e)
         {
+            //List<Contact> contacts = contactRepository.GetUserContacts(Instances.User.ID);
             List<Contact> contacts = await Task.Run(() => contactRepository.GetUserContacts(Instances.User.ID));
             lv_contacts.Items.Clear();
             foreach (Contact contact in contacts)
@@ -39,6 +40,7 @@ namespace MoneyApp.Forms
 
         private void ViewContactsFormClosed(object sender, FormClosedEventArgs e)
         {
+            Instances.MoneyApp.UnBlur();
             Instances.MoneyApp.Activate();
             Instances.MoneyApp.Show();
             Dispose();

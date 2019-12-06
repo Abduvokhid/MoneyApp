@@ -18,7 +18,7 @@ namespace MoneyApp.Forms
         public ViewTransactions()
         {
             InitializeComponent();
-            transactionRepository = new TransactionRepository();
+            transactionRepository = TransactionRepository.Instance();
             Instances.MoneyApp.Hide();
         }
 

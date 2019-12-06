@@ -32,7 +32,7 @@ namespace MoneyApp.Forms
             tbx_name.Text = c.Name;
         }
 
-        private void btn_action_Click(object sender, EventArgs e)
+        private async void btn_action_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(tbx_name.Text))
             {
@@ -43,7 +43,8 @@ namespace MoneyApp.Forms
             contact.Name = tbx_name.Text;
             ContactRepository contactRepository = ContactRepository.Instance();
 
-            bool i = contact.ID > 0 ? contactRepository.EditContact(contact) : contactRepository.AddContact(contact);
+            btn_action.Enabled = false;
+            bool i = contact.ID > 0 ? await Task.Run(()=> contactRepository.EditContact(contact)) : await Task.Run(() => contactRepository.AddContact(contact));
             MessageBox.Show(i ? (contact.ID > 0) ? "Edited okay" : "Added okay" : "Error");
             Close();
             Dispose();

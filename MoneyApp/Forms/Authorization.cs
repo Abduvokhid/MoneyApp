@@ -22,7 +22,7 @@ namespace MoneyApp.Forms
         {
             InitializeComponent();
             Instances.MoneyApp.Hide();
-            userRepository = new UserRepository();
+            userRepository = UserRepository.Instance();
         }
 
         private void SignInClick(object sender, EventArgs e)

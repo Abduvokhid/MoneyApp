@@ -9,7 +9,17 @@ namespace MoneyApp.Repositories
 {
     class UserRepository
     {
-        public UserRepository() {}
+        private static UserRepository instance;
+        private UserRepository() { }
+
+        public static UserRepository Instance()
+        {
+            if (instance == null)
+            {
+                instance = new UserRepository();
+            }
+            return instance;
+        }
 
         public bool AddUser(User user)
         {
