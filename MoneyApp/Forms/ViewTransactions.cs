@@ -19,17 +19,25 @@ namespace MoneyApp.Forms
         {
             InitializeComponent();
             transactionRepository = TransactionRepository.Instance();
-            Instances.MoneyApp.Hide();
+            //Instances.MoneyApp.Hide();
         }
 
         private void AddClick(object sender, EventArgs e)
         {
-
+            AddUpdateTransaction addEditTransaction = new AddUpdateTransaction();
+            addEditTransaction.Activate();
+            addEditTransaction.ShowDialog();
         }
 
         private void EditClick(object sender, EventArgs e)
         {
-
+            if (lv_transactions.SelectedItems.Count > 0)
+            {
+                Transaction transaction = (Transaction)lv_transactions.SelectedItems[0].Tag;
+                AddUpdateTransaction addEditTransaction = new AddUpdateTransaction(transaction);
+                addEditTransaction.Activate();
+                addEditTransaction.ShowDialog();
+            }
         }
 
         private void DeleteClick(object sender, EventArgs e)
@@ -49,6 +57,7 @@ namespace MoneyApp.Forms
 
         private void ViewTransactionsFormClosed(object sender, FormClosedEventArgs e)
         {
+            Instances.MoneyApp.UnBlur();
             Instances.MoneyApp.Activate();
             Instances.MoneyApp.Show();
             Dispose();
@@ -64,6 +73,27 @@ namespace MoneyApp.Forms
                 lvi.Tag = transaction;
                 lv_transactions.Items.Add(lvi);
             }
+        }
+
+        private void ViewTransactions_Resize(object sender, EventArgs e)
+        {
+            if (Width < 734)
+            {
+                btn_add.Location = new Point(12, 246);
+                btn_edit.Location = new Point(99, 246);
+                btn_delete.Location = new Point(186, 246);
+            } else
+            {
+                btn_add.Location = new Point(631, 12);
+                btn_edit.Location = new Point(631, 41);
+                btn_delete.Location = new Point(631, 70);
+            }
+            if (Width < 655) Width = 655;
+            if (Height < 315) Height = 315;
+        }
+
+        private void ViewTransactions_ResizeEnd(object sender, EventArgs e)
+        {
         }
     }
 }

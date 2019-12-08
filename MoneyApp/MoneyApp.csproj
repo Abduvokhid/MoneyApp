@@ -64,6 +64,12 @@
     <Compile Include="Forms\AddEditTransaction.Designer.cs">
       <DependentUpon>AddEditTransaction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\AddUpdateTransaction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddUpdateTransaction.Designer.cs">
+      <DependentUpon>AddUpdateTransaction.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Authorization.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +90,7 @@
     </Compile>
     <Compile Include="Instances.cs" />
     <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\RecurringTransaction.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Forms\MoneyApp.cs">
@@ -95,6 +102,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ContactRepository.cs" />
+    <Compile Include="Repositories\RecurringTransactionRepository.cs" />
     <Compile Include="Repositories\TransactionRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Screenshot.cs" />
@@ -124,6 +132,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -139,6 +148,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\back.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

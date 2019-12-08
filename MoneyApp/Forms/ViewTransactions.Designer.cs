@@ -119,15 +119,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(718, 262);
+            this.ClientSize = new System.Drawing.Size(718, 277);
             this.Controls.Add(this.btn_delete);
             this.Controls.Add(this.btn_edit);
             this.Controls.Add(this.btn_add);
             this.Controls.Add(this.lv_transactions);
+            this.MinimumSize = new System.Drawing.Size(655, 315);
             this.Name = "ViewTransactions";
-            this.Text = "ViewTransactions";
             this.Activated += new System.EventHandler(this.ViewTransactionsActivated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ViewTransactionsFormClosed);
+            this.ResizeEnd += new System.EventHandler(this.ViewTransactions_ResizeEnd);
+            this.Resize += new System.EventHandler(this.ViewTransactions_Resize);
             this.ResumeLayout(false);
 
         }

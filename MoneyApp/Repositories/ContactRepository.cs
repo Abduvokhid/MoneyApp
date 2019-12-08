@@ -86,9 +86,9 @@ namespace MoneyApp.Repositories
             }
         }
 
-        public bool AddContact(Contact contact)
+        public int AddContact(Contact contact)
         {
-            string query = "INSERT INTO Contacts ([UserID], [Name]) VALUES (@UserID, @Name)";
+            string query = "INSERT INTO Contacts ([UserID], [Name]) OUTPUT INSERTED.ID  VALUES (@UserID, @Name)";
             SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
 
             try
@@ -97,26 +97,22 @@ namespace MoneyApp.Repositories
                 sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = contact.UserID;
                 sqlCommand.Parameters.Add("@Name", SqlDbType.NVarChar).Value = contact.Name;
                 sqlConnection.Open();
-                var i = sqlCommand.ExecuteNonQuery();
-
+                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                int i = 0;
+                while (sqlDataReader.Read())
+                {
+                    i = (int)sqlDataReader["ID"];
+                }
                 sqlConnection.Close();
-
-                if (i > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return i;
             }
             catch (Exception ex)
             {
-                return false;
+                return 0;
             }
         }
 
-        public bool EditContact(Contact contact)
+        public int EditContact(Contact contact)
         {
             string query = "UPDATE Contacts SET [Name] = @Name WHERE [ID] = @ID AND [UserID] = @UserID";
             SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
@@ -132,18 +128,11 @@ namespace MoneyApp.Repositories
 
                 sqlConnection.Close();
 
-                if (i > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return i;
             }
             catch (Exception ex)
             {
-                return false;
+                return 0;
             }
         }
     }
