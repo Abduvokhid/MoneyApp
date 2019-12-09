@@ -46,7 +46,7 @@ namespace MoneyApp.Repositories
                         Type = (bool)sqlDataReader["Type"],
                         Amount = (decimal)sqlDataReader["Amount"],
                         Note = sqlDataReader["Note"].ToString(),
-                        CreatedDate = (DateTime)sqlDataReader["CreatedDate"],
+                        CreatedDate = (DateTime)sqlDataReader["AddedDate"],
                         Status = sqlDataReader["Status"].ToString()
                     };
 
@@ -114,7 +114,7 @@ namespace MoneyApp.Repositories
                 else ContactID.Value = transaction.ContactID;
                 sqlCommand.Parameters.Add(ContactID);
 
-                SqlParameter EndDate = new SqlParameter("@EndDate", SqlDbType.Int);
+                SqlParameter EndDate = new SqlParameter("@EndDate", SqlDbType.DateTime);
                 if (transaction.EndDate == DateTime.MinValue) EndDate.Value = DBNull.Value;
                 else EndDate.Value = transaction.EndDate;
                 sqlCommand.Parameters.Add(EndDate);
@@ -132,7 +132,7 @@ namespace MoneyApp.Repositories
 
         public bool EditTransaction(RecurringTransaction transaction)
         {
-            string query = "UPDATE RecurringTransactions SET [Name] = @Name, [ContactID] = @ContactID, [Type] = @Type, [Amount] = @Amount, [Note] = @Note, [CreatedDate] = @CreatedDate, [Status] = @Status, [EndDate] = @EndDate WHERE [ID] = @ID AND [UserID] = @UserID";
+            string query = "UPDATE RecurringTransactions SET [Name] = @Name, [ContactID] = @ContactID, [Type] = @Type, [Amount] = @Amount, [Note] = @Note, [AddedDate] = @CreatedDate, [Status] = @Status, [EndDate] = @EndDa`te WHERE [ID] = @ID AND [UserID] = @UserID";
             SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
 
             try
@@ -152,7 +152,7 @@ namespace MoneyApp.Repositories
                 else ContactID.Value = transaction.ContactID;
                 sqlCommand.Parameters.Add(ContactID);
 
-                SqlParameter EndDate = new SqlParameter("@EndDate", SqlDbType.Int);
+                SqlParameter EndDate = new SqlParameter("@EndDate", SqlDbType.DateTime);
                 if (transaction.EndDate == DateTime.MinValue) EndDate.Value = DBNull.Value;
                 else EndDate.Value = transaction.EndDate;
                 sqlCommand.Parameters.Add(EndDate);

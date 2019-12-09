@@ -82,46 +82,10 @@ namespace MoneyApp
 
         private void TransactionsClick(object sender, EventArgs e)
         {
-            Blur();
+            //Blur();
             ViewTransactions transactionsView = new ViewTransactions();
             transactionsView.Activate();
             transactionsView.Show();
-        }
-
-        private bool drag = false;
-
-        private void FormMouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
-                FormMouseUp(Handle, e);
-            }
-        }
-
-        private void FormMouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                btn_contacts.Text = "up";
-                if (drag)
-                {
-                    drag = false;
-                    Opacity = 1;
-                }
-                
-            }
-        }
-
-        private void FormMouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                btn_contacts.Text = "down";
-                drag = true;
-                Opacity = 0.5;
-            }
         }
 
         private void btn_transactions_MouseHover(object sender, EventArgs e)
@@ -146,6 +110,66 @@ namespace MoneyApp
         private void btn_transactions_MouseLeave(object sender, EventArgs e)
         {
             if (isTagged) ((Label)btn_transactions.Tag).Dispose();
+        }
+
+        private void btn_recurring_transactions_Click(object sender, EventArgs e)
+        {
+            ViewTransactions transactionsView = new ViewTransactions(true);
+            transactionsView.Activate();
+            transactionsView.Show();
+        }
+
+        private bool move = false;
+        private Point startPoint;
+        private void RightMouseDown(object sender, MouseEventArgs e)
+        {
+            move = true;
+            startPoint = MousePosition;
+        }
+
+        private void RightMouseMove(object sender, MouseEventArgs e)
+        {
+            if (move)
+            {
+                Point nowPoint = MousePosition;
+                int o = startPoint.X;
+                int n = nowPoint.X;
+                int t = n - o;
+                Size = new Size(Width + t, Height);
+                startPoint = nowPoint;
+            }
+        }
+
+        private void RightMouseUp(object sender, MouseEventArgs e)
+        {
+            if (move) move = false;
+        }
+
+        private void AllMouseDown(object sender, MouseEventArgs e)
+        {
+            move = true;
+            startPoint = MousePosition;
+        }
+
+        private void AllMouseMove(object sender, MouseEventArgs e)
+        {
+            if (move)
+            {
+                Point nowPoint = MousePosition;
+                int Xo = startPoint.X;
+                int Xn = nowPoint.X;
+                int Xt = Xn - Xo;
+                int Yo = startPoint.Y;
+                int Yn = nowPoint.Y;
+                int Yt = Yn - Yo;
+                Size = new Size(Width + Xt, Height + Yt);
+                startPoint = nowPoint;
+            }
+        }
+
+        private void AllMouseUp(object sender, MouseEventArgs e)
+        {
+            if (move) move = false;
         }
     }
 }

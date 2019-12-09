@@ -34,7 +34,13 @@ namespace MoneyApp
         {
             this.btn_contacts = new System.Windows.Forms.Button();
             this.panel = new System.Windows.Forms.Panel();
+            this.btn_right = new System.Windows.Forms.Button();
+            this.btn_left = new System.Windows.Forms.Button();
+            this.btn_up = new System.Windows.Forms.Button();
+            this.btn_down = new System.Windows.Forms.Button();
+            this.btn_recurring_transactions = new System.Windows.Forms.Button();
             this.btn_transactions = new System.Windows.Forms.Button();
+            this.btn_all = new System.Windows.Forms.Button();
             this.panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,16 +57,68 @@ namespace MoneyApp
             // panel
             // 
             this.panel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel.Controls.Add(this.btn_all);
+            this.panel.Controls.Add(this.btn_right);
+            this.panel.Controls.Add(this.btn_left);
+            this.panel.Controls.Add(this.btn_up);
+            this.panel.Controls.Add(this.btn_down);
+            this.panel.Controls.Add(this.btn_recurring_transactions);
             this.panel.Controls.Add(this.btn_transactions);
             this.panel.Controls.Add(this.btn_contacts);
-            this.panel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel.Location = new System.Drawing.Point(0, 0);
             this.panel.Name = "panel";
-            this.panel.Size = new System.Drawing.Size(799, 382);
+            this.panel.Size = new System.Drawing.Size(727, 382);
             this.panel.TabIndex = 1;
-            this.panel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
-            this.panel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormMouseMove);
-            this.panel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormMouseUp);
+            // 
+            // btn_right
+            // 
+            this.btn_right.Location = new System.Drawing.Point(429, 304);
+            this.btn_right.Name = "btn_right";
+            this.btn_right.Size = new System.Drawing.Size(23, 75);
+            this.btn_right.TabIndex = 6;
+            this.btn_right.Text = ">";
+            this.btn_right.UseVisualStyleBackColor = true;
+            this.btn_right.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RightMouseDown);
+            this.btn_right.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RightMouseMove);
+            this.btn_right.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RightMouseUp);
+            // 
+            // btn_left
+            // 
+            this.btn_left.Location = new System.Drawing.Point(319, 304);
+            this.btn_left.Name = "btn_left";
+            this.btn_left.Size = new System.Drawing.Size(23, 75);
+            this.btn_left.TabIndex = 5;
+            this.btn_left.Text = "<";
+            this.btn_left.UseVisualStyleBackColor = true;
+            // 
+            // btn_up
+            // 
+            this.btn_up.Location = new System.Drawing.Point(348, 304);
+            this.btn_up.Name = "btn_up";
+            this.btn_up.Size = new System.Drawing.Size(75, 23);
+            this.btn_up.TabIndex = 4;
+            this.btn_up.Text = "/\\";
+            this.btn_up.UseVisualStyleBackColor = true;
+            // 
+            // btn_down
+            // 
+            this.btn_down.Location = new System.Drawing.Point(348, 356);
+            this.btn_down.Name = "btn_down";
+            this.btn_down.Size = new System.Drawing.Size(75, 23);
+            this.btn_down.TabIndex = 3;
+            this.btn_down.Text = "\\/";
+            this.btn_down.UseVisualStyleBackColor = true;
+            // 
+            // btn_recurring_transactions
+            // 
+            this.btn_recurring_transactions.Location = new System.Drawing.Point(215, 122);
+            this.btn_recurring_transactions.Name = "btn_recurring_transactions";
+            this.btn_recurring_transactions.Size = new System.Drawing.Size(141, 23);
+            this.btn_recurring_transactions.TabIndex = 2;
+            this.btn_recurring_transactions.Text = "Recurring transactions";
+            this.btn_recurring_transactions.UseVisualStyleBackColor = true;
+            this.btn_recurring_transactions.Click += new System.EventHandler(this.btn_recurring_transactions_Click);
             // 
             // btn_transactions
             // 
@@ -74,22 +132,29 @@ namespace MoneyApp
             this.btn_transactions.MouseLeave += new System.EventHandler(this.btn_transactions_MouseLeave);
             this.btn_transactions.MouseHover += new System.EventHandler(this.btn_transactions_MouseHover);
             // 
+            // btn_all
+            // 
+            this.btn_all.Location = new System.Drawing.Point(521, 289);
+            this.btn_all.Name = "btn_all";
+            this.btn_all.Size = new System.Drawing.Size(75, 23);
+            this.btn_all.TabIndex = 7;
+            this.btn_all.Text = ".";
+            this.btn_all.UseVisualStyleBackColor = true;
+            this.btn_all.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AllMouseDown);
+            this.btn_all.MouseMove += new System.Windows.Forms.MouseEventHandler(this.AllMouseMove);
+            this.btn_all.MouseUp += new System.Windows.Forms.MouseEventHandler(this.AllMouseUp);
+            // 
             // MoneyApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(799, 382);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(831, 382);
             this.Controls.Add(this.panel);
-            this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MoneyApp";
             this.Text = "Money App";
             this.Activated += new System.EventHandler(this.MoneyApp_Activated);
             this.SizeChanged += new System.EventHandler(this.MoneyApp_SizeChanged);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormMouseDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormMouseMove);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormMouseUp);
             this.panel.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -105,13 +170,17 @@ namespace MoneyApp
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        [DllImportAttribute("user32.dll")]
-        public static extern bool SetCapture();
         #endregion
 
         private System.Windows.Forms.Button btn_contacts;
         private System.Windows.Forms.Button btn_transactions;
         private Panel panel;
+        private Button btn_recurring_transactions;
+        private Button btn_right;
+        private Button btn_left;
+        private Button btn_up;
+        private Button btn_down;
+        private Button btn_all;
     }
 }
 

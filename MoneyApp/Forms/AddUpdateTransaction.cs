@@ -15,7 +15,14 @@ namespace MoneyApp.Forms
     public partial class AddUpdateTransaction : Form
     {
         private Transaction auTransactionObj;
+        private RecurringTransaction auRecTransactionObj;
+        private bool isRecurring = false;
         public AddUpdateTransaction()
+        {
+            AddTransaction();
+        }
+
+        private void AddTransaction()
         {
             InitializeComponent();
             btn_add_editTransaction.Text = "Add Transaction";
@@ -39,10 +46,52 @@ namespace MoneyApp.Forms
             transactionDateTimePick.Value = transactionObj.CreatedDate;
             richTextBoxTransactionNote.Text = transactionObj.Note;
 
+            groupBoxRecTrans.Visible = false;
+            checkBoxTRecurring.Visible = false;
+        }
+
+        //update 
+        public AddUpdateTransaction(RecurringTransaction transactionObj)
+        {
+            InitializeComponent();
+            isRecurring = true;
+            auRecTransactionObj = transactionObj;
+            lblHeadingTransaction.Text = "Update Recurring Transaction";
+            btn_add_editTransaction.Text = "Update Recurring Transaction";
+            txtTransactionName.Text = transactionObj.Name;
+            comboBoxType.Text = transactionObj.TypeName;
+            numericUpDownAmount.Value = transactionObj.Amount;
+            transactionDateTimePick.Value = transactionObj.CreatedDate;
+            richTextBoxTransactionNote.Text = transactionObj.Note;
+            comboBoxTStatus.Text = transactionObj.Status;
+            if (transactionObj.EndDate == DateTime.MinValue)
+            {
+                dateTimePickerEndDate.Enabled = false;
+                chbx_infinite.Checked = true;
+            } else
+            {
+                dateTimePickerEndDate.Value = transactionObj.EndDate;
+            }
+
+            groupBoxRecTrans.Visible = true;
+            checkBoxTRecurring.Visible = false;
         }
 
         //
         private void btn_add_editTransaction_Click(object sender, EventArgs e)
+        {
+            
+            if (isRecurring)
+            {
+                UpdateRecurringTransaction();
+            } else
+            {
+                AddUpdateNormTransaction();
+            }
+
+        }
+
+        private void AddUpdateNormTransaction()
         {
             if (txtTransactionName.Text.Equals(""))
             {
@@ -52,7 +101,7 @@ namespace MoneyApp.Forms
             TransactionRepository transactionsRepository = TransactionRepository.Instance();
             auTransactionObj.Name = txtTransactionName.Text;
             auTransactionObj.TypeName = comboBoxType.Text;
-            auTransactionObj.Amount = numericUpDownAmount.DecimalPlaces;
+            auTransactionObj.Amount = numericUpDownAmount.Value;
             auTransactionObj.CreatedDate = transactionDateTimePick.Value;
             auTransactionObj.Note = richTextBoxTransactionNote.Text;
             bool result = false;
@@ -60,13 +109,13 @@ namespace MoneyApp.Forms
             //Combo box type of transaction
             if (auTransactionObj.TypeName.Equals("Income"))
             {
-                //income-0
-                auTransactionObj.Type = false;
+                //income-1
+                auTransactionObj.Type = true;
             }
             else
             {
-                //expense-   1
-                auTransactionObj.Type = true;
+                //expense-   2
+                auTransactionObj.Type = false;
             }
 
             Contact contact = (Contact)comboBoxContact.SelectedItem;
@@ -87,13 +136,43 @@ namespace MoneyApp.Forms
                 auTransactionObj.ContactID = contact.ID;
             }
 
+            if (checkBoxTRecurring.Checked && auTransactionObj.ID == 0)
+            {
+                RecurringTransaction rt = new RecurringTransaction
+                {
+                    Name = auTransactionObj.Name,
+                    Amount = auTransactionObj.Amount,
+                    UserID = auTransactionObj.UserID,
+                    Type = auTransactionObj.Type,
+                    CreatedDate = auTransactionObj.CreatedDate,
+                    Note = auTransactionObj.Note,
+                    ContactID = auTransactionObj.ContactID
+                };
+
+                if (chbx_infinite.Checked)
+                {
+                    rt.EndDate = DateTime.MinValue;
+                }
+                else
+                {
+                    rt.EndDate = dateTimePickerEndDate.Value;
+                }
+                rt.Status = comboBoxTStatus.Text;
+
+                RecurringTransactionRepository recurringTransactionRepository = RecurringTransactionRepository.Instance();
+                bool i = recurringTransactionRepository.AddTransaction(rt);
+                if (i == false)
+                {
+                    MessageBox.Show("Error!");
+                    return;
+                }
+            }
 
 
 
             //add /edit transaction
             if (auTransactionObj.ID > 0)
             {
-                Console.WriteLine(auTransactionObj.ID);
                 result = transactionsRepository.EditTransaction(auTransactionObj);
             }
             else
@@ -117,11 +196,79 @@ namespace MoneyApp.Forms
                 MessageBox.Show("Error!");
             }
 
-
-
         }
 
 
+        private void UpdateRecurringTransaction()
+        {
+            if (txtTransactionName.Text.Equals(""))
+            {
+                MessageBox.Show("Transaction is Empty! Please add a transaction name.");
+                return;
+            }
+            RecurringTransactionRepository recurringTransactionsRepository = RecurringTransactionRepository.Instance();
+            auRecTransactionObj.Name = txtTransactionName.Text;
+            auRecTransactionObj.TypeName = comboBoxType.Text;
+            auRecTransactionObj.Amount = numericUpDownAmount.Value;
+            auRecTransactionObj.CreatedDate = transactionDateTimePick.Value;
+            auRecTransactionObj.Note = richTextBoxTransactionNote.Text;
+            bool result = false;
+
+            //Combo box type of transaction
+            if (auRecTransactionObj.TypeName.Equals("Income"))
+            {
+                //income-1
+                auRecTransactionObj.Type = true;
+            }
+            else
+            {
+                //expense-   0
+                auRecTransactionObj.Type = false;
+            }
+
+            Contact contact = (Contact)comboBoxContact.SelectedItem;
+            if (contact == null)
+            {
+                if (string.IsNullOrWhiteSpace(comboBoxContact.Text))
+                {
+                    auRecTransactionObj.ContactID = 0;
+                }
+                else
+                {
+                    ContactRepository contactsRepository = ContactRepository.Instance();
+                    auRecTransactionObj.ContactID = contactsRepository.AddContact(new Contact { Name = comboBoxContact.Text, UserID = Instances.User.ID });
+                }
+            }
+            else
+            {
+                auRecTransactionObj.ContactID = contact.ID;
+            }
+
+            if (chbx_infinite.Checked)
+            {
+                auRecTransactionObj.EndDate = DateTime.MinValue;
+            }
+            else
+            {
+                auRecTransactionObj.EndDate = dateTimePickerEndDate.Value;
+            }
+            auRecTransactionObj.Status = comboBoxTStatus.Text;
+
+            result = recurringTransactionsRepository.EditTransaction(auRecTransactionObj);
+            
+
+            //messageBox for edit and add transaction
+            if (auRecTransactionObj.ID > 0 && result)
+            {
+                MessageBox.Show("Edited Successfully");
+                Dispose();
+            }
+            else
+            {
+                MessageBox.Show("Error!");
+            }
+
+        }
         //
         private void AddUpdateTransaction_Load(object sender, EventArgs e)
         {
@@ -131,7 +278,18 @@ namespace MoneyApp.Forms
             List<Contact> ContactList = ContactRepo.GetUserContacts(Instances.User.ID);
             comboBoxContact.DataSource = ContactList;
             comboBoxContact.DisplayMember = "Name";
+            
+            if (isRecurring)
+            {
+                SetRecTransactionContact(ContactList);
+            } else
+            {
+                SetTransactionContact(ContactList);
+            }
+        }
 
+        private void SetTransactionContact(List<Contact> ContactList)
+        {
             if (auTransactionObj.ID > 0)
             {
                 if (auTransactionObj.ContactID == 0)
@@ -151,17 +309,39 @@ namespace MoneyApp.Forms
             }
         }
 
-        //
-        private void comboBoxContact_SelectedIndexChanged(object sender, EventArgs e)
+        private void SetRecTransactionContact(List<Contact> ContactList)
         {
-
+            if (auRecTransactionObj.ID > 0)
+            {
+                if (auRecTransactionObj.ContactID == 0)
+                {
+                    comboBoxContact.Text = "";
+                }
+                else
+                {
+                    for (int i = 0; i < ContactList.Count; i++)
+                    {
+                        if (auRecTransactionObj.ContactID == ContactList[i].ID)
+                        {
+                            comboBoxContact.SelectedItem = comboBoxContact.Items[i];
+                        }
+                    }
+                }
+            }
         }
+
         //Check box Recurring Transaction and visibility of the groupbox if checked
         private void checkBoxTRecurring_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxTRecurring.Checked == true) groupBoxRecTrans.Visible = true;
             else groupBoxRecTrans.Visible = false;
 
+        }
+
+        private void chbx_infinite_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chbx_infinite.Checked == true) dateTimePickerEndDate.Enabled = false;
+            else dateTimePickerEndDate.Enabled = true;
         }
     }
 }

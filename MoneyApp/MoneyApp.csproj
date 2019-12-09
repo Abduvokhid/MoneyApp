@@ -112,6 +112,9 @@
     <EmbeddedResource Include="Forms\AddEditTransaction.resx">
       <DependentUpon>AddEditTransaction.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddUpdateTransaction.resx">
+      <DependentUpon>AddUpdateTransaction.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Authorization.resx">
       <DependentUpon>Authorization.cs</DependentUpon>
     </EmbeddedResource>
@@ -149,7 +152,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\back.png" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

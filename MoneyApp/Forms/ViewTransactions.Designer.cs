@@ -49,7 +49,9 @@
             this.cl_amount,
             this.cl_date,
             this.cl_note});
+            this.lv_transactions.FullRowSelect = true;
             this.lv_transactions.Location = new System.Drawing.Point(12, 12);
+            this.lv_transactions.MultiSelect = false;
             this.lv_transactions.Name = "lv_transactions";
             this.lv_transactions.Size = new System.Drawing.Size(613, 228);
             this.lv_transactions.TabIndex = 0;

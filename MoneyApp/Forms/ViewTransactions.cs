@@ -15,11 +15,24 @@ namespace MoneyApp.Forms
     public partial class ViewTransactions : Form
     {
         private TransactionRepository transactionRepository;
+        private RecurringTransactionRepository recurringTransactionRepository;
+        private bool isRecurring = false;
         public ViewTransactions()
         {
             InitializeComponent();
             transactionRepository = TransactionRepository.Instance();
-            //Instances.MoneyApp.Hide();
+        }
+        public ViewTransactions(bool recurring)
+        {
+            InitializeComponent();
+            isRecurring = recurring;
+            if (isRecurring)
+            {
+                lv_transactions.Columns.Add("Status");
+                lv_transactions.Columns.Add("End date");
+                recurringTransactionRepository = RecurringTransactionRepository.Instance();
+            }
+            transactionRepository = TransactionRepository.Instance();
         }
 
         private void AddClick(object sender, EventArgs e)
@@ -33,10 +46,19 @@ namespace MoneyApp.Forms
         {
             if (lv_transactions.SelectedItems.Count > 0)
             {
-                Transaction transaction = (Transaction)lv_transactions.SelectedItems[0].Tag;
-                AddUpdateTransaction addEditTransaction = new AddUpdateTransaction(transaction);
-                addEditTransaction.Activate();
-                addEditTransaction.ShowDialog();
+                if (isRecurring)
+                {
+                    RecurringTransaction transaction = (RecurringTransaction)lv_transactions.SelectedItems[0].Tag;
+                    AddUpdateTransaction addEditTransaction = new AddUpdateTransaction(transaction);
+                    addEditTransaction.Activate();
+                    addEditTransaction.ShowDialog();
+                } else
+                {
+                    Transaction transaction = (Transaction)lv_transactions.SelectedItems[0].Tag;
+                    AddUpdateTransaction addEditTransaction = new AddUpdateTransaction(transaction);
+                    addEditTransaction.Activate();
+                    addEditTransaction.ShowDialog();
+                }
             }
         }
 
@@ -44,13 +66,26 @@ namespace MoneyApp.Forms
         {
             if (lv_transactions.SelectedItems.Count > 0)
             {
-                Transaction transaction = (Transaction)lv_transactions.SelectedItems[0].Tag;
-                DialogResult dialogResult = MessageBox.Show("Are you sure?", "Confirmation", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
+                if (isRecurring)
                 {
-                    bool i = transactionRepository.DeleteTransaction(transaction);
+                    RecurringTransaction transaction = (RecurringTransaction)lv_transactions.SelectedItems[0].Tag;
+                    DialogResult dialogResult = MessageBox.Show("Are you sure?", "Confirmation", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        bool i = recurringTransactionRepository.DeleteTransaction(transaction);
 
-                    MessageBox.Show(i ? "Deleted" : "Error");
+                        MessageBox.Show(i ? "Deleted" : "Error");
+                    }
+                } else
+                {
+                    Transaction transaction = (Transaction)lv_transactions.SelectedItems[0].Tag;
+                    DialogResult dialogResult = MessageBox.Show("Are you sure?", "Confirmation", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        bool i = transactionRepository.DeleteTransaction(transaction);
+
+                        MessageBox.Show(i ? "Deleted" : "Error");
+                    }
                 }
             }
         }
@@ -65,13 +100,46 @@ namespace MoneyApp.Forms
 
         private void ViewTransactionsActivated(object sender, EventArgs e)
         {
-            List<Transaction> transactions = transactionRepository.GetUserTransactions(Instances.User.ID);
-            lv_transactions.Items.Clear();
-            foreach (Transaction transaction in transactions)
+            if (isRecurring)
             {
-                ListViewItem lvi = new ListViewItem(new string[] { transaction.Name });
-                lvi.Tag = transaction;
-                lv_transactions.Items.Add(lvi);
+                List<RecurringTransaction> TransactionList = recurringTransactionRepository.GetUserTransactions(Instances.User.ID);
+                lv_transactions.Items.Clear();
+                foreach (RecurringTransaction transaction in TransactionList)
+                {
+                    string endDate = (transaction.EndDate == DateTime.MinValue) ? "Never ends" : transaction.EndDate.ToString();
+                    ListViewItem transactionListViewItem = new ListViewItem(
+                        new string[] {
+                        transaction.Name,
+                        transaction.ContactName,
+                        transaction.TypeName,
+                        transaction.Amount.ToString("0.00"),
+                        transaction.CreatedDate.ToString(),
+                        transaction.Note,
+                        transaction.Status,
+                        endDate
+                        });
+                    transactionListViewItem.Tag = transaction;
+                    lv_transactions.Items.Add(transactionListViewItem);
+
+                }
+            } else
+            {
+                List<Transaction> TransactionList = transactionRepository.GetUserTransactions(Instances.User.ID);
+                lv_transactions.Items.Clear();
+                foreach (Transaction transaction in TransactionList)
+                {
+                    ListViewItem transactionListViewItem = new ListViewItem(
+                        new string[] {
+                        transaction.Name,
+                        transaction.ContactName,
+                        transaction.TypeName,
+                        transaction.Amount.ToString("0.00"),
+                        transaction.CreatedDate.ToString(),
+                        transaction.Note
+                        });
+                    transactionListViewItem.Tag = transaction;
+                    lv_transactions.Items.Add(transactionListViewItem);
+                }
             }
         }
 

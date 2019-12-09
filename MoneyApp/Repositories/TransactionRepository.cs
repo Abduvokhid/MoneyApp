@@ -45,7 +45,7 @@ namespace MoneyApp.Repositories
                         Type = (bool)sqlDataReader["Type"],
                         Amount = (decimal)sqlDataReader["Amount"],
                         Note = sqlDataReader["Note"].ToString(),
-                        CreatedDate = (DateTime)sqlDataReader["CreatedDate"],
+                        CreatedDate = (DateTime)sqlDataReader["AddedDate"],
                     };
 
                     if (sqlDataReader["ContactID"] == DBNull.Value) transaction.ContactID = 0;
@@ -122,7 +122,7 @@ namespace MoneyApp.Repositories
 
         public bool EditTransaction(Transaction transaction)
         {
-            string query = "UPDATE Transactions SET [Name] = @Name, [ContactID] = @ContactID, [Type] = @Type, [Amount] = @Amount, [Note] = @Note, [CreatedDate] = @CreatedDate WHERE [ID] = @ID AND [UserID] = @UserID";
+            string query = "UPDATE Transactions SET [Name] = @Name, [ContactID] = @ContactID, [Type] = @Type, [Amount] = @Amount, [Note] = @Note, [AddedDate] = @CreatedDate WHERE [ID] = @ID AND [UserID] = @UserID";
             SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
 
             try
