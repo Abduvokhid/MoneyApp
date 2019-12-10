@@ -44,12 +44,12 @@
             this.comboBoxContact = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBoxRecTrans = new System.Windows.Forms.GroupBox();
+            this.chbx_infinite = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.dateTimePickerEndDate = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.comboBoxTStatus = new System.Windows.Forms.ComboBox();
             this.checkBoxTRecurring = new System.Windows.Forms.CheckBox();
-            this.chbx_infinite = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAmount)).BeginInit();
             this.groupBoxRecTrans.SuspendLayout();
             this.SuspendLayout();
@@ -68,7 +68,7 @@
             // txtTransactionName
             // 
             this.txtTransactionName.Location = new System.Drawing.Point(153, 130);
-            this.txtTransactionName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTransactionName.Margin = new System.Windows.Forms.Padding(2);
             this.txtTransactionName.Name = "txtTransactionName";
             this.txtTransactionName.Size = new System.Drawing.Size(202, 20);
             this.txtTransactionName.TabIndex = 6;
@@ -80,7 +80,7 @@
             this.btn_add_editTransaction.Font = new System.Drawing.Font("Candara", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_add_editTransaction.ForeColor = System.Drawing.Color.White;
             this.btn_add_editTransaction.Location = new System.Drawing.Point(153, 485);
-            this.btn_add_editTransaction.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_add_editTransaction.Margin = new System.Windows.Forms.Padding(2);
             this.btn_add_editTransaction.Name = "btn_add_editTransaction";
             this.btn_add_editTransaction.Size = new System.Drawing.Size(86, 27);
             this.btn_add_editTransaction.TabIndex = 5;
@@ -107,7 +107,7 @@
             "Income",
             "Expense"});
             this.comboBoxType.Location = new System.Drawing.Point(153, 162);
-            this.comboBoxType.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxType.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxType.Name = "comboBoxType";
             this.comboBoxType.Size = new System.Drawing.Size(202, 21);
             this.comboBoxType.TabIndex = 8;
@@ -139,7 +139,7 @@
             // 
             this.numericUpDownAmount.DecimalPlaces = 2;
             this.numericUpDownAmount.Location = new System.Drawing.Point(153, 220);
-            this.numericUpDownAmount.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDownAmount.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDownAmount.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -163,8 +163,10 @@
             // 
             this.transactionDateTimePick.CustomFormat = "dd/MM/yyyy HH:mm";
             this.transactionDateTimePick.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.transactionDateTimePick.Location = new System.Drawing.Point(153, 105);
-            this.transactionDateTimePick.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.transactionDateTimePick.Location = new System.Drawing.Point(151, 106);
+            this.transactionDateTimePick.Margin = new System.Windows.Forms.Padding(2);
+            this.transactionDateTimePick.MaxDate = new System.DateTime(2200, 12, 31, 0, 0, 0, 0);
+            this.transactionDateTimePick.MinDate = new System.DateTime(2000, 1, 1, 0, 0, 0, 0);
             this.transactionDateTimePick.Name = "transactionDateTimePick";
             this.transactionDateTimePick.Size = new System.Drawing.Size(202, 20);
             this.transactionDateTimePick.TabIndex = 13;
@@ -183,7 +185,7 @@
             // richTextBoxTransactionNote
             // 
             this.richTextBoxTransactionNote.Location = new System.Drawing.Point(154, 252);
-            this.richTextBoxTransactionNote.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.richTextBoxTransactionNote.Margin = new System.Windows.Forms.Padding(2);
             this.richTextBoxTransactionNote.Name = "richTextBoxTransactionNote";
             this.richTextBoxTransactionNote.Size = new System.Drawing.Size(202, 67);
             this.richTextBoxTransactionNote.TabIndex = 16;
@@ -217,7 +219,7 @@
             this.comboBoxContact.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxContact.FormattingEnabled = true;
             this.comboBoxContact.Location = new System.Drawing.Point(153, 190);
-            this.comboBoxContact.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxContact.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxContact.Name = "comboBoxContact";
             this.comboBoxContact.Size = new System.Drawing.Size(202, 21);
             this.comboBoxContact.TabIndex = 19;
@@ -226,7 +228,7 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(78)))), ((int)(((byte)(130)))));
             this.panel1.Location = new System.Drawing.Point(2, 1);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(437, 13);
             this.panel1.TabIndex = 20;
@@ -239,13 +241,24 @@
             this.groupBoxRecTrans.Controls.Add(this.label3);
             this.groupBoxRecTrans.Controls.Add(this.comboBoxTStatus);
             this.groupBoxRecTrans.Location = new System.Drawing.Point(76, 366);
-            this.groupBoxRecTrans.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBoxRecTrans.Margin = new System.Windows.Forms.Padding(2);
             this.groupBoxRecTrans.Name = "groupBoxRecTrans";
-            this.groupBoxRecTrans.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBoxRecTrans.Padding = new System.Windows.Forms.Padding(2);
             this.groupBoxRecTrans.Size = new System.Drawing.Size(337, 74);
             this.groupBoxRecTrans.TabIndex = 21;
             this.groupBoxRecTrans.TabStop = false;
             this.groupBoxRecTrans.Visible = false;
+            // 
+            // chbx_infinite
+            // 
+            this.chbx_infinite.AutoSize = true;
+            this.chbx_infinite.Location = new System.Drawing.Point(251, 45);
+            this.chbx_infinite.Name = "chbx_infinite";
+            this.chbx_infinite.Size = new System.Drawing.Size(81, 17);
+            this.chbx_infinite.TabIndex = 23;
+            this.chbx_infinite.Text = "Never ends";
+            this.chbx_infinite.UseVisualStyleBackColor = true;
+            this.chbx_infinite.CheckedChanged += new System.EventHandler(this.chbx_infinite_CheckedChanged);
             // 
             // label4
             // 
@@ -263,7 +276,7 @@
             this.dateTimePickerEndDate.CustomFormat = "dd/MM/yyyy HH:mm";
             this.dateTimePickerEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePickerEndDate.Location = new System.Drawing.Point(118, 42);
-            this.dateTimePickerEndDate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dateTimePickerEndDate.Margin = new System.Windows.Forms.Padding(2);
             this.dateTimePickerEndDate.Name = "dateTimePickerEndDate";
             this.dateTimePickerEndDate.Size = new System.Drawing.Size(128, 20);
             this.dateTimePickerEndDate.TabIndex = 15;
@@ -287,7 +300,7 @@
             "Monthly",
             "Yearly"});
             this.comboBoxTStatus.Location = new System.Drawing.Point(127, 15);
-            this.comboBoxTStatus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxTStatus.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxTStatus.Name = "comboBoxTStatus";
             this.comboBoxTStatus.Size = new System.Drawing.Size(118, 21);
             this.comboBoxTStatus.TabIndex = 0;
@@ -297,24 +310,13 @@
             // 
             this.checkBoxTRecurring.AutoSize = true;
             this.checkBoxTRecurring.Location = new System.Drawing.Point(80, 339);
-            this.checkBoxTRecurring.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxTRecurring.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxTRecurring.Name = "checkBoxTRecurring";
             this.checkBoxTRecurring.Size = new System.Drawing.Size(131, 17);
             this.checkBoxTRecurring.TabIndex = 22;
             this.checkBoxTRecurring.Text = "Recurring Transaction";
             this.checkBoxTRecurring.UseVisualStyleBackColor = true;
             this.checkBoxTRecurring.CheckedChanged += new System.EventHandler(this.checkBoxTRecurring_CheckedChanged);
-            // 
-            // chbx_infinite
-            // 
-            this.chbx_infinite.AutoSize = true;
-            this.chbx_infinite.Location = new System.Drawing.Point(251, 45);
-            this.chbx_infinite.Name = "chbx_infinite";
-            this.chbx_infinite.Size = new System.Drawing.Size(81, 17);
-            this.chbx_infinite.TabIndex = 23;
-            this.chbx_infinite.Text = "Never ends";
-            this.chbx_infinite.UseVisualStyleBackColor = true;
-            this.chbx_infinite.CheckedChanged += new System.EventHandler(this.chbx_infinite_CheckedChanged);
             // 
             // AddUpdateTransaction
             // 
@@ -339,7 +341,7 @@
             this.Controls.Add(this.txtTransactionName);
             this.Controls.Add(this.btn_add_editTransaction);
             this.Controls.Add(this.lblHeadingTransaction);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AddUpdateTransaction";
             this.Text = "AddUpdateTransaction";
             this.Load += new System.EventHandler(this.AddUpdateTransaction_Load);
