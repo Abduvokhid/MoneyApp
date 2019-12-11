@@ -34,13 +34,14 @@ namespace MoneyApp
         {
             this.btn_contacts = new System.Windows.Forms.Button();
             this.panel = new System.Windows.Forms.Panel();
+            this.btn_all = new System.Windows.Forms.Button();
             this.btn_right = new System.Windows.Forms.Button();
             this.btn_left = new System.Windows.Forms.Button();
             this.btn_up = new System.Windows.Forms.Button();
             this.btn_down = new System.Windows.Forms.Button();
             this.btn_recurring_transactions = new System.Windows.Forms.Button();
             this.btn_transactions = new System.Windows.Forms.Button();
-            this.btn_all = new System.Windows.Forms.Button();
+            this.btn_report = new System.Windows.Forms.Button();
             this.panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,6 +58,7 @@ namespace MoneyApp
             // panel
             // 
             this.panel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel.Controls.Add(this.btn_report);
             this.panel.Controls.Add(this.btn_all);
             this.panel.Controls.Add(this.btn_right);
             this.panel.Controls.Add(this.btn_left);
@@ -70,6 +72,18 @@ namespace MoneyApp
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(727, 382);
             this.panel.TabIndex = 1;
+            // 
+            // btn_all
+            // 
+            this.btn_all.Location = new System.Drawing.Point(521, 289);
+            this.btn_all.Name = "btn_all";
+            this.btn_all.Size = new System.Drawing.Size(75, 23);
+            this.btn_all.TabIndex = 7;
+            this.btn_all.Text = ".";
+            this.btn_all.UseVisualStyleBackColor = true;
+            this.btn_all.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AllMouseDown);
+            this.btn_all.MouseMove += new System.Windows.Forms.MouseEventHandler(this.AllMouseMove);
+            this.btn_all.MouseUp += new System.Windows.Forms.MouseEventHandler(this.AllMouseUp);
             // 
             // btn_right
             // 
@@ -132,17 +146,15 @@ namespace MoneyApp
             this.btn_transactions.MouseLeave += new System.EventHandler(this.btn_transactions_MouseLeave);
             this.btn_transactions.MouseHover += new System.EventHandler(this.btn_transactions_MouseHover);
             // 
-            // btn_all
+            // btn_report
             // 
-            this.btn_all.Location = new System.Drawing.Point(521, 289);
-            this.btn_all.Name = "btn_all";
-            this.btn_all.Size = new System.Drawing.Size(75, 23);
-            this.btn_all.TabIndex = 7;
-            this.btn_all.Text = ".";
-            this.btn_all.UseVisualStyleBackColor = true;
-            this.btn_all.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AllMouseDown);
-            this.btn_all.MouseMove += new System.Windows.Forms.MouseEventHandler(this.AllMouseMove);
-            this.btn_all.MouseUp += new System.Windows.Forms.MouseEventHandler(this.AllMouseUp);
+            this.btn_report.Location = new System.Drawing.Point(215, 170);
+            this.btn_report.Name = "btn_report";
+            this.btn_report.Size = new System.Drawing.Size(75, 23);
+            this.btn_report.TabIndex = 8;
+            this.btn_report.Text = "Report";
+            this.btn_report.UseVisualStyleBackColor = true;
+            this.btn_report.Click += new System.EventHandler(this.ReportClick);
             // 
             // MoneyApp
             // 
@@ -181,6 +193,7 @@ namespace MoneyApp
         private Button btn_up;
         private Button btn_down;
         private Button btn_all;
+        private Button btn_report;
     }
 }
 

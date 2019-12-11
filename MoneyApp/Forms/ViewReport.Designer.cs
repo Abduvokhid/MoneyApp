@@ -71,7 +71,13 @@
             // 
             // cbx_show
             // 
+            this.cbx_show.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbx_show.FormattingEnabled = true;
+            this.cbx_show.Items.AddRange(new object[] {
+            "Transactions",
+            "Days",
+            "Months",
+            "Years"});
             this.cbx_show.Location = new System.Drawing.Point(145, 53);
             this.cbx_show.Name = "cbx_show";
             this.cbx_show.Size = new System.Drawing.Size(121, 21);

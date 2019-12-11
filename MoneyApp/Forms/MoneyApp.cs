@@ -171,5 +171,12 @@ namespace MoneyApp
         {
             if (move) move = false;
         }
+
+        private void ReportClick(object sender, EventArgs e)
+        {
+            ViewReport viewReport = new ViewReport();
+            viewReport.Activate();
+            viewReport.Show();
+        }
     }
 }
