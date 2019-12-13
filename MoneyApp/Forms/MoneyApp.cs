@@ -37,7 +37,7 @@ namespace MoneyApp
         {
             if (Instances.User == null)
             {
-                Instances.User = new User { ID = 7, Name = "Abdu", Username = "Abduvokhid", LastAccessDate = DateTime.Now.AddDays(-5).AddHours(5) };
+                Instances.User = new User { ID = 7, Name = "Abdu", Username = "Abduvokhid", LastAccessDate = DateTime.Now.AddDays(-99).AddHours(5) };
             }
             if (Instances.User == null)
             {
@@ -253,6 +253,7 @@ namespace MoneyApp
             while (!bw.CancellationPending)
             {
                 DoRecurringTransaction();
+                Instances.User.LastAccessDate = DateTime.Now;
             }
         }
 
@@ -264,37 +265,57 @@ namespace MoneyApp
             List<RecurringTransaction> recurringTransactions = recurringTransactionRepository.GetUserTransactions(Instances.User.ID);
             foreach(RecurringTransaction recurringTransaction in recurringTransactions)
             {
-                switch (recurringTransaction.Status)
+                DateTime accTime = Instances.User.LastAccessDate;
+                DateTime nowTime = DateTime.Now;
+                int days = (nowTime - accTime).Days;
+                DateTime recTime = Instances.User.LastAccessDate;
+                TimeSpan ts = new TimeSpan(
+                    recurringTransaction.CreatedDate.Hour, 
+                    recurringTransaction.CreatedDate.Minute, 
+                    recurringTransaction.CreatedDate.Second
+                    );
+                recTime = recTime.Date + ts;
+                for (int i = 0; i <= days; i++)
                 {
-                    case "Daily":
-                        DateTime accTime = Instances.User.LastAccessDate;
-                        DateTime nowTime = DateTime.Now;
-                        int days = (nowTime - accTime).Days;
-                        DateTime recTime = Instances.User.LastAccessDate;
-                        TimeSpan ts = new TimeSpan(
-                            recurringTransaction.CreatedDate.Hour, 
-                            recurringTransaction.CreatedDate.Minute, 
-                            recurringTransaction.CreatedDate.Second
-                            );
-                        recTime = recTime.Date + ts;
-                        for (int i = 0; i <= days; i++)
+                    if (recurringTransaction.Status.Equals("Weekly"))
+                    {
+                        if (recTime.DayOfWeek != recurringTransaction.CreatedDate.DayOfWeek)
                         {
-                            if (recTime > accTime && recTime <= nowTime && recTime > recurringTransaction.CreatedDate)
-                            {
-                                transactionRepository.AddTransaction(new Transaction {
-                                    Name = recurringTransaction.Name,
-                                    UserID = recurringTransaction.UserID,
-                                    ContactID = recurringTransaction.ContactID,
-                                    Type = recurringTransaction.Type,
-                                    Amount = recurringTransaction.Amount,
-                                    Note = recurringTransaction.Note,
-                                    CreatedDate = recTime
-                                });
-                            }
-                            Instances.User.LastAccessDate = nowTime;
                             recTime = recTime.AddDays(1);
+                            continue;
                         }
-                        break;
+                    }
+                    if (recurringTransaction.Status.Equals("Monthly"))
+                    {
+                        if (recTime.Day != recurringTransaction.CreatedDate.Day)
+                        {
+                            recTime = recTime.AddDays(1);
+                            continue;
+                        }
+                    }
+                    if (recurringTransaction.Status.Equals("Yearly"))
+                    {
+                        string recTimeString = recTime.ToString("dd/MM");
+                        string createdDateString = recurringTransaction.CreatedDate.ToString("dd/MM");
+                        if (!recTimeString.Equals(createdDateString))
+                        {
+                            recTime = recTime.AddDays(1);
+                            continue;
+                        }
+                    }
+                    if (recTime > accTime && recTime <= nowTime && recTime > recurringTransaction.CreatedDate)
+                    {
+                        transactionRepository.AddTransaction(new Transaction {
+                            Name = recurringTransaction.Name,
+                            UserID = recurringTransaction.UserID,
+                            ContactID = recurringTransaction.ContactID,
+                            Type = recurringTransaction.Type,
+                            Amount = recurringTransaction.Amount,
+                            Note = recurringTransaction.Note,
+                            CreatedDate = recTime
+                        });
+                    }
+                    recTime = recTime.AddDays(1);
                 }
             }
         }
