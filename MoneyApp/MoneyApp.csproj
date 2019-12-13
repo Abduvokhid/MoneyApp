@@ -82,6 +82,12 @@
     <Compile Include="Forms\ViewContacts.Designer.cs">
       <DependentUpon>ViewContacts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ViewPrediction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewPrediction.Designer.cs">
+      <DependentUpon>ViewPrediction.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ViewReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +135,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MoneyApp.resx">
       <DependentUpon>MoneyApp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ViewPrediction.resx">
+      <DependentUpon>ViewPrediction.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ViewReport.resx">
       <DependentUpon>ViewReport.cs</DependentUpon>

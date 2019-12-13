@@ -12,6 +12,7 @@ using MoneyApp.Forms;
 using MoneyApp.Models;
 using MoneyApp.Repositories;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace MoneyApp
 {
@@ -29,6 +30,61 @@ namespace MoneyApp
             pb.Dock = DockStyle.Fill;*/
             this.SetStyle(ControlStyles.ResizeRedraw, true);
             SetPanelSize();
+
+            SetMenu();
+        }
+
+        private void SetMenu()
+        {
+            int width = pl_menu.Width / 5;
+            int width_last = pl_menu.Width - (width * 4);
+
+            Button transactions = new Button();
+            transactions.Width = width;
+            transactions.BackColor = pl_menu.BackColor;
+            transactions.Text = "Transactions";
+            transactions.Height = 40;
+            transactions.FlatStyle = FlatStyle.Flat;
+            transactions.Location = new Point(0,0);
+            pl_menu.Controls.Add(transactions);
+
+            Button events = new Button();
+            events.Width = width;
+            events.BackColor = pl_menu.BackColor;
+            events.Text = "Events";
+            events.FlatStyle = FlatStyle.Flat;
+            events.Height = 40;
+            events.Location = new Point(transactions.Location.X + transactions.Width, 0);
+            pl_menu.Controls.Add(events);
+
+            Button contacts = new Button();
+            contacts.Width = width;
+            contacts.BackColor = pl_menu.BackColor;
+            contacts.Text = "Contacts";
+            contacts.FlatStyle = FlatStyle.Flat;
+            contacts.Height = 40;
+            contacts.Location = new Point(events.Location.X + events.Width, 0);
+            pl_menu.Controls.Add(contacts);
+
+            Button reports = new Button();
+            reports.Width = width;
+            reports.BackColor = pl_menu.BackColor;
+            reports.Text = "Reports";
+            reports.FlatStyle = FlatStyle.Flat;
+            reports.Height = 40;
+            reports.Location = new Point(contacts.Location.X + contacts.Width, 0);
+            pl_menu.Controls.Add(reports);
+
+            Button settings = new Button();
+            settings.Width = width_last;
+            settings.BackColor = pl_menu.BackColor;
+            settings.Text = "Settings";
+            settings.FlatStyle = FlatStyle.Flat;
+            settings.Height = 40;
+            settings.Location = new Point(reports.Location.X + reports.Width, 0);
+            pl_menu.Controls.Add(settings);
+
+
         }
 
         private void MoneyApp_Activated(object sender, EventArgs e)
@@ -40,8 +96,8 @@ namespace MoneyApp
                 auth.Activate();
                 auth.Show();
             }
-            
-            
+
+            if (!bw_recurring.IsBusy) bw_recurring.RunWorkerAsync();
         }
 
         private void Blur()
@@ -177,6 +233,27 @@ namespace MoneyApp
             ViewReport viewReport = new ViewReport();
             viewReport.Activate();
             viewReport.Show();
+        }
+
+        private void btn_predict_Click(object sender, EventArgs e)
+        {
+            ViewPrediction viewPrediction = new ViewPrediction();
+            viewPrediction.Activate();
+            viewPrediction.Show();
+        }
+
+        private void bw_recurring_DoWork(object sender, DoWorkEventArgs e)
+        {
+            for (var i = 0; i < 100; i++)
+            {
+                bw_recurring.ReportProgress(i);
+                Thread.Sleep(500);
+            }
+        }
+
+        private void bw_recurring_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            btn_all.Text = "Progress: " + e.ProgressPercentage;
         }
     }
 }

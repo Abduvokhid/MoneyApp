@@ -34,6 +34,9 @@ namespace MoneyApp
         {
             this.btn_contacts = new System.Windows.Forms.Button();
             this.panel = new System.Windows.Forms.Panel();
+            this.btn_predict = new System.Windows.Forms.Button();
+            this.pl_menu = new System.Windows.Forms.Panel();
+            this.btn_report = new System.Windows.Forms.Button();
             this.btn_all = new System.Windows.Forms.Button();
             this.btn_right = new System.Windows.Forms.Button();
             this.btn_left = new System.Windows.Forms.Button();
@@ -41,7 +44,7 @@ namespace MoneyApp
             this.btn_down = new System.Windows.Forms.Button();
             this.btn_recurring_transactions = new System.Windows.Forms.Button();
             this.btn_transactions = new System.Windows.Forms.Button();
-            this.btn_report = new System.Windows.Forms.Button();
+            this.bw_recurring = new System.ComponentModel.BackgroundWorker();
             this.panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,6 +61,8 @@ namespace MoneyApp
             // panel
             // 
             this.panel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel.Controls.Add(this.btn_predict);
+            this.panel.Controls.Add(this.pl_menu);
             this.panel.Controls.Add(this.btn_report);
             this.panel.Controls.Add(this.btn_all);
             this.panel.Controls.Add(this.btn_right);
@@ -73,9 +78,38 @@ namespace MoneyApp
             this.panel.Size = new System.Drawing.Size(727, 382);
             this.panel.TabIndex = 1;
             // 
+            // btn_predict
+            // 
+            this.btn_predict.Location = new System.Drawing.Point(215, 199);
+            this.btn_predict.Name = "btn_predict";
+            this.btn_predict.Size = new System.Drawing.Size(75, 23);
+            this.btn_predict.TabIndex = 10;
+            this.btn_predict.Text = "Predict";
+            this.btn_predict.UseVisualStyleBackColor = true;
+            this.btn_predict.Click += new System.EventHandler(this.btn_predict_Click);
+            // 
+            // pl_menu
+            // 
+            this.pl_menu.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.pl_menu.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pl_menu.Location = new System.Drawing.Point(0, 342);
+            this.pl_menu.Name = "pl_menu";
+            this.pl_menu.Size = new System.Drawing.Size(727, 40);
+            this.pl_menu.TabIndex = 9;
+            // 
+            // btn_report
+            // 
+            this.btn_report.Location = new System.Drawing.Point(215, 170);
+            this.btn_report.Name = "btn_report";
+            this.btn_report.Size = new System.Drawing.Size(75, 23);
+            this.btn_report.TabIndex = 8;
+            this.btn_report.Text = "Report";
+            this.btn_report.UseVisualStyleBackColor = true;
+            this.btn_report.Click += new System.EventHandler(this.ReportClick);
+            // 
             // btn_all
             // 
-            this.btn_all.Location = new System.Drawing.Point(521, 289);
+            this.btn_all.Location = new System.Drawing.Point(592, 177);
             this.btn_all.Name = "btn_all";
             this.btn_all.Size = new System.Drawing.Size(75, 23);
             this.btn_all.TabIndex = 7;
@@ -87,7 +121,7 @@ namespace MoneyApp
             // 
             // btn_right
             // 
-            this.btn_right.Location = new System.Drawing.Point(429, 304);
+            this.btn_right.Location = new System.Drawing.Point(592, 96);
             this.btn_right.Name = "btn_right";
             this.btn_right.Size = new System.Drawing.Size(23, 75);
             this.btn_right.TabIndex = 6;
@@ -99,7 +133,7 @@ namespace MoneyApp
             // 
             // btn_left
             // 
-            this.btn_left.Location = new System.Drawing.Point(319, 304);
+            this.btn_left.Location = new System.Drawing.Point(482, 96);
             this.btn_left.Name = "btn_left";
             this.btn_left.Size = new System.Drawing.Size(23, 75);
             this.btn_left.TabIndex = 5;
@@ -108,7 +142,7 @@ namespace MoneyApp
             // 
             // btn_up
             // 
-            this.btn_up.Location = new System.Drawing.Point(348, 304);
+            this.btn_up.Location = new System.Drawing.Point(511, 93);
             this.btn_up.Name = "btn_up";
             this.btn_up.Size = new System.Drawing.Size(75, 23);
             this.btn_up.TabIndex = 4;
@@ -117,7 +151,7 @@ namespace MoneyApp
             // 
             // btn_down
             // 
-            this.btn_down.Location = new System.Drawing.Point(348, 356);
+            this.btn_down.Location = new System.Drawing.Point(511, 148);
             this.btn_down.Name = "btn_down";
             this.btn_down.Size = new System.Drawing.Size(75, 23);
             this.btn_down.TabIndex = 3;
@@ -146,15 +180,11 @@ namespace MoneyApp
             this.btn_transactions.MouseLeave += new System.EventHandler(this.btn_transactions_MouseLeave);
             this.btn_transactions.MouseHover += new System.EventHandler(this.btn_transactions_MouseHover);
             // 
-            // btn_report
+            // bw_recurring
             // 
-            this.btn_report.Location = new System.Drawing.Point(215, 170);
-            this.btn_report.Name = "btn_report";
-            this.btn_report.Size = new System.Drawing.Size(75, 23);
-            this.btn_report.TabIndex = 8;
-            this.btn_report.Text = "Report";
-            this.btn_report.UseVisualStyleBackColor = true;
-            this.btn_report.Click += new System.EventHandler(this.ReportClick);
+            this.bw_recurring.WorkerReportsProgress = true;
+            this.bw_recurring.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bw_recurring_DoWork);
+            this.bw_recurring.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bw_recurring_ProgressChanged);
             // 
             // MoneyApp
             // 
@@ -194,6 +224,9 @@ namespace MoneyApp
         private Button btn_down;
         private Button btn_all;
         private Button btn_report;
+        private Panel pl_menu;
+        private Button btn_predict;
+        private System.ComponentModel.BackgroundWorker bw_recurring;
     }
 }
 

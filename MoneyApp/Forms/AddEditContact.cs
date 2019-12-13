@@ -45,7 +45,7 @@ namespace MoneyApp.Forms
 
             btn_action.Enabled = false;
             int i = contact.ID > 0 ? await Task.Run(()=> contactRepository.EditContact(contact)) : await Task.Run(() => contactRepository.AddContact(contact));
-            MessageBox.Show(i == 1 ? (contact.ID > 0) ? "Edited okay" : "Added okay" : "Error");
+            MessageBox.Show(i > 0 ? (contact.ID > 0) ? "Edited okay" : "Added okay" : "Error");
             Close();
             Dispose();
         }

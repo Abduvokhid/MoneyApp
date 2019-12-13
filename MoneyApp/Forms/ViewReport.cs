@@ -23,7 +23,7 @@ namespace MoneyApp.Forms
             cbx_show.SelectedIndex = 0;
         }
 
-        private void BtnGenerateClick(object sender, EventArgs e)
+        private async void BtnGenerateClick(object sender, EventArgs e)
         {
             dt_start.Value = dt_start.Value.Date + new TimeSpan();
             dt_end.Value = dt_end.Value.Date + new TimeSpan(23, 59, 59);
@@ -36,7 +36,7 @@ namespace MoneyApp.Forms
 
             if (transactions == null)
             {
-                transactions = transactionRepository.GetUserTransactions(Instances.User.ID);
+                transactions = await Task.Run(() => transactionRepository.GetUserTransactions(Instances.User.ID));
             }
 
             lv_report.Items.Clear();
@@ -73,18 +73,18 @@ namespace MoneyApp.Forms
 
                 foreach (Transaction transaction in tempList)
                 {
-                    int z = 0;
+                    int z = -1;
 
                     for (int x = 0; x < dateList.Count; x++)
                     {
-                        if (dateList[0].Date == transaction.CreatedDate.Date)
+                        if (dateList[x].Date == transaction.CreatedDate.Date)
                         {
                             z = x;
                             break;
                         }
                     }
                     
-                    if (z < 0)
+                    if (z == -1)
                     {
                         dateList.Add(transaction.CreatedDate);
                         incomeList.Add(0);
@@ -103,6 +103,95 @@ namespace MoneyApp.Forms
                 {
                     ListViewItem listViewItem = new ListViewItem(new string[] {
                         dateList[i].ToShortDateString(),
+                        incomeList[i].ToString("0.00"),
+                        expenseList[i].ToString("0.00")
+                    });
+                    lv_report.Items.Add(listViewItem);
+                }
+
+            }
+            else if (cbx_show.Text.Equals("Months"))
+            {
+                List<string> dateList = new List<string>();
+                List<decimal> incomeList = new List<decimal>();
+                List<decimal> expenseList = new List<decimal>();
+
+                foreach (Transaction transaction in tempList)
+                {
+                    int z = -1;
+
+                    for (int x = 0; x < dateList.Count; x++)
+                    {
+                        if (dateList[x].Equals(transaction.CreatedDate.ToString("MM/yyyy")))
+                        {
+                            z = x;
+                            break;
+                        }
+                    }
+
+                    if (z == -1)
+                    {
+                        dateList.Add(transaction.CreatedDate.ToString("MM/yyyy"));
+                        incomeList.Add(0);
+                        expenseList.Add(0);
+                        z = dateList.Count - 1;
+                    }
+                    if (transaction.Type) incomeList[z] += transaction.Amount;
+                    else expenseList[z] += transaction.Amount;
+                }
+
+                lv_report.Columns.Add("Month", 100);
+                lv_report.Columns.Add("Income", 80);
+                lv_report.Columns.Add("Expense", 80);
+
+                for (int i = 0; i < dateList.Count; i++)
+                {
+                    ListViewItem listViewItem = new ListViewItem(new string[] {
+                        dateList[i],
+                        incomeList[i].ToString("0.00"),
+                        expenseList[i].ToString("0.00")
+                    });
+                    lv_report.Items.Add(listViewItem);
+                }
+            }
+            else if (cbx_show.Text.Equals("Years"))
+            {
+                List<string> dateList = new List<string>();
+                List<decimal> incomeList = new List<decimal>();
+                List<decimal> expenseList = new List<decimal>();
+
+                foreach (Transaction transaction in tempList)
+                {
+                    int z = -1;
+
+                    for (int x = 0; x < dateList.Count; x++)
+                    {
+                        if (dateList[x].Equals(transaction.CreatedDate.ToString("yyyy")))
+                        {
+                            z = x;
+                            break;
+                        }
+                    }
+
+                    if (z == -1)
+                    {
+                        dateList.Add(transaction.CreatedDate.ToString("yyyy"));
+                        incomeList.Add(0);
+                        expenseList.Add(0);
+                        z = dateList.Count - 1;
+                    }
+                    if (transaction.Type) incomeList[z] += transaction.Amount;
+                    else expenseList[z] += transaction.Amount;
+                }
+
+                lv_report.Columns.Add("Year", 100);
+                lv_report.Columns.Add("Income", 80);
+                lv_report.Columns.Add("Expense", 80);
+
+                for (int i = 0; i < dateList.Count; i++)
+                {
+                    ListViewItem listViewItem = new ListViewItem(new string[] {
+                        dateList[i],
                         incomeList[i].ToString("0.00"),
                         expenseList[i].ToString("0.00")
                     });

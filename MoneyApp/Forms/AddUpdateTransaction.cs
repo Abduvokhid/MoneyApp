@@ -91,7 +91,7 @@ namespace MoneyApp.Forms
 
         }
 
-        private void AddUpdateNormTransaction()
+        private async void AddUpdateNormTransaction()
         {
             if (txtTransactionName.Text.Equals(""))
             {
@@ -128,7 +128,7 @@ namespace MoneyApp.Forms
                 else
                 {
                     ContactRepository contactsRepository = ContactRepository.Instance();
-                    auTransactionObj.ContactID = contactsRepository.AddContact(new Contact { Name = comboBoxContact.Text, UserID = Instances.User.ID });
+                    auTransactionObj.ContactID = await Task.Run(() => contactsRepository.AddContact(new Contact { Name = comboBoxContact.Text, UserID = Instances.User.ID }));
                 }
             }
             else
@@ -160,7 +160,7 @@ namespace MoneyApp.Forms
                 rt.Status = comboBoxTStatus.Text;
 
                 RecurringTransactionRepository recurringTransactionRepository = RecurringTransactionRepository.Instance();
-                bool i = recurringTransactionRepository.AddTransaction(rt);
+                bool i = await Task.Run(() => recurringTransactionRepository.AddTransaction(rt));
                 if (i == false)
                 {
                     MessageBox.Show("Error!");
@@ -173,11 +173,11 @@ namespace MoneyApp.Forms
             //add /edit transaction
             if (auTransactionObj.ID > 0)
             {
-                result = transactionsRepository.EditTransaction(auTransactionObj);
+                result = await Task.Run(() => transactionsRepository.EditTransaction(auTransactionObj));
             }
             else
             {
-                result = transactionsRepository.AddTransaction(auTransactionObj);
+                result = await Task.Run(() => transactionsRepository.AddTransaction(auTransactionObj));
             }
 
             //messageBox for edit and add transaction
@@ -199,7 +199,7 @@ namespace MoneyApp.Forms
         }
 
 
-        private void UpdateRecurringTransaction()
+        private async void UpdateRecurringTransaction()
         {
             if (txtTransactionName.Text.Equals(""))
             {
@@ -236,7 +236,7 @@ namespace MoneyApp.Forms
                 else
                 {
                     ContactRepository contactsRepository = ContactRepository.Instance();
-                    auRecTransactionObj.ContactID = contactsRepository.AddContact(new Contact { Name = comboBoxContact.Text, UserID = Instances.User.ID });
+                    auRecTransactionObj.ContactID = await Task.Run(() => contactsRepository.AddContact(new Contact { Name = comboBoxContact.Text, UserID = Instances.User.ID }));
                 }
             }
             else
@@ -254,7 +254,7 @@ namespace MoneyApp.Forms
             }
             auRecTransactionObj.Status = comboBoxTStatus.Text;
 
-            result = recurringTransactionsRepository.EditTransaction(auRecTransactionObj);
+            result = await Task.Run(() => recurringTransactionsRepository.EditTransaction(auRecTransactionObj));
             
 
             //messageBox for edit and add transaction
@@ -270,12 +270,12 @@ namespace MoneyApp.Forms
 
         }
         //
-        private void AddUpdateTransaction_Load(object sender, EventArgs e)
+        private async void AddUpdateTransaction_Load(object sender, EventArgs e)
         {
 
             ContactRepository ContactRepo = ContactRepository.Instance();
             // Gets the contact list 
-            List<Contact> ContactList = ContactRepo.GetUserContacts(Instances.User.ID);
+            List<Contact> ContactList = await Task.Run(() => ContactRepo.GetUserContacts(Instances.User.ID));
             comboBoxContact.DataSource = ContactList;
             comboBoxContact.DisplayMember = "Name";
             

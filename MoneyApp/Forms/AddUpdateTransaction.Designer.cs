@@ -298,7 +298,8 @@
             this.comboBoxTStatus.Items.AddRange(new object[] {
             "Weekly",
             "Monthly",
-            "Yearly"});
+            "Yearly",
+            "Daily"});
             this.comboBoxTStatus.Location = new System.Drawing.Point(127, 15);
             this.comboBoxTStatus.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxTStatus.Name = "comboBoxTStatus";

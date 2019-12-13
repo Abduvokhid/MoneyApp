@@ -62,7 +62,7 @@ namespace MoneyApp.Forms
             }
         }
 
-        private void DeleteClick(object sender, EventArgs e)
+        private async void DeleteClick(object sender, EventArgs e)
         {
             if (lv_transactions.SelectedItems.Count > 0)
             {
@@ -72,7 +72,7 @@ namespace MoneyApp.Forms
                     DialogResult dialogResult = MessageBox.Show("Are you sure?", "Confirmation", MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.Yes)
                     {
-                        bool i = recurringTransactionRepository.DeleteTransaction(transaction);
+                        bool i = await Task.Run(() => recurringTransactionRepository.DeleteTransaction(transaction));
 
                         MessageBox.Show(i ? "Deleted" : "Error");
                     }
@@ -82,7 +82,7 @@ namespace MoneyApp.Forms
                     DialogResult dialogResult = MessageBox.Show("Are you sure?", "Confirmation", MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.Yes)
                     {
-                        bool i = transactionRepository.DeleteTransaction(transaction);
+                        bool i = await Task.Run(() => transactionRepository.DeleteTransaction(transaction));
 
                         MessageBox.Show(i ? "Deleted" : "Error");
                     }
@@ -98,11 +98,11 @@ namespace MoneyApp.Forms
             Dispose();
         }
 
-        private void ViewTransactionsActivated(object sender, EventArgs e)
+        private async void ViewTransactionsActivated(object sender, EventArgs e)
         {
             if (isRecurring)
             {
-                List<RecurringTransaction> TransactionList = recurringTransactionRepository.GetUserTransactions(Instances.User.ID);
+                List<RecurringTransaction> TransactionList = await Task.Run(() => recurringTransactionRepository.GetUserTransactions(Instances.User.ID));
                 lv_transactions.Items.Clear();
                 foreach (RecurringTransaction transaction in TransactionList)
                 {
@@ -124,7 +124,7 @@ namespace MoneyApp.Forms
                 }
             } else
             {
-                List<Transaction> TransactionList = transactionRepository.GetUserTransactions(Instances.User.ID);
+                List<Transaction> TransactionList = await Task.Run(() => transactionRepository.GetUserTransactions(Instances.User.ID));
                 lv_transactions.Items.Clear();
                 foreach (Transaction transaction in TransactionList)
                 {

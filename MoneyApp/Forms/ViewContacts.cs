@@ -64,7 +64,7 @@ namespace MoneyApp.Forms
             }
         }
 
-        private void DeleteClick(object sender, EventArgs e)
+        private async void DeleteClick(object sender, EventArgs e)
         {
             if (lv_contacts.SelectedItems.Count > 0)
             {
@@ -72,7 +72,7 @@ namespace MoneyApp.Forms
                 DialogResult dialogResult = MessageBox.Show("Are you sure?", "Confirmation", MessageBoxButtons.YesNo);
                 if(dialogResult == DialogResult.Yes)
                 {
-                    bool i = contactRepository.DeleteContact(contact);
+                    bool i = await Task.Run(() => contactRepository.DeleteContact(contact));
 
                     MessageBox.Show(i ? "Deleted" : "Error");
                 }

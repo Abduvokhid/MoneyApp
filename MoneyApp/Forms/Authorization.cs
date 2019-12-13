@@ -25,14 +25,14 @@ namespace MoneyApp.Forms
             userRepository = UserRepository.Instance();
         }
 
-        private void SignInClick(object sender, EventArgs e)
+        private async void SignInClick(object sender, EventArgs e)
         {
             username = tbx_username.Text;
             password = tbx_password.Text;
 
             if (!ValidateSignInInput()) return;
 
-            User user = userRepository.GetUserByUsername(username);
+            User user = await Task.Run(() => userRepository.GetUserByUsername(username));
             
             if (!CheckUser(user)) return;
 
@@ -42,7 +42,7 @@ namespace MoneyApp.Forms
             Close();
         }
 
-        private void SignUpClick(object sender, EventArgs e)
+        private async void SignUpClick(object sender, EventArgs e)
         {
             new_name = tbx_new_name.Text;
             new_username = tbx_new_username.Text;
@@ -51,11 +51,11 @@ namespace MoneyApp.Forms
 
             if (!ValidateSignUpInput()) return;
 
-            if (!CheckUsername()) return;
+            if (!await CheckUsername()) return;
 
             EncryptPassword();
 
-            bool result = userRepository.AddUser(new User { Name = new_name, Username = new_username, Password = new_password });
+            bool result = await Task.Run(() => userRepository.AddUser(new User { Name = new_name, Username = new_username, Password = new_password }));
 
             string message = result ? "You have been signed up successfully!" : "Something went wrong!";
 
@@ -101,9 +101,9 @@ namespace MoneyApp.Forms
             new_password = bcrypt.HashPassword("MlADmsKS" + new_password + "FCkvSlS", bcrypt.GenerateSalt());
         }
 
-        private bool CheckUsername()
+        private async Task<bool> CheckUsername()
         {
-            User user = userRepository.GetUserByUsername(new_username);
+            User user = await Task.Run(() => userRepository.GetUserByUsername(new_username));
             if (user.ID > 0)
             {
                 MessageBox.Show("User with this username already exists!", "Error");
