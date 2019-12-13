@@ -132,7 +132,7 @@ namespace MoneyApp.Repositories
 
         public bool EditTransaction(RecurringTransaction transaction)
         {
-            string query = "UPDATE RecurringTransactions SET [Name] = @Name, [ContactID] = @ContactID, [Type] = @Type, [Amount] = @Amount, [Note] = @Note, [AddedDate] = @CreatedDate, [Status] = @Status, [EndDate] = @EndDa`te WHERE [ID] = @ID AND [UserID] = @UserID";
+            string query = "UPDATE RecurringTransactions SET [Name] = @Name, [ContactID] = @ContactID, [Type] = @Type, [Amount] = @Amount, [Note] = @Note, [AddedDate] = @CreatedDate, [Status] = @Status, [EndDate] = @CreatedDate WHERE [ID] = @ID AND [UserID] = @UserID";
             SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
 
             try

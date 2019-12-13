@@ -68,6 +68,7 @@ namespace MoneyApp.Repositories
                     user.Name = sqlDataReader["Name"].ToString();
                     user.Username = sqlDataReader["Username"].ToString();
                     user.Password = sqlDataReader["Password"].ToString();
+                    user.LastAccessDate = (DateTime)sqlDataReader["LastAccessDate"];
                 }
 
                 sqlConnection.Close();

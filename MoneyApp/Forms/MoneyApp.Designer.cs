@@ -111,7 +111,7 @@ namespace MoneyApp
             // 
             this.btn_all.Location = new System.Drawing.Point(592, 177);
             this.btn_all.Name = "btn_all";
-            this.btn_all.Size = new System.Drawing.Size(75, 23);
+            this.btn_all.Size = new System.Drawing.Size(135, 23);
             this.btn_all.TabIndex = 7;
             this.btn_all.Text = ".";
             this.btn_all.UseVisualStyleBackColor = true;
@@ -183,6 +183,7 @@ namespace MoneyApp
             // bw_recurring
             // 
             this.bw_recurring.WorkerReportsProgress = true;
+            this.bw_recurring.WorkerSupportsCancellation = true;
             this.bw_recurring.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bw_recurring_DoWork);
             this.bw_recurring.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bw_recurring_ProgressChanged);
             // 

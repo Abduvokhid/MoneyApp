@@ -12,5 +12,6 @@ namespace MoneyApp.Models
         public string Name { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public DateTime LastAccessDate { get; set; }
     }
 }

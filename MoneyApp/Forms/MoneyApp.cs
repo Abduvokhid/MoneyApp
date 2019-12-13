@@ -30,10 +30,25 @@ namespace MoneyApp
             pb.Dock = DockStyle.Fill;*/
             this.SetStyle(ControlStyles.ResizeRedraw, true);
             SetPanelSize();
-
             SetMenu();
         }
 
+        private void MoneyApp_Activated(object sender, EventArgs e)
+        {
+            if (Instances.User == null)
+            {
+                Instances.User = new User { ID = 7, Name = "Abdu", Username = "Abduvokhid", LastAccessDate = DateTime.Now.AddDays(-5).AddHours(5) };
+            }
+            if (Instances.User == null)
+            {
+                Authorization auth = new Authorization();
+                auth.Activate();
+                auth.Show();
+            }
+            if (!bw_recurring.IsBusy) bw_recurring.RunWorkerAsync();
+        }
+
+        #region All shit is here
         private void SetMenu()
         {
             int width = pl_menu.Width / 5;
@@ -87,18 +102,6 @@ namespace MoneyApp
 
         }
 
-        private void MoneyApp_Activated(object sender, EventArgs e)
-        {
-            Instances.User = new User { ID = 7, Name = "Abdu", Username = "Abduvokhid" };
-            if (Instances.User == null)
-            {
-                Authorization auth = new Authorization();
-                auth.Activate();
-                auth.Show();
-            }
-
-            if (!bw_recurring.IsBusy) bw_recurring.RunWorkerAsync();
-        }
 
         private void Blur()
         {
@@ -242,18 +245,63 @@ namespace MoneyApp
             viewPrediction.Show();
         }
 
+        #endregion
+
         private void bw_recurring_DoWork(object sender, DoWorkEventArgs e)
         {
-            for (var i = 0; i < 100; i++)
+            BackgroundWorker bw = (BackgroundWorker)sender;
+            while (!bw.CancellationPending)
             {
-                bw_recurring.ReportProgress(i);
-                Thread.Sleep(500);
+                DoRecurringTransaction();
+            }
+        }
+
+        private void DoRecurringTransaction()
+        {
+            TransactionRepository transactionRepository = TransactionRepository.Instance();
+
+            RecurringTransactionRepository recurringTransactionRepository = RecurringTransactionRepository.Instance();
+            List<RecurringTransaction> recurringTransactions = recurringTransactionRepository.GetUserTransactions(Instances.User.ID);
+            foreach(RecurringTransaction recurringTransaction in recurringTransactions)
+            {
+                switch (recurringTransaction.Status)
+                {
+                    case "Daily":
+                        DateTime accTime = Instances.User.LastAccessDate;
+                        DateTime nowTime = DateTime.Now;
+                        int days = (nowTime - accTime).Days;
+                        DateTime recTime = Instances.User.LastAccessDate;
+                        TimeSpan ts = new TimeSpan(
+                            recurringTransaction.CreatedDate.Hour, 
+                            recurringTransaction.CreatedDate.Minute, 
+                            recurringTransaction.CreatedDate.Second
+                            );
+                        recTime = recTime.Date + ts;
+                        for (int i = 0; i <= days; i++)
+                        {
+                            if (recTime > accTime && recTime <= nowTime && recTime > recurringTransaction.CreatedDate)
+                            {
+                                transactionRepository.AddTransaction(new Transaction {
+                                    Name = recurringTransaction.Name,
+                                    UserID = recurringTransaction.UserID,
+                                    ContactID = recurringTransaction.ContactID,
+                                    Type = recurringTransaction.Type,
+                                    Amount = recurringTransaction.Amount,
+                                    Note = recurringTransaction.Note,
+                                    CreatedDate = recTime
+                                });
+                            }
+                            Instances.User.LastAccessDate = nowTime;
+                            recTime = recTime.AddDays(1);
+                        }
+                        break;
+                }
             }
         }
 
         private void bw_recurring_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            btn_all.Text = "Progress: " + e.ProgressPercentage;
+
         }
     }
 }
