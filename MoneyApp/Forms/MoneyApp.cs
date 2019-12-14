@@ -13,14 +13,17 @@ using MoneyApp.Models;
 using MoneyApp.Repositories;
 using System.Runtime.InteropServices;
 using System.Threading;
+using Tulpep.NotificationWindow;
 
 namespace MoneyApp
 {
     public partial class MoneyApp : Form
     {
         private bool isTagged = false;
-        private PictureBox pb;
-        Bitmap bmp;
+        private bool isFirst = true;
+
+        //private PictureBox pb;
+        //Bitmap bmp;
         public MoneyApp()
         {
             InitializeComponent();
@@ -44,8 +47,10 @@ namespace MoneyApp
                 Authorization auth = new Authorization();
                 auth.Activate();
                 auth.Show();
+            } else
+            {
+                if (!bw_recurring.IsBusy) bw_recurring.RunWorkerAsync();
             }
-            if (!bw_recurring.IsBusy) bw_recurring.RunWorkerAsync();
         }
 
         #region All shit is here
@@ -253,18 +258,21 @@ namespace MoneyApp
             while (!bw.CancellationPending)
             {
                 DoRecurringTransaction();
+                DoRecurringEvent();
+                if (isFirst) isFirst = false;
                 Instances.User.LastAccessDate = DateTime.Now;
+                UserRepository.Instance().EditLastAccessDate(Instances.User);
             }
         }
 
         private void DoRecurringTransaction()
         {
             TransactionRepository transactionRepository = TransactionRepository.Instance();
-
             RecurringTransactionRepository recurringTransactionRepository = RecurringTransactionRepository.Instance();
             List<RecurringTransaction> recurringTransactions = recurringTransactionRepository.GetUserTransactions(Instances.User.ID);
             foreach(RecurringTransaction recurringTransaction in recurringTransactions)
             {
+                if (DateTime.Now > recurringTransaction.EndDate && recurringTransaction.EndDate != DateTime.MinValue) continue;
                 DateTime accTime = Instances.User.LastAccessDate;
                 DateTime nowTime = DateTime.Now;
                 int days = (nowTime - accTime).Days;
@@ -314,15 +322,100 @@ namespace MoneyApp
                             Note = recurringTransaction.Note,
                             CreatedDate = recTime
                         });
+                        bw_recurring.ReportProgress(1);
                     }
                     recTime = recTime.AddDays(1);
                 }
             }
         }
 
+        private void DoRecurringEvent()
+        {
+            EventRepository transactionRepository = EventRepository.Instance();
+            RecurringEventRepository recurringEventRepository = RecurringEventRepository.Instance();
+            List<RecurringEvent> recurringEvents = recurringEventRepository.GetRecEvents(Instances.User.ID);
+            foreach (RecurringEvent recurringEvent in recurringEvents)
+            {
+                if (DateTime.Now > recurringEvent.EndDate && recurringEvent.EndDate != DateTime.MinValue) continue;
+                DateTime accTime = Instances.User.LastAccessDate;
+                DateTime nowTime = DateTime.Now;
+                int days = (nowTime - accTime).Days;
+                DateTime recTime = Instances.User.LastAccessDate;
+                TimeSpan ts = new TimeSpan(
+                    recurringEvent.CreatedDate.Hour,
+                    recurringEvent.CreatedDate.Minute,
+                    recurringEvent.CreatedDate.Second
+                    );
+                recTime = recTime.Date + ts;
+                for (int i = 0; i <= days; i++)
+                {
+                    if (recurringEvent.Status.Equals("Weekly"))
+                    {
+                        if (recTime.DayOfWeek != recurringEvent.CreatedDate.DayOfWeek)
+                        {
+                            recTime = recTime.AddDays(1);
+                            continue;
+                        }
+                    }
+                    if (recurringEvent.Status.Equals("Monthly"))
+                    {
+                        if (recTime.Day != recurringEvent.CreatedDate.Day)
+                        {
+                            recTime = recTime.AddDays(1);
+                            continue;
+                        }
+                    }
+                    if (recurringEvent.Status.Equals("Yearly"))
+                    {
+                        string recTimeString = recTime.ToString("dd/MM");
+                        string createdDateString = recurringEvent.CreatedDate.ToString("dd/MM");
+                        if (!recTimeString.Equals(createdDateString))
+                        {
+                            recTime = recTime.AddDays(1);
+                            continue;
+                        }
+                    }
+                    if (recTime > accTime && recTime <= nowTime && recTime > recurringEvent.CreatedDate)
+                    {
+                        transactionRepository.AddEvent(new Event
+                        {
+                            Name = recurringEvent.Name,
+                            UserID = recurringEvent.UserID,
+                            ContactID = recurringEvent.ContactID,
+                            Type = recurringEvent.Type,
+                            Location = recurringEvent.Location,
+                            Note = recurringEvent.Note,
+                            CreatedDate = recTime
+                        });
+                        bw_recurring.ReportProgress(1);
+                    }
+                    recTime = recTime.AddDays(1);
+                }
+            }
+        }
+
+
         private void bw_recurring_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            if (!isFirst)
+            {
+                new Notification("You have new transaction!").Show();
+            }
+        }
 
+        private void btn_event_Click(object sender, EventArgs e)
+        {
+
+            ViewEvents viewEvents = new ViewEvents();
+            viewEvents.Activate();
+            viewEvents.Show();
+        }
+
+        private void btn_recurring_events_Click(object sender, EventArgs e)
+        {
+            ViewEvents viewEvents = new ViewEvents(true);
+            viewEvents.Activate();
+            viewEvents.Show();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace MoneyApp.Forms
         List<Panel> panels = new List<Panel>();
         int lastYLoc = 0;
         int lastID = 0;
-        private Transaction transaction;
+       // private Transaction transaction;
         public AddEditTransaction()
         {
             InitializeComponent();

@@ -24,6 +24,7 @@ namespace MoneyApp.Forms
             InitializeComponent();
             transactionRepository = TransactionRepository.Instance();
             recurringTransactionRepository = RecurringTransactionRepository.Instance();
+            dtp_date.MinDate = DateTime.Now.AddDays(1);
         }
 
         private decimal GetAverage()

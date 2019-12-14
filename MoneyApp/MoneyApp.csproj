@@ -49,6 +49,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Tulpep.NotificationWindow, Version=1.1.25.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tulpep.NotificationWindow.1.1.25\lib\net40\Tulpep.NotificationWindow.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitmapFilter.cs" />
@@ -57,6 +60,12 @@
     </Compile>
     <Compile Include="Forms\AddEditContact.Designer.cs">
       <DependentUpon>AddEditContact.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AddEditEvent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddEditEvent.Designer.cs">
+      <DependentUpon>AddEditEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\AddEditTransaction.cs">
       <SubType>Form</SubType>
@@ -76,11 +85,23 @@
     <Compile Include="Forms\Authorization.Designer.cs">
       <DependentUpon>Authorization.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Notification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Notification.Designer.cs">
+      <DependentUpon>Notification.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ViewContacts.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\ViewContacts.Designer.cs">
       <DependentUpon>ViewContacts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ViewEvents.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewEvents.Designer.cs">
+      <DependentUpon>ViewEvents.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ViewPrediction.cs">
       <SubType>Form</SubType>
@@ -102,6 +123,8 @@
     </Compile>
     <Compile Include="Instances.cs" />
     <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\RecurringEvent.cs" />
     <Compile Include="Models\RecurringTransaction.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Models\User.cs" />
@@ -114,6 +137,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ContactRepository.cs" />
+    <Compile Include="Repositories\EventRepository.cs" />
+    <Compile Include="Repositories\RecurringEventRepository.cs" />
     <Compile Include="Repositories\RecurringTransactionRepository.cs" />
     <Compile Include="Repositories\TransactionRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
@@ -129,6 +154,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Authorization.resx">
       <DependentUpon>Authorization.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Notification.resx">
+      <DependentUpon>Notification.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ViewContacts.resx">
       <DependentUpon>ViewContacts.cs</DependentUpon>

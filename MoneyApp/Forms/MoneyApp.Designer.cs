@@ -45,6 +45,8 @@ namespace MoneyApp
             this.btn_recurring_transactions = new System.Windows.Forms.Button();
             this.btn_transactions = new System.Windows.Forms.Button();
             this.bw_recurring = new System.ComponentModel.BackgroundWorker();
+            this.btn_event = new System.Windows.Forms.Button();
+            this.btn_recurring_events = new System.Windows.Forms.Button();
             this.panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,6 +63,8 @@ namespace MoneyApp
             // panel
             // 
             this.panel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel.Controls.Add(this.btn_recurring_events);
+            this.panel.Controls.Add(this.btn_event);
             this.panel.Controls.Add(this.btn_predict);
             this.panel.Controls.Add(this.pl_menu);
             this.panel.Controls.Add(this.btn_report);
@@ -187,6 +191,26 @@ namespace MoneyApp
             this.bw_recurring.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bw_recurring_DoWork);
             this.bw_recurring.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bw_recurring_ProgressChanged);
             // 
+            // btn_event
+            // 
+            this.btn_event.Location = new System.Drawing.Point(71, 92);
+            this.btn_event.Name = "btn_event";
+            this.btn_event.Size = new System.Drawing.Size(75, 23);
+            this.btn_event.TabIndex = 11;
+            this.btn_event.Text = "Events";
+            this.btn_event.UseVisualStyleBackColor = true;
+            this.btn_event.Click += new System.EventHandler(this.btn_event_Click);
+            // 
+            // btn_recurring_events
+            // 
+            this.btn_recurring_events.Location = new System.Drawing.Point(51, 148);
+            this.btn_recurring_events.Name = "btn_recurring_events";
+            this.btn_recurring_events.Size = new System.Drawing.Size(75, 23);
+            this.btn_recurring_events.TabIndex = 12;
+            this.btn_recurring_events.Text = "Recurring events";
+            this.btn_recurring_events.UseVisualStyleBackColor = true;
+            this.btn_recurring_events.Click += new System.EventHandler(this.btn_recurring_events_Click);
+            // 
             // MoneyApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -228,6 +252,8 @@ namespace MoneyApp
         private Panel pl_menu;
         private Button btn_predict;
         private System.ComponentModel.BackgroundWorker bw_recurring;
+        private Button btn_recurring_events;
+        private Button btn_event;
     }
 }
 

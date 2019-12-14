@@ -79,5 +79,28 @@ namespace MoneyApp.Repositories
             }
             return user;
         }
+
+        public int EditLastAccessDate(User user)
+        {
+            string query = "UPDATE Users SET [LastAccessDate] = @LastAccessDate WHERE [ID] = @ID";
+            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
+
+            try
+            {
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlCommand.Parameters.Add("@ID", SqlDbType.Int).Value = user.ID;
+                sqlCommand.Parameters.Add("@LastAccessDate", SqlDbType.DateTime).Value = user.LastAccessDate;
+                sqlConnection.Open();
+                var i = sqlCommand.ExecuteNonQuery();
+
+                sqlConnection.Close();
+
+                return i;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
     }
 }
