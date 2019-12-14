@@ -19,8 +19,10 @@ namespace MoneyApp.Forms
         {
             InitializeComponent();
             contactRepository = ContactRepository.Instance();
-            //Instances.MoneyApp.Hide();
-            
+            Instances.MoneyApp.Hide();
+            //Instances.MoneyApp.Location = new Point(10000, 10000);
+            //Instances.MoneyApp.ShowInTaskbar = false;
+
         }
 
         private async void ViewContactsActivated(object sender, EventArgs e)
@@ -43,6 +45,8 @@ namespace MoneyApp.Forms
             Instances.MoneyApp.UnBlur();
             Instances.MoneyApp.Activate();
             Instances.MoneyApp.Show();
+            //Instances.MoneyApp.Location = this.Location;
+            //Instances.MoneyApp.ShowInTaskbar = true;
             Dispose();
         }
 

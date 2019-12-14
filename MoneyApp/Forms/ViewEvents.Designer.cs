@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewEvents));
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblEventsList = new System.Windows.Forms.Label();
             this.listViewEvents = new System.Windows.Forms.ListView();
@@ -46,35 +45,33 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(78)))), ((int)(((byte)(130)))));
             this.panel1.Controls.Add(this.lblEventsList);
-            this.panel1.Location = new System.Drawing.Point(4, 4);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
+            this.panel1.Location = new System.Drawing.Point(2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1413, 138);
+            this.panel1.Size = new System.Drawing.Size(706, 72);
             this.panel1.TabIndex = 8;
-            this.panel1.UseWaitCursor = true;
             // 
             // lblEventsList
             // 
-            this.lblEventsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.lblEventsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEventsList.AutoSize = true;
             this.lblEventsList.Font = new System.Drawing.Font("Times New Roman", 22.125F, System.Drawing.FontStyle.Bold);
             this.lblEventsList.ForeColor = System.Drawing.Color.White;
-            this.lblEventsList.Location = new System.Drawing.Point(518, 39);
-            this.lblEventsList.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblEventsList.Location = new System.Drawing.Point(259, 20);
+            this.lblEventsList.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblEventsList.Name = "lblEventsList";
-            this.lblEventsList.Size = new System.Drawing.Size(312, 67);
+            this.lblEventsList.Size = new System.Drawing.Size(158, 35);
             this.lblEventsList.TabIndex = 6;
             this.lblEventsList.Text = "Events List";
-            this.lblEventsList.UseWaitCursor = true;
             // 
             // listViewEvents
             // 
-            this.listViewEvents.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.listViewEvents.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewEvents.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.col_Name,
@@ -86,11 +83,11 @@
             this.listViewEvents.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
             this.listViewEvents.FullRowSelect = true;
             this.listViewEvents.HideSelection = false;
-            this.listViewEvents.Location = new System.Drawing.Point(119, 226);
-            this.listViewEvents.Margin = new System.Windows.Forms.Padding(4);
+            this.listViewEvents.Location = new System.Drawing.Point(60, 118);
+            this.listViewEvents.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.listViewEvents.MultiSelect = false;
             this.listViewEvents.Name = "listViewEvents";
-            this.listViewEvents.Size = new System.Drawing.Size(1063, 442);
+            this.listViewEvents.Size = new System.Drawing.Size(534, 232);
             this.listViewEvents.TabIndex = 11;
             this.listViewEvents.UseCompatibleStateImageBehavior = false;
             this.listViewEvents.View = System.Windows.Forms.View.Details;
@@ -131,10 +128,10 @@
             this.btnDeleteEvent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(78)))), ((int)(((byte)(130)))));
             this.btnDeleteEvent.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
             this.btnDeleteEvent.ForeColor = System.Drawing.Color.White;
-            this.btnDeleteEvent.Location = new System.Drawing.Point(916, 745);
-            this.btnDeleteEvent.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDeleteEvent.Location = new System.Drawing.Point(458, 387);
+            this.btnDeleteEvent.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnDeleteEvent.Name = "btnDeleteEvent";
-            this.btnDeleteEvent.Size = new System.Drawing.Size(232, 60);
+            this.btnDeleteEvent.Size = new System.Drawing.Size(116, 31);
             this.btnDeleteEvent.TabIndex = 14;
             this.btnDeleteEvent.Text = "Delete";
             this.btnDeleteEvent.UseVisualStyleBackColor = false;
@@ -146,10 +143,10 @@
             this.btnEditEvent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(78)))), ((int)(((byte)(130)))));
             this.btnEditEvent.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
             this.btnEditEvent.ForeColor = System.Drawing.Color.White;
-            this.btnEditEvent.Location = new System.Drawing.Point(518, 745);
-            this.btnEditEvent.Margin = new System.Windows.Forms.Padding(4);
+            this.btnEditEvent.Location = new System.Drawing.Point(259, 387);
+            this.btnEditEvent.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnEditEvent.Name = "btnEditEvent";
-            this.btnEditEvent.Size = new System.Drawing.Size(232, 60);
+            this.btnEditEvent.Size = new System.Drawing.Size(116, 31);
             this.btnEditEvent.TabIndex = 13;
             this.btnEditEvent.Text = "Edit";
             this.btnEditEvent.UseVisualStyleBackColor = false;
@@ -161,34 +158,35 @@
             this.btn_addEvent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(78)))), ((int)(((byte)(130)))));
             this.btn_addEvent.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
             this.btn_addEvent.ForeColor = System.Drawing.Color.White;
-            this.btn_addEvent.Location = new System.Drawing.Point(119, 745);
-            this.btn_addEvent.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_addEvent.Location = new System.Drawing.Point(60, 387);
+            this.btn_addEvent.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_addEvent.Name = "btn_addEvent";
-            this.btn_addEvent.Size = new System.Drawing.Size(232, 60);
+            this.btn_addEvent.Size = new System.Drawing.Size(116, 31);
             this.btn_addEvent.TabIndex = 12;
             this.btn_addEvent.Text = "Add ";
             this.btn_addEvent.UseVisualStyleBackColor = false;
             this.btn_addEvent.Click += new System.EventHandler(this.btn_addEvent_Click);
             // 
-            // ViewEventsForm
+            // ViewEvents
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
-            this.ClientSize = new System.Drawing.Size(1371, 935);
+            this.ClientSize = new System.Drawing.Size(686, 486);
             this.Controls.Add(this.btnDeleteEvent);
             this.Controls.Add(this.btnEditEvent);
             this.Controls.Add(this.btn_addEvent);
             this.Controls.Add(this.listViewEvents);
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "ViewEventsForm";
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Name = "ViewEvents";
             this.Text = "ViewEventsForm";
             this.Activated += new System.EventHandler(this.viewEventFormActivated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ViewEventForm_FormClosed);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion

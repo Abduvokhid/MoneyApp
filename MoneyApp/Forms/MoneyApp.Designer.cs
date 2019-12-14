@@ -34,6 +34,8 @@ namespace MoneyApp
         {
             this.btn_contacts = new System.Windows.Forms.Button();
             this.panel = new System.Windows.Forms.Panel();
+            this.btn_recurring_events = new System.Windows.Forms.Button();
+            this.btn_event = new System.Windows.Forms.Button();
             this.btn_predict = new System.Windows.Forms.Button();
             this.pl_menu = new System.Windows.Forms.Panel();
             this.btn_report = new System.Windows.Forms.Button();
@@ -45,8 +47,6 @@ namespace MoneyApp
             this.btn_recurring_transactions = new System.Windows.Forms.Button();
             this.btn_transactions = new System.Windows.Forms.Button();
             this.bw_recurring = new System.ComponentModel.BackgroundWorker();
-            this.btn_event = new System.Windows.Forms.Button();
-            this.btn_recurring_events = new System.Windows.Forms.Button();
             this.panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,6 +81,26 @@ namespace MoneyApp
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(727, 382);
             this.panel.TabIndex = 1;
+            // 
+            // btn_recurring_events
+            // 
+            this.btn_recurring_events.Location = new System.Drawing.Point(51, 148);
+            this.btn_recurring_events.Name = "btn_recurring_events";
+            this.btn_recurring_events.Size = new System.Drawing.Size(75, 23);
+            this.btn_recurring_events.TabIndex = 12;
+            this.btn_recurring_events.Text = "Recurring events";
+            this.btn_recurring_events.UseVisualStyleBackColor = true;
+            this.btn_recurring_events.Click += new System.EventHandler(this.btn_recurring_events_Click);
+            // 
+            // btn_event
+            // 
+            this.btn_event.Location = new System.Drawing.Point(71, 92);
+            this.btn_event.Name = "btn_event";
+            this.btn_event.Size = new System.Drawing.Size(75, 23);
+            this.btn_event.TabIndex = 11;
+            this.btn_event.Text = "Events";
+            this.btn_event.UseVisualStyleBackColor = true;
+            this.btn_event.Click += new System.EventHandler(this.btn_event_Click);
             // 
             // btn_predict
             // 
@@ -143,6 +163,7 @@ namespace MoneyApp
             this.btn_left.TabIndex = 5;
             this.btn_left.Text = "<";
             this.btn_left.UseVisualStyleBackColor = true;
+            this.btn_left.Click += new System.EventHandler(this.btn_left_Click);
             // 
             // btn_up
             // 
@@ -190,26 +211,6 @@ namespace MoneyApp
             this.bw_recurring.WorkerSupportsCancellation = true;
             this.bw_recurring.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bw_recurring_DoWork);
             this.bw_recurring.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bw_recurring_ProgressChanged);
-            // 
-            // btn_event
-            // 
-            this.btn_event.Location = new System.Drawing.Point(71, 92);
-            this.btn_event.Name = "btn_event";
-            this.btn_event.Size = new System.Drawing.Size(75, 23);
-            this.btn_event.TabIndex = 11;
-            this.btn_event.Text = "Events";
-            this.btn_event.UseVisualStyleBackColor = true;
-            this.btn_event.Click += new System.EventHandler(this.btn_event_Click);
-            // 
-            // btn_recurring_events
-            // 
-            this.btn_recurring_events.Location = new System.Drawing.Point(51, 148);
-            this.btn_recurring_events.Name = "btn_recurring_events";
-            this.btn_recurring_events.Size = new System.Drawing.Size(75, 23);
-            this.btn_recurring_events.TabIndex = 12;
-            this.btn_recurring_events.Text = "Recurring events";
-            this.btn_recurring_events.UseVisualStyleBackColor = true;
-            this.btn_recurring_events.Click += new System.EventHandler(this.btn_recurring_events_Click);
             // 
             // MoneyApp
             // 

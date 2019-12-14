@@ -40,7 +40,7 @@ namespace MoneyApp.Repositories
             {
                 SqlCommand sqlCommand = new SqlCommand(selectRecEventQuery, sqlConnection);
 
-                sqlCommand.Parameters.Add("@FK_UserID", SqlDbType.Int).Value = userID;
+                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = userID;
 
 
                 sqlConnection.Open();

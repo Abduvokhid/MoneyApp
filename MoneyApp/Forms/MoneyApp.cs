@@ -265,7 +265,7 @@ namespace MoneyApp
             }
         }
 
-        private void DoRecurringTransaction()
+        private async void DoRecurringTransaction()
         {
             TransactionRepository transactionRepository = TransactionRepository.Instance();
             RecurringTransactionRepository recurringTransactionRepository = RecurringTransactionRepository.Instance();
@@ -313,7 +313,7 @@ namespace MoneyApp
                     }
                     if (recTime > accTime && recTime <= nowTime && recTime > recurringTransaction.CreatedDate)
                     {
-                        transactionRepository.AddTransaction(new Transaction {
+                        await Task.Run(() => transactionRepository.AddTransaction(new Transaction {
                             Name = recurringTransaction.Name,
                             UserID = recurringTransaction.UserID,
                             ContactID = recurringTransaction.ContactID,
@@ -321,15 +321,15 @@ namespace MoneyApp
                             Amount = recurringTransaction.Amount,
                             Note = recurringTransaction.Note,
                             CreatedDate = recTime
-                        });
-                        bw_recurring.ReportProgress(1);
+                        }));
+                        bw_recurring.ReportProgress(1, "New transaction has been added!");
                     }
                     recTime = recTime.AddDays(1);
                 }
             }
         }
 
-        private void DoRecurringEvent()
+        private async void DoRecurringEvent()
         {
             EventRepository transactionRepository = EventRepository.Instance();
             RecurringEventRepository recurringEventRepository = RecurringEventRepository.Instance();
@@ -377,7 +377,7 @@ namespace MoneyApp
                     }
                     if (recTime > accTime && recTime <= nowTime && recTime > recurringEvent.CreatedDate)
                     {
-                        transactionRepository.AddEvent(new Event
+                        await Task.Run(() => transactionRepository.AddEvent(new Event
                         {
                             Name = recurringEvent.Name,
                             UserID = recurringEvent.UserID,
@@ -386,8 +386,8 @@ namespace MoneyApp
                             Location = recurringEvent.Location,
                             Note = recurringEvent.Note,
                             CreatedDate = recTime
-                        });
-                        bw_recurring.ReportProgress(1);
+                        }));
+                        bw_recurring.ReportProgress(1, "New event has been added!");
                     }
                     recTime = recTime.AddDays(1);
                 }
@@ -399,7 +399,8 @@ namespace MoneyApp
         {
             if (!isFirst)
             {
-                new Notification("You have new transaction!").Show();
+                string text = (string)e.UserState;
+                new Notification(text).Show();
             }
         }
 
@@ -414,6 +415,13 @@ namespace MoneyApp
         private void btn_recurring_events_Click(object sender, EventArgs e)
         {
             ViewEvents viewEvents = new ViewEvents(true);
+            viewEvents.Activate();
+            viewEvents.Show();
+        }
+
+        private void btn_left_Click(object sender, EventArgs e)
+        {
+            AddEditTransaction viewEvents = new AddEditTransaction();
             viewEvents.Activate();
             viewEvents.Show();
         }

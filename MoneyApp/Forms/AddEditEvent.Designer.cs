@@ -73,7 +73,7 @@
             this.comboBoxContact.Location = new System.Drawing.Point(327, 239);
             this.comboBoxContact.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxContact.Name = "comboBoxContact";
-            this.comboBoxContact.Size = new System.Drawing.Size(394, 33);
+            this.comboBoxContact.Size = new System.Drawing.Size(394, 21);
             this.comboBoxContact.TabIndex = 34;
             // 
             // lblContact
@@ -83,7 +83,7 @@
             this.lblContact.Location = new System.Drawing.Point(175, 239);
             this.lblContact.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblContact.Name = "lblContact";
-            this.lblContact.Size = new System.Drawing.Size(93, 25);
+            this.lblContact.Size = new System.Drawing.Size(51, 13);
             this.lblContact.TabIndex = 33;
             this.lblContact.Text = "Contact";
             // 
@@ -94,7 +94,7 @@
             this.lblNote.Location = new System.Drawing.Point(171, 418);
             this.lblNote.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblNote.Name = "lblNote";
-            this.lblNote.Size = new System.Drawing.Size(61, 25);
+            this.lblNote.Size = new System.Drawing.Size(34, 13);
             this.lblNote.TabIndex = 32;
             this.lblNote.Text = "Note";
             // 
@@ -115,7 +115,7 @@
             this.lblDateTime.Location = new System.Drawing.Point(171, 362);
             this.lblDateTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDateTime.Name = "lblDateTime";
-            this.lblDateTime.Size = new System.Drawing.Size(127, 25);
+            this.lblDateTime.Size = new System.Drawing.Size(69, 13);
             this.lblDateTime.TabIndex = 30;
             this.lblDateTime.Text = "Date -Time";
             // 
@@ -127,7 +127,7 @@
             this.eventDateTimePick.Location = new System.Drawing.Point(327, 356);
             this.eventDateTimePick.Margin = new System.Windows.Forms.Padding(4);
             this.eventDateTimePick.Name = "eventDateTimePick";
-            this.eventDateTimePick.Size = new System.Drawing.Size(394, 31);
+            this.eventDateTimePick.Size = new System.Drawing.Size(394, 19);
             this.eventDateTimePick.TabIndex = 29;
             // 
             // lblType
@@ -137,7 +137,7 @@
             this.lblType.Location = new System.Drawing.Point(175, 187);
             this.lblType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblType.Name = "lblType";
-            this.lblType.Size = new System.Drawing.Size(64, 25);
+            this.lblType.Size = new System.Drawing.Size(35, 13);
             this.lblType.TabIndex = 26;
             this.lblType.Text = "Type";
             // 
@@ -151,7 +151,7 @@
             this.comboBoxEvType.Location = new System.Drawing.Point(327, 187);
             this.comboBoxEvType.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxEvType.Name = "comboBoxEvType";
-            this.comboBoxEvType.Size = new System.Drawing.Size(394, 33);
+            this.comboBoxEvType.Size = new System.Drawing.Size(394, 21);
             this.comboBoxEvType.TabIndex = 25;
             this.comboBoxEvType.Text = "Task";
             // 
@@ -162,7 +162,7 @@
             this.lbl_Add_ContName.Location = new System.Drawing.Point(175, 131);
             this.lbl_Add_ContName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_Add_ContName.Name = "lbl_Add_ContName";
-            this.lbl_Add_ContName.Size = new System.Drawing.Size(72, 25);
+            this.lbl_Add_ContName.Size = new System.Drawing.Size(39, 13);
             this.lbl_Add_ContName.TabIndex = 24;
             this.lbl_Add_ContName.Text = "Name";
             // 
@@ -172,7 +172,7 @@
             this.txtEventName.Location = new System.Drawing.Point(327, 126);
             this.txtEventName.Margin = new System.Windows.Forms.Padding(4);
             this.txtEventName.Name = "txtEventName";
-            this.txtEventName.Size = new System.Drawing.Size(394, 31);
+            this.txtEventName.Size = new System.Drawing.Size(394, 19);
             this.txtEventName.TabIndex = 23;
             // 
             // btn_add_editEvent
@@ -197,7 +197,7 @@
             this.lblHeadingTransaction.Location = new System.Drawing.Point(158, -83);
             this.lblHeadingTransaction.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblHeadingTransaction.Name = "lblHeadingTransaction";
-            this.lblHeadingTransaction.Size = new System.Drawing.Size(394, 64);
+            this.lblHeadingTransaction.Size = new System.Drawing.Size(202, 33);
             this.lblHeadingTransaction.TabIndex = 21;
             this.lblHeadingTransaction.Text = "Add Transaction";
             this.lblHeadingTransaction.UseMnemonic = false;
@@ -218,7 +218,7 @@
             this.lblHeadingEvent.Location = new System.Drawing.Point(313, 41);
             this.lblHeadingEvent.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblHeadingEvent.Name = "lblHeadingEvent";
-            this.lblHeadingEvent.Size = new System.Drawing.Size(298, 67);
+            this.lblHeadingEvent.Size = new System.Drawing.Size(151, 35);
             this.lblHeadingEvent.TabIndex = 36;
             this.lblHeadingEvent.Text = "Add Event";
             this.lblHeadingEvent.UseMnemonic = false;
@@ -230,7 +230,7 @@
             this.lbllocation.Location = new System.Drawing.Point(175, 299);
             this.lbllocation.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbllocation.Name = "lbllocation";
-            this.lbllocation.Size = new System.Drawing.Size(102, 25);
+            this.lbllocation.Size = new System.Drawing.Size(56, 13);
             this.lbllocation.TabIndex = 39;
             this.lbllocation.Text = "Location";
             // 
@@ -240,7 +240,7 @@
             this.eventLocation.Location = new System.Drawing.Point(327, 293);
             this.eventLocation.Margin = new System.Windows.Forms.Padding(4);
             this.eventLocation.Name = "eventLocation";
-            this.eventLocation.Size = new System.Drawing.Size(394, 31);
+            this.eventLocation.Size = new System.Drawing.Size(394, 19);
             this.eventLocation.TabIndex = 38;
             // 
             // checkBoxERecurring
@@ -250,7 +250,7 @@
             this.checkBoxERecurring.Location = new System.Drawing.Point(177, 522);
             this.checkBoxERecurring.Margin = new System.Windows.Forms.Padding(4);
             this.checkBoxERecurring.Name = "checkBoxERecurring";
-            this.checkBoxERecurring.Size = new System.Drawing.Size(213, 29);
+            this.checkBoxERecurring.Size = new System.Drawing.Size(118, 17);
             this.checkBoxERecurring.TabIndex = 41;
             this.checkBoxERecurring.Text = "Recurring Event";
             this.checkBoxERecurring.UseVisualStyleBackColor = true;
@@ -278,7 +278,7 @@
             this.cbEUndefined.AutoSize = true;
             this.cbEUndefined.Location = new System.Drawing.Point(3, 70);
             this.cbEUndefined.Name = "cbEUndefined";
-            this.cbEUndefined.Size = new System.Drawing.Size(250, 29);
+            this.cbEUndefined.Size = new System.Drawing.Size(138, 17);
             this.cbEUndefined.TabIndex = 18;
             this.cbEUndefined.Text = "Undefined end date";
             this.cbEUndefined.UseVisualStyleBackColor = true;
@@ -291,7 +291,7 @@
             this.lblEndDate.Location = new System.Drawing.Point(-2, 114);
             this.lblEndDate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblEndDate.Name = "lblEndDate";
-            this.lblEndDate.Size = new System.Drawing.Size(165, 29);
+            this.lblEndDate.Size = new System.Drawing.Size(84, 14);
             this.lblEndDate.TabIndex = 16;
             this.lblEndDate.Text = "End Date -Time";
             // 
@@ -303,7 +303,7 @@
             this.dateTimeEvEndDate.Location = new System.Drawing.Point(238, 114);
             this.dateTimeEvEndDate.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimeEvEndDate.Name = "dateTimeEvEndDate";
-            this.dateTimeEvEndDate.Size = new System.Drawing.Size(252, 31);
+            this.dateTimeEvEndDate.Size = new System.Drawing.Size(252, 19);
             this.dateTimeEvEndDate.TabIndex = 15;
             // 
             // lblEventStatus
@@ -313,7 +313,7 @@
             this.lblEventStatus.Location = new System.Drawing.Point(6, 29);
             this.lblEventStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblEventStatus.Name = "lblEventStatus";
-            this.lblEventStatus.Size = new System.Drawing.Size(135, 29);
+            this.lblEventStatus.Size = new System.Drawing.Size(69, 14);
             this.lblEventStatus.TabIndex = 1;
             this.lblEventStatus.Text = "Event Status";
             // 
@@ -322,19 +322,20 @@
             this.comboBoxEStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxEStatus.FormattingEnabled = true;
             this.comboBoxEStatus.Items.AddRange(new object[] {
+            "Daily",
             "Weekly",
             "Monthly",
             "Yearly"});
             this.comboBoxEStatus.Location = new System.Drawing.Point(254, 29);
             this.comboBoxEStatus.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxEStatus.Name = "comboBoxEStatus";
-            this.comboBoxEStatus.Size = new System.Drawing.Size(232, 33);
+            this.comboBoxEStatus.Size = new System.Drawing.Size(232, 21);
             this.comboBoxEStatus.TabIndex = 0;
             this.comboBoxEStatus.Text = "Weekly";
             // 
-            // AddUpdateEvent
+            // AddEditEvent
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
             this.ClientSize = new System.Drawing.Size(924, 967);
@@ -359,13 +360,14 @@
             this.Controls.Add(this.lblHeadingTransaction);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "AddUpdateEvent";
+            this.Name = "AddEditEvent";
             this.Text = "AddUpdateEvent";
             this.Load += new System.EventHandler(this.AddUpdateEvent_Load);
             this.groupBoxRecEv.ResumeLayout(false);
             this.groupBoxRecEv.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

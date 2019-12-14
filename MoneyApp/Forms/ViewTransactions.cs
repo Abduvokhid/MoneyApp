@@ -112,7 +112,7 @@ namespace MoneyApp.Forms
                         transaction.Name,
                         transaction.ContactName,
                         transaction.TypeName,
-                        transaction.Amount.ToString("0.00"),
+                        "£" + transaction.Amount.ToString("0.00"),
                         transaction.CreatedDate.ToString(),
                         transaction.Note,
                         transaction.Status,
@@ -133,7 +133,7 @@ namespace MoneyApp.Forms
                         transaction.Name,
                         transaction.ContactName,
                         transaction.TypeName,
-                        transaction.Amount.ToString("0.00"),
+                        "£" + transaction.Amount.ToString("0.00"),
                         transaction.CreatedDate.ToString(),
                         transaction.Note
                         });

@@ -7,11 +7,13 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 
 namespace MoneyApp.Repositories
 {
     class EventRepository
     {
+        private Logger Logger = LogManager.GetCurrentClassLogger();
         private static EventRepository instance;
         private EventRepository() { }
 
@@ -38,7 +40,7 @@ namespace MoneyApp.Repositories
             {
                 SqlCommand sqlCommand = new SqlCommand(selectEventQuery, sqlConnection);
 
-                sqlCommand.Parameters.Add("@FK_UserID", SqlDbType.Int).Value = userID;
+                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = userID;
 
 
                 sqlConnection.Open();
@@ -99,6 +101,7 @@ namespace MoneyApp.Repositories
             }
             catch (Exception ex)
             {
+                Logger.Error(ex.Message);
                 sqlConnection.Close();
             }
 

@@ -7,11 +7,14 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 
 namespace MoneyApp.Repositories
 {
+    
     class ContactRepository
     {
+        private Logger Logger = LogManager.GetCurrentClassLogger();
         private static ContactRepository instance;
         private ContactRepository() { }
 
@@ -52,7 +55,7 @@ namespace MoneyApp.Repositories
             }
             catch (Exception ex)
             {
-
+                Logger.Error(ex.Message);
             }
             return contacts;
         }
@@ -82,6 +85,7 @@ namespace MoneyApp.Repositories
             }
             catch (Exception ex)
             {
+                Logger.Error(ex.Message);
                 return false;
             }
         }
@@ -108,6 +112,7 @@ namespace MoneyApp.Repositories
             }
             catch (Exception ex)
             {
+                Logger.Error(ex.Message);
                 return 0;
             }
         }
@@ -132,6 +137,7 @@ namespace MoneyApp.Repositories
             }
             catch (Exception ex)
             {
+                Logger.Error(ex.Message);
                 return 0;
             }
         }

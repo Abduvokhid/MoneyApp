@@ -22,7 +22,6 @@ namespace MoneyApp.Forms
         public ViewEvents()
         {
             InitializeComponent();
-            Instances.MoneyApp.Hide();
             EventRepo = EventRepository.Instance();
         }
 
@@ -39,8 +38,6 @@ namespace MoneyApp.Forms
                 recEventRepository = RecurringEventRepository.Instance();
 
             }
-
-            Instances.MoneyApp.Hide();
             EventRepo = EventRepository.Instance();
 
         }
