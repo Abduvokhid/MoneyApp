@@ -20,8 +20,8 @@ namespace MoneyApp.Forms
     {
         private TransactionRepository transactionRepository;
         private List<Transaction> transactions;
-        private List<Transaction> tempList;
-        int nowY = 0;
+        private string reportType = "";
+        private int nowY = 0;
         public ViewReport()
         {
             InitializeComponent();
@@ -45,39 +45,32 @@ namespace MoneyApp.Forms
                 transactions = await Task.Run(() => transactionRepository.GetUserTransactions(Instances.User.ID));
             }
 
-            lv_report.Items.Clear();
-            lv_report.Columns.Clear();
-
-            tempList = new List<Transaction>();
+            List<Transaction> tempList = new List<Transaction>();
 
             tempList = transactions.Where((t) => t.CreatedDate >= dt_start.Value && t.CreatedDate <= dt_end.Value).ToList();
 
             if (cbx_show.Text.Equals("Transactions"))
             {
-                lv_report.Columns.Add("Name", 100);
-                lv_report.Columns.Add("Contact", 80);
-                lv_report.Columns.Add("Type", 50);
-                lv_report.Columns.Add("Amount", 80);
-                lv_report.Columns.Add("Created date", 100);
-                lv_report.Columns.Add("Note", 200);
-
-                tempList.ForEach((t) =>
+                reportType = "transactions";
+                plList.Controls.Clear();
+                plList.AutoScroll = false;
+                nowY = 0;
+                AddNewTransactionControl(new Transaction());
+                if (tempList != null)
                 {
-                    ListViewItem listViewItem = new ListViewItem(new string[] {
-                        t.Name, t.ContactName, t.TypeName, t.Amount.ToString("0.00"), t.CreatedDate.ToString(), t.Note
-                    });
-                    //listViewItem.BackColor = t.Type ? Color.FromArgb(200, 230, 201) : Color.FromArgb(255, 205, 210);
-                    listViewItem.ForeColor = t.Type ? Color.FromArgb(67, 160, 71) : Color.FromArgb(229, 57, 53);
-                    lv_report.Items.Add(listViewItem);
-                });
-                GenerateItems();
+                    foreach (Transaction t in tempList)
+                    {
+                        AddNewTransactionControl(t);
+                    }
+                }
+                plList.AutoScroll = true;
             }
             else if (cbx_show.Text.Equals("Days"))
             {
+                reportType = "days";
                 List<DateTime> dateList = new List<DateTime>();
                 List<decimal> incomeList = new List<decimal>();
                 List<decimal> expenseList = new List<decimal>();
-
                 foreach (Transaction transaction in tempList)
                 {
                     int z = -1;
@@ -102,24 +95,24 @@ namespace MoneyApp.Forms
                     else expenseList[z] += transaction.Amount;
                 }
 
-                lv_report.Columns.Add("Date", 100);
-                lv_report.Columns.Add("Income", 80);
-                lv_report.Columns.Add("Expense", 80);
-
-                for (int i = 0; i < dateList.Count; i++)
+                plList.Controls.Clear();
+                plList.AutoScroll = false;
+                nowY = 0;
+                AddNewOtherControl(DateTime.MinValue, 0, 0, -1);
+                if (tempList != null)
                 {
-                    ListViewItem listViewItem = new ListViewItem(new string[] {
-                        dateList[i].ToShortDateString(),
-                        incomeList[i].ToString("0.00"),
-                        expenseList[i].ToString("0.00")
-                    });
-                    lv_report.Items.Add(listViewItem);
+                    for (int i = 0; i < dateList.Count; i++)
+                    {
+                        AddNewOtherControl(dateList[i], incomeList[i], expenseList[i], i);
+                    }
                 }
+                plList.AutoScroll = true;
 
             }
             else if (cbx_show.Text.Equals("Months"))
             {
-                List<string> dateList = new List<string>();
+                reportType = "months";
+                List<DateTime> dateList = new List<DateTime>();
                 List<decimal> incomeList = new List<decimal>();
                 List<decimal> expenseList = new List<decimal>();
 
@@ -129,7 +122,7 @@ namespace MoneyApp.Forms
 
                     for (int x = 0; x < dateList.Count; x++)
                     {
-                        if (dateList[x].Equals(transaction.CreatedDate.ToString("MM/yyyy")))
+                        if (dateList[x].Equals(new DateTime(transaction.CreatedDate.Year, transaction.CreatedDate.Month, 1)))
                         {
                             z = x;
                             break;
@@ -138,7 +131,7 @@ namespace MoneyApp.Forms
 
                     if (z == -1)
                     {
-                        dateList.Add(transaction.CreatedDate.ToString("MM/yyyy"));
+                        dateList.Add(new DateTime(transaction.CreatedDate.Year, transaction.CreatedDate.Month, 1));
                         incomeList.Add(0);
                         expenseList.Add(0);
                         z = dateList.Count - 1;
@@ -147,23 +140,23 @@ namespace MoneyApp.Forms
                     else expenseList[z] += transaction.Amount;
                 }
 
-                lv_report.Columns.Add("Month", 100);
-                lv_report.Columns.Add("Income", 80);
-                lv_report.Columns.Add("Expense", 80);
-
-                for (int i = 0; i < dateList.Count; i++)
+                plList.Controls.Clear();
+                plList.AutoScroll = false;
+                nowY = 0;
+                AddNewOtherControl(DateTime.MinValue, 0, 0, -1);
+                if (tempList != null)
                 {
-                    ListViewItem listViewItem = new ListViewItem(new string[] {
-                        dateList[i],
-                        incomeList[i].ToString("0.00"),
-                        expenseList[i].ToString("0.00")
-                    });
-                    lv_report.Items.Add(listViewItem);
+                    for (int i = 0; i < dateList.Count; i++)
+                    {
+                        AddNewOtherControl(dateList[i], incomeList[i], expenseList[i], i);
+                    }
                 }
+                plList.AutoScroll = true;
             }
             else if (cbx_show.Text.Equals("Years"))
             {
-                List<string> dateList = new List<string>();
+                reportType = "years";
+                List<DateTime> dateList = new List<DateTime>();
                 List<decimal> incomeList = new List<decimal>();
                 List<decimal> expenseList = new List<decimal>();
 
@@ -173,7 +166,7 @@ namespace MoneyApp.Forms
 
                     for (int x = 0; x < dateList.Count; x++)
                     {
-                        if (dateList[x].Equals(transaction.CreatedDate.ToString("yyyy")))
+                        if (dateList[x].Equals(new DateTime(transaction.CreatedDate.Year, 1, 1)))
                         {
                             z = x;
                             break;
@@ -182,7 +175,7 @@ namespace MoneyApp.Forms
 
                     if (z == -1)
                     {
-                        dateList.Add(transaction.CreatedDate.ToString("yyyy"));
+                        dateList.Add(new DateTime(transaction.CreatedDate.Year, 1, 1));
                         incomeList.Add(0);
                         expenseList.Add(0);
                         z = dateList.Count - 1;
@@ -191,19 +184,19 @@ namespace MoneyApp.Forms
                     else expenseList[z] += transaction.Amount;
                 }
 
-                lv_report.Columns.Add("Year", 100);
-                lv_report.Columns.Add("Income", 80);
-                lv_report.Columns.Add("Expense", 80);
-
-                for (int i = 0; i < dateList.Count; i++)
+                plList.Controls.Clear();
+                plList.AutoScroll = false;
+                nowY = 0;
+                AddNewOtherControl(DateTime.MinValue, 0, 0, -1);
+                if (tempList != null)
                 {
-                    ListViewItem listViewItem = new ListViewItem(new string[] {
-                        dateList[i],
-                        incomeList[i].ToString("0.00"),
-                        expenseList[i].ToString("0.00")
-                    });
-                    lv_report.Items.Add(listViewItem);
+                    for (int i = 0; i < dateList.Count; i++)
+                    {
+                        AddNewOtherControl(dateList[i], incomeList[i], expenseList[i], i);
+                    }
                 }
+                plList.AutoScroll = true;
+
 
             }
 
@@ -216,23 +209,44 @@ namespace MoneyApp.Forms
             };
         }
 
-        private void GenerateItems()
+        private void PanelSizeChanged(object sender, EventArgs e)
         {
-            plList.Controls.Clear();
-            plList.AutoScroll = false;
-            nowY = 0;
-            if (tempList != null)
+            Panel plItem = (Panel)sender;
+
+            int height = plItem.Height / 2;
+            int widthAll = (int)(plItem.Size.Width * 0.25);
+            int widthOne = plItem.Size.Width - (widthAll * 3);
+
+            List<Panel> panels = plItem.Controls.OfType<Panel>().ToList();
+            for (int i = 0; i < panels.Count; i++)
             {
-                foreach (Transaction t in tempList)
+                int id = (int)panels[i].Tag;
+                switch (id)
                 {
-                    AddNewControl(t);
+                    case 1:
+                        panels[i].Width = widthOne;
+                        panels[i].Location = new Point(0, 0);
+                        break;
+                    case 5:
+                        panels[i].Width = plItem.Size.Width;
+                        break;
+                    default:
+                        panels[i].Width = widthAll;
+                        panels[i].Location = new Point((id - 1) * widthAll, 0);
+                        break;
                 }
             }
-            plList.AutoScroll = true;
         }
 
-        private void AddNewControl(Transaction t)
+        private void AddNewTransactionControl(Transaction t)
         {
+            string transactionTitle = "Transaction Name";
+            string contactTitle = "Contact Name";
+            string dateTitle = "Date and Time";
+            string dayOfWeekTitle = "Day of Week";
+            string amountTitle = "Amount";
+            string typeTitle = "Type";
+
             Panel plItem = new Panel();
             Label lblItemDayOfWeek = new Label();
             Label lblItemDateTime = new Label();
@@ -241,7 +255,7 @@ namespace MoneyApp.Forms
             Label lblItemType = new Label();
             Label lblItemAmount = new Label();
             Panel plBorder = new Panel();
-            
+
             plItem.Controls.Add(lblItemType);
             plItem.Controls.Add(lblItemAmount);
             plItem.Controls.Add(lblItemDayOfWeek);
@@ -271,6 +285,10 @@ namespace MoneyApp.Forms
             lblItemName.Anchor = AnchorStyles.Left;
             lblItemName.Name = "lblItemName" + t.ID;
             lblItemName.Text = t.Name;
+            if (t.ID == 0) {
+                lblItemName.Text = transactionTitle;
+                lblItemName.BackColor = Color.FromArgb(249, 250, 252);
+            }
             // 
             // lblItemContact
             // 
@@ -283,6 +301,11 @@ namespace MoneyApp.Forms
             lblItemContact.Anchor = AnchorStyles.Left;
             lblItemContact.Name = "lblItemContact" + t.ID;
             lblItemContact.Text = t.ContactName;
+            if (t.ID == 0)
+            {
+                lblItemContact.Text = contactTitle;
+                lblItemContact.BackColor = Color.FromArgb(249, 250, 252);
+            }
             // 
             // lblItemDateTime
             // 
@@ -295,6 +318,11 @@ namespace MoneyApp.Forms
             lblItemDateTime.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             lblItemDateTime.Name = "lblItemDateTime" + t.ID;
             lblItemDateTime.Text = t.CreatedDate.ToString("dd/MM/yyyy hh:mm");
+            if (t.ID == 0)
+            {
+                lblItemDateTime.Text = dateTitle;
+                lblItemDateTime.BackColor = Color.FromArgb(249, 250, 252);
+            }
             // 
             // lblItemDayOfWeek
             // 
@@ -307,6 +335,11 @@ namespace MoneyApp.Forms
             lblItemDayOfWeek.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             lblItemDayOfWeek.Name = "lblItemDayOfWeek" + t.ID;
             lblItemDayOfWeek.Text = t.CreatedDate.DayOfWeek.ToString();
+            if (t.ID == 0)
+            {
+                lblItemDayOfWeek.Text = dayOfWeekTitle;
+                lblItemDayOfWeek.BackColor = Color.FromArgb(249, 250, 252);
+            }
             // 
             // lblItemAmount
             // 
@@ -319,6 +352,11 @@ namespace MoneyApp.Forms
             lblItemAmount.Anchor = AnchorStyles.Right;
             lblItemAmount.Name = "lblItemAmount" + t.ID;
             lblItemAmount.Text = t.Amount.ToString("£0.00");
+            if (t.ID == 0)
+            {
+                lblItemAmount.Text = amountTitle;
+                lblItemAmount.BackColor = Color.FromArgb(249, 250, 252);
+            }
             // 
             // lblItemType
             // 
@@ -337,6 +375,12 @@ namespace MoneyApp.Forms
             lblItemType.Anchor = AnchorStyles.Right;
             lblItemType.Name = "lblItemType" + t.ID;
             lblItemType.Text = t.TypeName;
+            if (t.ID == 0)
+            {
+                lblItemType.ForeColor = Color.FromArgb(109, 116, 129);
+                lblItemType.Text = typeTitle;
+                lblItemType.BackColor = Color.FromArgb(249, 250, 252);
+            }
 
             plBorder.Width = plItem.Width;
             plBorder.Height = 1;
@@ -347,6 +391,211 @@ namespace MoneyApp.Forms
             
             plItem.Location = new Point(0, nowY);
             nowY += plItem.Height;
+
+            plList.Controls.Add(plItem);
+        }
+
+        private void AddNewOtherControl(DateTime dateTime, decimal income, decimal expense, int id)
+        {
+            string dateTitle = "";
+            string incomeTitle = "Income";
+            string expenseTitle = "Expense";
+            string totalTitle = "Total";
+
+            if (reportType.Equals("days")) dateTitle = "Days";
+            else if (reportType.Equals("months")) dateTitle = "Months";
+            else if (reportType.Equals("years")) dateTitle = "Years";
+
+            Panel plItem = new Panel();
+
+            Panel plOne = new Panel();
+            Panel plTwo = new Panel();
+            Panel plThree = new Panel();
+            Panel plFour = new Panel();
+
+            Label lblItemDateTime = new Label();
+            Label lblItemDayOfWeek = new Label();
+            Label lblItemIncome = new Label();
+            Label lblItemExpense = new Label();
+            Label lblItemTotal = new Label();
+            Panel plBorder = new Panel();
+
+            plOne.Controls.Add(lblItemDateTime);
+            if (dateTime != DateTime.MinValue && reportType.Equals("years") == false)
+            {
+                plOne.Controls.Add(lblItemDayOfWeek);
+            }
+            plTwo.Controls.Add(lblItemIncome);
+            plThree.Controls.Add(lblItemExpense);
+            plFour.Controls.Add(lblItemTotal);
+
+            plItem.Controls.Add(plOne);
+            plItem.Controls.Add(plTwo);
+            plItem.Controls.Add(plThree);
+            plItem.Controls.Add(plFour);
+            plItem.Controls.Add(plBorder);
+
+            plItem.Name = "plItem" + id;
+            plItem.Size = new Size(plList.Width, 60);
+            plItem.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+
+            int height = plItem.Height / 2;
+            int widthAll = (int)(plItem.Width * 0.25);
+            int widthOne = plItem.Width - (widthAll * 3);
+
+            plOne.Height = plItem.Height;
+            plTwo.Height = plItem.Height;
+            plThree.Height = plItem.Height;
+            plFour.Height = plItem.Height;
+
+            plOne.Tag = 1;
+            plTwo.Tag = 2;
+            plThree.Tag = 3;
+            plFour.Tag = 4;
+
+            plOne.Width = widthOne;
+            plTwo.Width = widthAll;
+            plThree.Width = widthAll;
+            plFour.Width = widthAll;
+
+            plOne.Anchor = AnchorStyles.Right;
+            plTwo.Anchor = AnchorStyles.Right;
+            plThree.Anchor = AnchorStyles.Right;
+            plFour.Anchor = AnchorStyles.Right;
+
+            plOne.Location = new Point(0, 0);
+            plTwo.Location = new Point(widthOne, 0);
+            plThree.Location = new Point(widthOne + widthAll, 0);
+            plFour.Location = new Point(widthOne + widthAll + widthAll, 0);
+
+
+            // 
+            // lblItemDateTime
+            // 
+            lblItemDateTime.AutoSize = false;
+            lblItemDateTime.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            lblItemDateTime.ForeColor = Color.FromArgb(43, 56, 75);
+            lblItemDateTime.Location = new Point(0, 0);
+            lblItemDateTime.TextAlign = ContentAlignment.BottomCenter;
+            lblItemDateTime.Size = new Size(widthOne, height);
+            lblItemDateTime.Anchor = AnchorStyles.Right | AnchorStyles.Left;
+            lblItemDateTime.TabIndex = 0;
+            lblItemDateTime.Name = "lblItemDateTime" + id;
+            switch (reportType)
+            {
+                case "days":
+                    lblItemDateTime.Text = dateTime.ToString("dd/MM/yyyy");
+                    break;
+                case "months":
+                    lblItemDateTime.Text = dateTime.ToString("MMMM");
+                    break;
+                case "years":
+                    lblItemDateTime.Text = dateTime.ToString("yyyy");
+                    lblItemDateTime.Size = new Size(widthOne, plItem.Height);
+                    lblItemDateTime.TextAlign = ContentAlignment.MiddleCenter;
+                    break;
+            }
+            if (dateTime == DateTime.MinValue)
+            {
+                lblItemDateTime.TextAlign = ContentAlignment.MiddleCenter;
+                lblItemDateTime.Size = new Size(widthOne, plItem.Height);
+                lblItemDateTime.Text = dateTitle;
+                lblItemDateTime.BackColor = Color.FromArgb(249, 250, 252);
+            }
+            // 
+            // lblItemDayOfWeek
+            // 
+            lblItemDayOfWeek.AutoSize = false;
+            lblItemDayOfWeek.Font = new Font("Arial Condensed", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblItemDayOfWeek.ForeColor = Color.FromArgb(109, 116, 129);
+            lblItemDayOfWeek.Location = new Point(0, height);
+            lblItemDayOfWeek.TextAlign = ContentAlignment.TopCenter;
+            lblItemDayOfWeek.Size = new Size(widthOne, height);
+            lblItemDayOfWeek.Anchor = AnchorStyles.Right | AnchorStyles.Left;
+            lblItemDayOfWeek.TabIndex = 1;
+            lblItemDayOfWeek.Name = "lblItemDayOfWeek" + id;
+            lblItemDayOfWeek.Text = dateTime.DayOfWeek.ToString();
+            if (reportType.Equals("months"))
+            {
+                lblItemDayOfWeek.Text = dateTime.ToString("yyyy");
+            }
+            // 
+            // lblItemIncome
+            // 
+            lblItemIncome.AutoSize = false;
+            lblItemIncome.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            lblItemIncome.ForeColor = Color.FromArgb(46, 125, 50);
+            lblItemIncome.Location = new Point(0, 0);
+            lblItemIncome.TextAlign = ContentAlignment.MiddleCenter;
+            lblItemIncome.Size = new Size(widthAll, plItem.Height);
+            lblItemIncome.Anchor = AnchorStyles.Right | AnchorStyles.Left;
+            lblItemIncome.TabIndex = 2;
+            lblItemIncome.Name = "lblItemIncome" + id;
+            lblItemIncome.Text = income.ToString("£0.00");
+            if (dateTime == DateTime.MinValue)
+            {
+                lblItemIncome.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+                lblItemIncome.Text = incomeTitle;
+                lblItemIncome.BackColor = Color.FromArgb(249, 250, 252);
+            }
+            // 
+            // lblItemExpense
+            // 
+            lblItemExpense.AutoSize = false;
+            lblItemExpense.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            lblItemExpense.ForeColor = Color.FromArgb(211, 47, 47);
+            lblItemExpense.Location = new Point(0, 0);
+            lblItemExpense.TextAlign = ContentAlignment.MiddleCenter;
+            lblItemExpense.Size = new Size(widthAll, plItem.Height);
+            lblItemExpense.Anchor = AnchorStyles.Right | AnchorStyles.Left;
+            lblItemExpense.Name = "lblItemExpense" + id;
+            lblItemExpense.Text = expense.ToString("£0.00");
+            if (dateTime == DateTime.MinValue)
+            {
+                lblItemExpense.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+                lblItemExpense.Text = expenseTitle;
+                lblItemExpense.BackColor = Color.FromArgb(249, 250, 252);
+            }
+            // 
+            // lblItemTotal
+            // 
+            decimal total = income - expense;
+            lblItemTotal.AutoSize = false;
+            lblItemTotal.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            if (total < 0)
+            {
+                lblItemTotal.ForeColor = Color.FromArgb(211, 47, 47);
+            } else if (total > 0)
+            {
+                lblItemTotal.ForeColor = Color.FromArgb(46, 125, 50);
+            } else
+            {
+                lblItemTotal.ForeColor = Color.FromArgb(109, 116, 129);
+            }
+            lblItemTotal.Location = new Point(0, 0);
+            lblItemTotal.TextAlign = ContentAlignment.MiddleCenter;
+            lblItemTotal.Size = new Size(widthAll, plItem.Height);
+            lblItemTotal.Anchor = AnchorStyles.Right | AnchorStyles.Left;
+            lblItemTotal.Name = "lblItemTotal" + id;
+            lblItemTotal.Text = total.ToString("£0.00");
+            if (dateTime == DateTime.MinValue)
+            {
+                lblItemTotal.Text = totalTitle;
+                lblItemTotal.BackColor = Color.FromArgb(249, 250, 252);
+            }
+
+            plBorder.Width = plItem.Width;
+            plBorder.Height = 1;
+            plBorder.BackColor = Color.FromArgb(228, 232, 241);
+            plBorder.Location = new Point(0, plItem.Height - 1);
+            plBorder.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            plBorder.Tag = 5;
+            plBorder.BringToFront();
+
+            plItem.Location = new Point(0, nowY);
+            nowY += plItem.Height;
+
+            plItem.SizeChanged += new EventHandler(PanelSizeChanged);
 
             plList.Controls.Add(plItem);
         }

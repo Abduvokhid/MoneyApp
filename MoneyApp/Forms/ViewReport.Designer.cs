@@ -37,7 +37,13 @@
             this.btn_generate = new System.Windows.Forms.Button();
             this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
             this.plList = new System.Windows.Forms.Panel();
-            this.lv_report = new System.Windows.Forms.ListView();
+            this.pl_item = new System.Windows.Forms.Panel();
+            this.lblItemAmount = new System.Windows.Forms.Label();
+            this.lblItemDateTime = new System.Windows.Forms.Label();
+            this.lblItemContact = new System.Windows.Forms.Label();
+            this.lblItemName = new System.Windows.Forms.Label();
+            this.plList.SuspendLayout();
+            this.pl_item.SuspendLayout();
             this.SuspendLayout();
             // 
             // dt_start
@@ -125,27 +131,78 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.plList.AutoScroll = true;
             this.plList.BackColor = System.Drawing.Color.White;
-            this.plList.Location = new System.Drawing.Point(475, 92);
+            this.plList.Controls.Add(this.pl_item);
+            this.plList.Location = new System.Drawing.Point(13, 91);
             this.plList.Name = "plList";
-            this.plList.Size = new System.Drawing.Size(674, 246);
+            this.plList.Size = new System.Drawing.Size(677, 246);
             this.plList.TabIndex = 11;
             // 
-            // lv_report
+            // pl_item
             // 
-            this.lv_report.FullRowSelect = true;
-            this.lv_report.Location = new System.Drawing.Point(12, 92);
-            this.lv_report.MultiSelect = false;
-            this.lv_report.Name = "lv_report";
-            this.lv_report.Size = new System.Drawing.Size(457, 246);
-            this.lv_report.TabIndex = 0;
-            this.lv_report.UseCompatibleStateImageBehavior = false;
-            this.lv_report.View = System.Windows.Forms.View.Details;
+            this.pl_item.BackColor = System.Drawing.Color.White;
+            this.pl_item.Controls.Add(this.lblItemAmount);
+            this.pl_item.Controls.Add(this.lblItemDateTime);
+            this.pl_item.Controls.Add(this.lblItemContact);
+            this.pl_item.Controls.Add(this.lblItemName);
+            this.pl_item.Location = new System.Drawing.Point(15, 22);
+            this.pl_item.Name = "pl_item";
+            this.pl_item.Size = new System.Drawing.Size(641, 60);
+            this.pl_item.TabIndex = 0;
+            // 
+            // lblItemAmount
+            // 
+            this.lblItemAmount.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lblItemAmount.AutoSize = true;
+            this.lblItemAmount.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblItemAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(56)))), ((int)(((byte)(75)))));
+            this.lblItemAmount.Location = new System.Drawing.Point(526, 15);
+            this.lblItemAmount.Name = "lblItemAmount";
+            this.lblItemAmount.Size = new System.Drawing.Size(69, 19);
+            this.lblItemAmount.TabIndex = 4;
+            this.lblItemAmount.Text = "£125.00";
+            // 
+            // lblItemDateTime
+            // 
+            this.lblItemDateTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblItemDateTime.AutoSize = true;
+            this.lblItemDateTime.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblItemDateTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(56)))), ((int)(((byte)(75)))));
+            this.lblItemDateTime.Location = new System.Drawing.Point(273, 14);
+            this.lblItemDateTime.Name = "lblItemDateTime";
+            this.lblItemDateTime.Size = new System.Drawing.Size(138, 19);
+            this.lblItemDateTime.TabIndex = 2;
+            this.lblItemDateTime.Text = "12/12/2019 23:12";
+            this.lblItemDateTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblItemContact
+            // 
+            this.lblItemContact.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblItemContact.AutoSize = true;
+            this.lblItemContact.Font = new System.Drawing.Font("Roboto Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblItemContact.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(116)))), ((int)(((byte)(129)))));
+            this.lblItemContact.Location = new System.Drawing.Point(17, 32);
+            this.lblItemContact.Name = "lblItemContact";
+            this.lblItemContact.Size = new System.Drawing.Size(24, 18);
+            this.lblItemContact.TabIndex = 1;
+            this.lblItemContact.Text = "TfL";
+            // 
+            // lblItemName
+            // 
+            this.lblItemName.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblItemName.AutoSize = true;
+            this.lblItemName.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblItemName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(56)))), ((int)(((byte)(75)))));
+            this.lblItemName.Location = new System.Drawing.Point(14, 14);
+            this.lblItemName.Name = "lblItemName";
+            this.lblItemName.Size = new System.Drawing.Size(130, 19);
+            this.lblItemName.TabIndex = 0;
+            this.lblItemName.Text = "Travel to London";
             // 
             // ViewReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1161, 639);
+            this.ClientSize = new System.Drawing.Size(807, 639);
             this.Controls.Add(this.plList);
             this.Controls.Add(this.cartesianChart1);
             this.Controls.Add(this.btn_generate);
@@ -155,9 +212,11 @@
             this.Controls.Add(this.cbx_show);
             this.Controls.Add(this.dt_end);
             this.Controls.Add(this.dt_start);
-            this.Controls.Add(this.lv_report);
             this.Name = "ViewReport";
             this.Text = "ViewReport";
+            this.plList.ResumeLayout(false);
+            this.pl_item.ResumeLayout(false);
+            this.pl_item.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -173,6 +232,10 @@
         private System.Windows.Forms.Button btn_generate;
         private LiveCharts.WinForms.CartesianChart cartesianChart1;
         private System.Windows.Forms.Panel plList;
-        private System.Windows.Forms.ListView lv_report;
+        private System.Windows.Forms.Panel pl_item;
+        private System.Windows.Forms.Label lblItemAmount;
+        private System.Windows.Forms.Label lblItemDateTime;
+        private System.Windows.Forms.Label lblItemContact;
+        private System.Windows.Forms.Label lblItemName;
     }
 }

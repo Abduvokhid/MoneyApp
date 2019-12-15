@@ -38,10 +38,10 @@ namespace MoneyApp
 
         private void MoneyApp_Activated(object sender, EventArgs e)
         {
-            if (Instances.User == null)
+            /*if (Instances.User == null)
             {
                 Instances.User = new User { ID = 7, Name = "Abdu", Username = "Abduvokhid", LastAccessDate = DateTime.Now.AddDays(-99).AddHours(5) };
-            }
+            }*/
             if (Instances.User == null)
             {
                 Authorization auth = new Authorization();
