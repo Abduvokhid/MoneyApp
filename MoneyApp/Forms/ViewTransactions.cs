@@ -20,7 +20,8 @@ namespace MoneyApp.Forms
         public ViewTransactions()
         {
             InitializeComponent();
-            transactionRepository = TransactionRepository.Instance();
+            transactionRepository = TransactionRepository.Instance;
+            ResizeColumns();
         }
         public ViewTransactions(bool recurring)
         {
@@ -30,9 +31,10 @@ namespace MoneyApp.Forms
             {
                 lv_transactions.Columns.Add("Status");
                 lv_transactions.Columns.Add("End date");
-                recurringTransactionRepository = RecurringTransactionRepository.Instance();
+                recurringTransactionRepository = RecurringTransactionRepository.Instance;
             }
-            transactionRepository = TransactionRepository.Instance();
+            ResizeColumns();
+            transactionRepository = TransactionRepository.Instance;
         }
 
         private void AddClick(object sender, EventArgs e)
@@ -92,7 +94,6 @@ namespace MoneyApp.Forms
 
         private void ViewTransactionsFormClosed(object sender, FormClosedEventArgs e)
         {
-            Instances.MoneyApp.UnBlur();
             Instances.MoneyApp.Activate();
             Instances.MoneyApp.Show();
             Dispose();
@@ -143,25 +144,29 @@ namespace MoneyApp.Forms
             }
         }
 
-        private void ViewTransactions_Resize(object sender, EventArgs e)
+        private void TransactionsSizeChanged(object sender, EventArgs e)
         {
-            if (Width < 734)
-            {
-                btn_add.Location = new Point(12, 246);
-                btn_edit.Location = new Point(99, 246);
-                btn_delete.Location = new Point(186, 246);
-            } else
-            {
-                btn_add.Location = new Point(631, 12);
-                btn_edit.Location = new Point(631, 41);
-                btn_delete.Location = new Point(631, 70);
-            }
-            if (Width < 655) Width = 655;
-            if (Height < 315) Height = 315;
+            ResizeColumns();
         }
 
-        private void ViewTransactions_ResizeEnd(object sender, EventArgs e)
+        private void ResizeColumns()
         {
+            int count = lv_transactions.Columns.Count;
+            int per = (lv_transactions.Width - 20) / count;
+
+            for (int i = 0; i < count; i++)
+            {
+                int width = 0;
+                if (i == count - 1)
+                {
+                    width = lv_transactions.Width - ((count - 1) * per) - 20;
+                }
+                else
+                {
+                    width = per;
+                }
+                lv_transactions.Columns[i].Width = width;
+            }
         }
     }
 }

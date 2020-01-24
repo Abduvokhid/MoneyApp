@@ -13,35 +13,77 @@ using MoneyApp.Models;
 using MoneyApp.Repositories;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Tulpep.NotificationWindow;
+using LiveCharts.Wpf;
+using LiveCharts;
 
 namespace MoneyApp
 {
     public partial class MoneyApp : Form
     {
-        private bool isTagged = false;
         private bool isFirst = true;
-
-        //private PictureBox pb;
-        //Bitmap bmp;
         public MoneyApp()
         {
             InitializeComponent();
             Instances.MoneyApp = this;
-            /*pb = new PictureBox();
-            panel.Controls.Add(pb);
-            pb.Dock = DockStyle.Fill;*/
-            this.SetStyle(ControlStyles.ResizeRedraw, true);
-            SetPanelSize();
-            SetMenu();
+            mc_calendar.MinDate = DateTime.Now.Date;
+            mc_calendar.SelectionStart = DateTime.Now;
+        }
+
+        private void GenerateInfo()
+        {
+            TransactionRepository transactionRepository = TransactionRepository.Instance;
+            List<Transaction> transactions = transactionRepository.GetUserTransactions(Instances.User.ID);
+            List<DateTime> dates = new List<DateTime>();
+            List<decimal> totalIncomes = new List<decimal>();
+            List<decimal> totalExpenses = new List<decimal>();
+            for (int i = 0; i < DateTime.Now.Day; i++)
+            {
+                dates.Add(new DateTime(DateTime.Now.Year, DateTime.Now.Month, i + 1));
+                totalIncomes.Add(0);
+                totalExpenses.Add(0);
+            }
+            decimal income = 0;
+            decimal expense = 0;
+            transactions = transactions.Where(t => t.CreatedDate.Month == DateTime.Now.Month).ToList();
+            transactions.ForEach(t =>
+            {
+                if (t.Type)
+                {
+                    income += t.Amount;
+                    totalIncomes[t.CreatedDate.Day - 1] += t.Amount;
+                }
+                else
+                {
+                    expense += t.Amount;
+                    totalExpenses[t.CreatedDate.Day - 1] += t.Amount;
+                }
+            });
+            lbl_income_amount.Text = "£" + income.ToString("0.00");
+            lbl_expense_amount.Text = "£" + expense.ToString("0.00");
+
+            cch_month.Series = new LiveCharts.SeriesCollection
+            {
+                new LineSeries { Title = "Income", Values = new ChartValues<decimal>(totalIncomes)},
+                new LineSeries { Title = "Expense", Values = new ChartValues<decimal>(totalExpenses)}
+            };
+
+            List<string> vs = new List<string>();
+            foreach (DateTime d in dates)
+            {
+                vs.Add(d.Day.ToString());
+            }
+
+            cch_month.AxisX.Clear();
+
+            cch_month.AxisX.Add(new Axis
+            {
+                Title = "Month",
+                Labels = vs.ToArray()
+            });
         }
 
         private void MoneyApp_Activated(object sender, EventArgs e)
         {
-            /*if (Instances.User == null)
-            {
-                Instances.User = new User { ID = 7, Name = "Abdu", Username = "Abduvokhid", LastAccessDate = DateTime.Now.AddDays(-99).AddHours(5) };
-            }*/
             if (Instances.User == null)
             {
                 Authorization auth = new Authorization();
@@ -49,96 +91,13 @@ namespace MoneyApp
                 auth.Show();
             } else
             {
+                GenerateInfo();
                 if (!bw_recurring.IsBusy) bw_recurring.RunWorkerAsync();
             }
         }
 
-        #region All shit is here
-        private void SetMenu()
-        {
-            int width = pl_menu.Width / 5;
-            int width_last = pl_menu.Width - (width * 4);
-
-            Button transactions = new Button();
-            transactions.Width = width;
-            transactions.BackColor = pl_menu.BackColor;
-            transactions.Text = "Transactions";
-            transactions.Height = 40;
-            transactions.FlatStyle = FlatStyle.Flat;
-            transactions.Location = new Point(0,0);
-            pl_menu.Controls.Add(transactions);
-
-            Button events = new Button();
-            events.Width = width;
-            events.BackColor = pl_menu.BackColor;
-            events.Text = "Events";
-            events.FlatStyle = FlatStyle.Flat;
-            events.Height = 40;
-            events.Location = new Point(transactions.Location.X + transactions.Width, 0);
-            pl_menu.Controls.Add(events);
-
-            Button contacts = new Button();
-            contacts.Width = width;
-            contacts.BackColor = pl_menu.BackColor;
-            contacts.Text = "Contacts";
-            contacts.FlatStyle = FlatStyle.Flat;
-            contacts.Height = 40;
-            contacts.Location = new Point(events.Location.X + events.Width, 0);
-            pl_menu.Controls.Add(contacts);
-
-            Button reports = new Button();
-            reports.Width = width;
-            reports.BackColor = pl_menu.BackColor;
-            reports.Text = "Reports";
-            reports.FlatStyle = FlatStyle.Flat;
-            reports.Height = 40;
-            reports.Location = new Point(contacts.Location.X + contacts.Width, 0);
-            pl_menu.Controls.Add(reports);
-
-            Button settings = new Button();
-            settings.Width = width_last;
-            settings.BackColor = pl_menu.BackColor;
-            settings.Text = "Settings";
-            settings.FlatStyle = FlatStyle.Flat;
-            settings.Height = 40;
-            settings.Location = new Point(reports.Location.X + reports.Width, 0);
-            pl_menu.Controls.Add(settings);
-
-
-        }
-
-
-        private void Blur()
-        {
-            /*bmp = Screenshot.TakeSnapshot(panel);
-            BitmapFilter.GaussianBlur(bmp, 1);
-            
-            pb.Image = bmp;
-            pb.BringToFront();*/
-        }
-
-        public void UnBlur()
-        {
-            /*pb.Image = null;
-            pb.SendToBack();
-            bmp.Dispose();
-            System.GC.Collect();
-            System.GC.WaitForPendingFinalizers();*/
-        }
-
-        private void MoneyApp_SizeChanged(object sender, EventArgs e)
-        {
-            SetPanelSize();
-        }
-
-        private void SetPanelSize()
-        {
-           panel.Size = new Size(Width, Height - 20);
-        }
-
         private void ContactsClick(object sender, EventArgs e)
         {
-            Blur();
             ViewContacts contactsView = new ViewContacts();
             contactsView.Activate();
             contactsView.Show();
@@ -146,34 +105,9 @@ namespace MoneyApp
 
         private void TransactionsClick(object sender, EventArgs e)
         {
-            //Blur();
             ViewTransactions transactionsView = new ViewTransactions();
             transactionsView.Activate();
             transactionsView.Show();
-        }
-
-        private void btn_transactions_MouseHover(object sender, EventArgs e)
-        {
-            Label label = new Label();
-            label.Padding = new Padding(5);
-            label.AutoSize = false;
-            label.Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc volutpat hendrerit consectetur. Cras dapibus ipsum eu nibh venenatis, sed interdum sem efficitur. Vivamus fermentum auctor sodales nullam.";
-            label.Width = 250;
-            int a = label.Text.Length * 6 / 260;
-            label.Height += a * 13;
-            btn_transactions.Tag = label;
-            label.Location = new Point(btn_transactions.Location.X + btn_transactions.Width + 5, btn_transactions.Location.Y + (btn_transactions.Height / 2) - (label.Height / 2));
-            label.BringToFront();
-            label.BackColor = Color.White;
-            label.ForeColor = Color.Black;
-            label.BorderStyle = BorderStyle.FixedSingle;
-            panel.Controls.Add(label);
-            isTagged = true;
-        }
-
-        private void btn_transactions_MouseLeave(object sender, EventArgs e)
-        {
-            if (isTagged) ((Label)btn_transactions.Tag).Dispose();
         }
 
         private void btn_recurring_transactions_Click(object sender, EventArgs e)
@@ -182,59 +116,7 @@ namespace MoneyApp
             transactionsView.Activate();
             transactionsView.Show();
         }
-
-        private bool move = false;
-        private Point startPoint;
-        private void RightMouseDown(object sender, MouseEventArgs e)
-        {
-            move = true;
-            startPoint = MousePosition;
-        }
-
-        private void RightMouseMove(object sender, MouseEventArgs e)
-        {
-            if (move)
-            {
-                Point nowPoint = MousePosition;
-                int o = startPoint.X;
-                int n = nowPoint.X;
-                int t = n - o;
-                Size = new Size(Width + t, Height);
-                startPoint = nowPoint;
-            }
-        }
-
-        private void RightMouseUp(object sender, MouseEventArgs e)
-        {
-            if (move) move = false;
-        }
-
-        private void AllMouseDown(object sender, MouseEventArgs e)
-        {
-            move = true;
-            startPoint = MousePosition;
-        }
-
-        private void AllMouseMove(object sender, MouseEventArgs e)
-        {
-            if (move)
-            {
-                Point nowPoint = MousePosition;
-                int Xo = startPoint.X;
-                int Xn = nowPoint.X;
-                int Xt = Xn - Xo;
-                int Yo = startPoint.Y;
-                int Yn = nowPoint.Y;
-                int Yt = Yn - Yo;
-                Size = new Size(Width + Xt, Height + Yt);
-                startPoint = nowPoint;
-            }
-        }
-
-        private void AllMouseUp(object sender, MouseEventArgs e)
-        {
-            if (move) move = false;
-        }
+        
 
         private void ReportClick(object sender, EventArgs e)
         {
@@ -247,10 +129,9 @@ namespace MoneyApp
         {
             ViewPrediction viewPrediction = new ViewPrediction();
             viewPrediction.Activate();
-            viewPrediction.Show();
+            viewPrediction.ShowDialog();
         }
-
-        #endregion
+        
 
         private void bw_recurring_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -261,14 +142,15 @@ namespace MoneyApp
                 DoRecurringEvent();
                 if (isFirst) isFirst = false;
                 Instances.User.LastAccessDate = DateTime.Now;
-                UserRepository.Instance().EditLastAccessDate(Instances.User);
+                UserRepository userRepository = UserRepository.Instance;
+                userRepository.EditLastAccessDate(Instances.User);
             }
         }
 
         private async void DoRecurringTransaction()
         {
-            TransactionRepository transactionRepository = TransactionRepository.Instance();
-            RecurringTransactionRepository recurringTransactionRepository = RecurringTransactionRepository.Instance();
+            TransactionRepository transactionRepository = TransactionRepository.Instance;
+            RecurringTransactionRepository recurringTransactionRepository = RecurringTransactionRepository.Instance;
             List<RecurringTransaction> recurringTransactions = recurringTransactionRepository.GetUserTransactions(Instances.User.ID);
             foreach(RecurringTransaction recurringTransaction in recurringTransactions)
             {
@@ -331,9 +213,9 @@ namespace MoneyApp
 
         private async void DoRecurringEvent()
         {
-            EventRepository transactionRepository = EventRepository.Instance();
-            RecurringEventRepository recurringEventRepository = RecurringEventRepository.Instance();
-            List<RecurringEvent> recurringEvents = recurringEventRepository.GetRecEvents(Instances.User.ID);
+            EventRepository transactionRepository = EventRepository.Instance;
+            RecurringEventRepository recurringEventRepository = RecurringEventRepository.Instance;
+            List<RecurringEvent> recurringEvents = recurringEventRepository.GetRecurringEvents(Instances.User.ID);
             foreach (RecurringEvent recurringEvent in recurringEvents)
             {
                 if (DateTime.Now > recurringEvent.EndDate && recurringEvent.EndDate != DateTime.MinValue) continue;
@@ -419,11 +301,71 @@ namespace MoneyApp
             viewEvents.Show();
         }
 
-        private void btn_left_Click(object sender, EventArgs e)
+        private void MoneyAppDateSelected(object sender, DateRangeEventArgs e)
         {
-            AddEditTransaction viewEvents = new AddEditTransaction();
-            viewEvents.Activate();
-            viewEvents.Show();
+            ShowEventsForDate(mc_calendar.SelectionStart);
+        }
+
+        private void ShowEventsForDate(DateTime d)
+        {
+
+            pl_right.Controls.OfType<Panel>().ToList().ForEach(p => p.Dispose());
+
+            RecurringEventRepository recurringEventRepository = RecurringEventRepository.Instance;
+            List<RecurringEvent> events = recurringEventRepository.GetRecurringEvents(Instances.User.ID);
+
+            List<RecurringEvent> newList = new List<RecurringEvent>();
+
+            events.ForEach(e =>
+            {
+                switch (e.Status)
+                {
+                    case "Daily":
+                        newList.Add(e);
+                        break;
+                    case "Weekly":
+                        if (e.CreatedDate.DayOfWeek == d.DayOfWeek) newList.Add(e);
+                        break;
+                    case "Monthly":
+                        if (e.CreatedDate.Day == d.Day) newList.Add(e);
+                        break;
+                    case "Yearly":
+                        if (e.CreatedDate.Month == d.Month && e.CreatedDate.Day == d.Day) newList.Add(e);
+                        break;
+                }
+            });
+
+            newList = newList.OrderBy(e => e.CreatedDate).ToList();
+
+            int now = 180;
+
+            newList.ForEach(e =>
+            {
+                Panel p = new Panel();
+                p.Width = pl_right.Width - 20;
+                p.Height = 25;
+                p.Location = new Point(0, now);
+                now += p.Height;
+
+                Label name = new Label();
+                name.Text = e.Name;
+                name.ForeColor = Color.FromArgb(109, 116, 129);
+                name.Font = new Font("Arial", 10F, FontStyle.Regular, GraphicsUnit.Point, 204);
+                name.Location = new Point(10, 10);
+                name.Size = new Size(p.Width, p.Height);
+                p.Controls.Add(name);
+
+                Panel b = new Panel();
+                b.Width = p.Width;
+                b.Height = 1;
+                b.Location = new Point(0, p.Height - 1);
+                b.BackColor = Color.FromArgb(228, 232, 241);
+                b.BringToFront();
+                p.Controls.Add(b);
+
+                pl_right.Controls.Add(p);
+            });
+            
         }
     }
 }

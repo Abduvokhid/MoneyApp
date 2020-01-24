@@ -1,4 +1,5 @@
 ﻿using MoneyApp.Models;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,46 +13,31 @@ namespace MoneyApp.Repositories
 {
     class RecurringEventRepository
     {
-        private static RecurringEventRepository instance;
-        private RecurringEventRepository() { }
-
-        public static RecurringEventRepository Instance()
+        private Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly RecurringEventRepository instance = new RecurringEventRepository();
+        public static RecurringEventRepository Instance { get { return instance; } }
+        
+        public List<RecurringEvent> GetRecurringEvents(int userID)
         {
-            if (instance == null)
-            {
-                instance = new RecurringEventRepository();
-            }
-            return instance;
-        }
+            string connectionString = ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString;
+            string query = "SELECT RecurringEvents.*, Contacts.Name AS ContactName FROM RecurringEvents LEFT JOIN Contacts ON Contacts.ID = RecurringEvents.ContactID WHERE RecurringEvents.UserID = @UserID";
 
+            List<RecurringEvent> recurringEventsList = new List<RecurringEvent>();
 
-        // read all RecurringEvent
-        public List<RecurringEvent> GetRecEvents(int userID)
-        {
-
-            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
-
-            // object recEventList
-            List<RecurringEvent> recEventList = new List<RecurringEvent>();
-
-            string selectRecEventQuery = "SELECT RecurringEvents.*, Contacts.Name AS ContactName FROM RecurringEvents LEFT JOIN Contacts ON Contacts.ID = RecurringEvents.ContactID WHERE RecurringEvents.UserID = @UserID";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
 
             try
             {
-                SqlCommand sqlCommand = new SqlCommand(selectRecEventQuery, sqlConnection);
+                sqlConnection.Open();
 
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
                 sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = userID;
 
-
-                sqlConnection.Open();
-                // Ask to retrieve all the  row
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
-
-
 
                 while (sqlDataReader.Read())
                 {
-                    RecurringEvent temp = new RecurringEvent
+                    RecurringEvent temporaryEvent = new RecurringEvent
                     {
                         ID = (int)sqlDataReader["ID"],
                         UserID = (int)sqlDataReader["UserID"],
@@ -63,172 +49,118 @@ namespace MoneyApp.Repositories
                         Status = sqlDataReader["Status"].ToString(),
                     };
 
+                    temporaryEvent.TypeName = temporaryEvent.Type ? "Appointment" : "Task";
 
-                    if (temp.Type)
-                    {// appointment=1-TRUE
-                        temp.TypeName = "Appointment";
-                    }
-                    else
-                    {// task=0-FALSE
-                        temp.TypeName = "Task";
-                    }
+                    temporaryEvent.ContactID = (sqlDataReader["ContactID"] == DBNull.Value) ? 0 : temporaryEvent.ContactID = (int)sqlDataReader["ContactID"];
 
+                    temporaryEvent.ContactName = (sqlDataReader["ContactName"] == DBNull.Value) ? "" : temporaryEvent.ContactName = sqlDataReader["ContactName"].ToString();
 
+                    temporaryEvent.EndDate = (sqlDataReader["EndDate"] == DBNull.Value) ? DateTime.MinValue : temporaryEvent.EndDate = (DateTime)sqlDataReader["EndDate"];
 
-                    if (sqlDataReader["ContactID"] == DBNull.Value)
-                    {
-                        temp.ContactID = 0;
-                    }
-                    else
-                    {
-                        temp.ContactID = (int)sqlDataReader["ContactID"];
-                    }
-
-                    if (sqlDataReader["ContactName"] == DBNull.Value)
-                    {
-                        temp.ContactName = "";
-                    }
-                    else
-                    {
-                        temp.ContactName = sqlDataReader["ContactName"].ToString();
-                    }
-
-                    if (sqlDataReader["EndDate"] == DBNull.Value)
-                    {
-                        temp.EndDate = DateTime.MinValue;
-                    }
-                    else
-                    {
-                        temp.EndDate = (DateTime)sqlDataReader["EndDate"];
-                    }
-
-
-                    recEventList.Add(temp);
-
-
+                    recurringEventsList.Add(temporaryEvent);
                 }
-                sqlConnection.Close();
-
-
             }
             catch (Exception ex)
             {
-                sqlConnection.Close();
+                Logger.Error(ex.Message);
+            }
+            finally
+            {
+                sqlConnection.Dispose();
             }
 
-
-            return recEventList;
+            return recurringEventsList;
         }
-
-
-        //Add RecurringEvent
-        public bool AddrecEvents(RecurringEvent objectrecEvent)
+        
+        public bool AddRecurringEvent(RecurringEvent temporaryEvent)
         {
+            string connectionString = ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString;
+            string query = "INSERT INTO RecurringEvents ([UserID],[Name],[Type],[AddedDate],[Location],[Note],[Status],[EndDate],[ContactID]) VALUES(@UserID,@Name,@Type,@CreatedDate,@Location,@Note,@Status,@EndDate,@ContactID);";
 
-            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
-            //Add Events query
-            string sqlAddrecEventQuery = "INSERT INTO RecurringEvents ([UserID],[Name],[Type],[AddedDate],[Location],[Note],[Status],[EndDate],[ContactID]) VALUES(@UserID,@Name,@Type,@CreatedDate,@Location,@Note,@Status,@EndDate,@ContactID);";
-
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
 
             try
             {
-                SqlCommand sqlCommand = new SqlCommand(sqlAddrecEventQuery, sqlConnection);
-                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = objectrecEvent.UserID;
-                sqlCommand.Parameters.Add("@Name", SqlDbType.NVarChar).Value = objectrecEvent.Name;
-                sqlCommand.Parameters.Add("@Type", SqlDbType.Bit).Value = objectrecEvent.Type;
-                sqlCommand.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = objectrecEvent.CreatedDate;
-                sqlCommand.Parameters.Add("@Location", SqlDbType.NVarChar).Value = objectrecEvent.Location;
-                sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = objectrecEvent.Note;
-                sqlCommand.Parameters.Add("@Status", SqlDbType.NVarChar).Value = objectrecEvent.Status;
-
-                SqlParameter contactparameter = new SqlParameter("@ContactID", SqlDbType.Int);
-
-                if (objectrecEvent.ContactID == 0)
-                {
-                    contactparameter.Value = DBNull.Value;
-                }
-                else
-                {
-                    contactparameter.Value = objectrecEvent.ContactID;
-                }
-                sqlCommand.Parameters.Add(contactparameter);
-
-
-                SqlParameter eventEndDate = new SqlParameter("@EndDate", SqlDbType.DateTime);
-
-                if (objectrecEvent.EndDate == DateTime.MinValue)
-                {
-                    eventEndDate.Value = DBNull.Value;
-                }
-                else
-                {
-                    eventEndDate.Value = objectrecEvent.EndDate;
-                }
-                sqlCommand.Parameters.Add(eventEndDate);
                 sqlConnection.Open();
 
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = temporaryEvent.UserID;
+                sqlCommand.Parameters.Add("@Name", SqlDbType.NVarChar).Value = temporaryEvent.Name;
+                sqlCommand.Parameters.Add("@Type", SqlDbType.Bit).Value = temporaryEvent.Type;
+                sqlCommand.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = temporaryEvent.CreatedDate;
+                sqlCommand.Parameters.Add("@Location", SqlDbType.NVarChar).Value = temporaryEvent.Location;
+                sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = temporaryEvent.Note;
+                sqlCommand.Parameters.Add("@Status", SqlDbType.NVarChar).Value = temporaryEvent.Status;
 
-                var i = sqlCommand.ExecuteNonQuery();
-                if (i > 0)
-                {
-                    sqlConnection.Close();
-                    return true;
+                SqlParameter eventContact = new SqlParameter("@ContactID", SqlDbType.Int);
+                if (temporaryEvent.ContactID == 0) eventContact.Value = DBNull.Value;
+                else eventContact.Value = temporaryEvent.ContactID;
+                sqlCommand.Parameters.Add(eventContact);
+                
+                SqlParameter eventEndDate = new SqlParameter("@EndDate", SqlDbType.DateTime);
+                if (temporaryEvent.EndDate == DateTime.MinValue) eventEndDate.Value = DBNull.Value;
+                else eventEndDate.Value = temporaryEvent.EndDate;
+                sqlCommand.Parameters.Add(eventEndDate);
+                
+                var result = sqlCommand.ExecuteNonQuery();
 
-                }
-                else
-                {
-                    sqlConnection.Close();
-                    return false;
-                }
-
+                return (result > 0) ? true : false;
             }
             catch (Exception ex)
             {
-                sqlConnection.Close();
+                Logger.Error(ex.Message);
                 return false;
+            }
+            finally
+            {
+                sqlConnection.Dispose();
             }
 
         }
-
-        //Delete RecurringEvent
-        public bool DeleterecEvent(RecurringEvent objectrecEvent)
+        
+        public bool DeleteRecurringEvent(RecurringEvent objectrecEvent)
         {
+            string connectionString = ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString;
+            string query = "Delete FROM RecurringEvents WHERE [ID] = @ID and [UserID]=@UserID";
 
-            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
-            string DeleteRecEventQuery = "Delete FROM RecurringEvents WHERE [ID] = @ID and [UserID]=@UserID";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
             try
             {
-                SqlCommand sqlCommand = new SqlCommand(DeleteRecEventQuery, sqlConnection);
+                sqlConnection.Open();
+
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
                 sqlCommand.Parameters.Add("@ID", SqlDbType.Int).Value = objectrecEvent.ID;
                 sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = objectrecEvent.UserID;
 
-                sqlConnection.Open();
-
                 var result = sqlCommand.ExecuteNonQuery();
-                sqlConnection.Close();
-                if (result > 0)
-                    return true;
-                else
-                    return false;
+
+                return (result > 0) ? true : false;
             }
             catch (Exception ex)
             {
-                sqlConnection.Close();
+                Logger.Error(ex.Message);
                 return false;
+            }
+            finally
+            {
+                sqlConnection.Dispose();
             }
 
         }
-
-        //Edit RecurringEvent
-        public bool EditrecEvent(RecurringEvent objectEditrecEvent)
+        
+        public bool EditRecurringEvent(RecurringEvent objectEditrecEvent)
         {
+            string connectionString = ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString;
+            string query = "UPDATE RecurringEvents SET [Name] = @Name,[Type] = @Type,[AddedDate] = @CreatedDate,[Location] = @Location,[Note] = @Note,[Status] = @Status,[ContactID] = @ContactID,[EndDate] = @EndDate WHERE [UserID] = @UserID AND [ID] = @ID";
 
-            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
-            string EditRecEventnQuery = "UPDATE RecurringEvents SET [Name] = @Name,[Type] = @Type,[AddedDate] = @CreatedDate,[Location] = @Location,[Note] = @Note,[Status] = @Status,[ContactID] = @ContactID,[EndDate] = @EndDate WHERE [UserID] = @UserID AND [ID] = @ID";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
 
             try
             {
-                SqlCommand sqlCommand = new SqlCommand(EditRecEventnQuery, sqlConnection);
+                sqlConnection.Open();
+
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
                 sqlCommand.Parameters.Add("@ID", SqlDbType.Int).Value = objectEditrecEvent.ID;
                 sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = objectEditrecEvent.UserID;
                 sqlCommand.Parameters.Add("@Name", SqlDbType.NVarChar).Value = objectEditrecEvent.Name;
@@ -238,47 +170,29 @@ namespace MoneyApp.Repositories
                 sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = objectEditrecEvent.Note;
                 sqlCommand.Parameters.Add("@Status", SqlDbType.NVarChar).Value = objectEditrecEvent.Status;
 
-
-                SqlParameter contactparameter = new SqlParameter("@ContactID", SqlDbType.Int);
-
-
-                //
-                if (objectEditrecEvent.ContactID == 0)
-                {
-                    contactparameter.Value = DBNull.Value;
-                }
-                else
-                {
-                    contactparameter.Value = objectEditrecEvent.ContactID;
-                }
-                sqlCommand.Parameters.Add(contactparameter);
+                SqlParameter eventContact = new SqlParameter("@ContactID", SqlDbType.Int);
+                if (objectEditrecEvent.ContactID == 0) eventContact.Value = DBNull.Value;
+                else eventContact.Value = objectEditrecEvent.ContactID;
+                sqlCommand.Parameters.Add(eventContact);
 
 
                 SqlParameter eventEndDate = new SqlParameter("@EndDate", SqlDbType.DateTime);
-
-                if (objectEditrecEvent.EndDate == DateTime.MinValue)
-                {
-                    eventEndDate.Value = DBNull.Value;
-                }
-                else
-                {
-                    eventEndDate.Value = objectEditrecEvent.EndDate;
-                }
+                if (objectEditrecEvent.EndDate == DateTime.MinValue) eventEndDate.Value = DBNull.Value;
+                else eventEndDate.Value = objectEditrecEvent.EndDate;
                 sqlCommand.Parameters.Add(eventEndDate);
-                sqlConnection.Open();
 
                 var result = sqlCommand.ExecuteNonQuery();
-                sqlConnection.Close();
-                if (result > 0)
-                    return true;
 
-                else
-                    return false;
+                return (result > 0) ? true : false;
             }
             catch (Exception ex)
             {
-                sqlConnection.Close();
+                Logger.Error(ex.Message);
                 return false;
+            }
+            finally
+            {
+                sqlConnection.Dispose();
             }
 
         }

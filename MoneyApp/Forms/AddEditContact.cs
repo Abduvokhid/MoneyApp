@@ -41,7 +41,7 @@ namespace MoneyApp.Forms
             }
 
             contact.Name = tbx_name.Text;
-            ContactRepository contactRepository = ContactRepository.Instance();
+            ContactRepository contactRepository = ContactRepository.Instance;
 
             btn_action.Enabled = false;
             int i = contact.ID > 0 ? await Task.Run(()=> contactRepository.EditContact(contact)) : await Task.Run(() => contactRepository.AddContact(contact));

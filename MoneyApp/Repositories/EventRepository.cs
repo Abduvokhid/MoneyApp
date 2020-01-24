@@ -14,44 +14,28 @@ namespace MoneyApp.Repositories
     class EventRepository
     {
         private Logger Logger = LogManager.GetCurrentClassLogger();
-        private static EventRepository instance;
-        private EventRepository() { }
+        private static readonly EventRepository instance = new EventRepository();
+        public static EventRepository Instance { get { return instance; } }
 
-        public static EventRepository Instance()
-        {
-            if (instance == null)
-            {
-                instance = new EventRepository();
-            }
-            return instance;
-        }
-        // read all events
         public List<Event> GetUserEvents(int userID)
         {
+            string query = "SELECT Events.*, Contacts.Name AS ContactName FROM Events LEFT JOIN Contacts ON Contacts.ID = Events.ContactID WHERE Events.UserID = @UserID";
+            string connectionString = ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString;
 
-            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
-
-            // object eventList
-            List<Event> eventList = new List<Event>();
-
-            string selectEventQuery = "SELECT Events.*, Contacts.Name AS ContactName FROM Events LEFT JOIN Contacts ON Contacts.ID = Events.ContactID WHERE Events.UserID = @UserID";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            
+            List<Event> eventsList = new List<Event>();
 
             try
             {
-                SqlCommand sqlCommand = new SqlCommand(selectEventQuery, sqlConnection);
-
-                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = userID;
-
-
                 sqlConnection.Open();
-                // Ask to retrieve all the  row
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = userID;
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
-
-
 
                 while (sqlDataReader.Read())
                 {
-                    Event temp = new Event
+                    Event temporaryEvent = new Event
                     {
                         ID = (int)sqlDataReader["ID"],
                         UserID = (int)sqlDataReader["UserID"],
@@ -62,178 +46,158 @@ namespace MoneyApp.Repositories
                         Note = sqlDataReader["Note"].ToString()
                     };
 
-                    //check if needs add contact
-
                     if (sqlDataReader["ContactID"] == DBNull.Value)
                     {
-                        temp.ContactID = 0;
+                        temporaryEvent.ContactID = 0;
                     }
                     else
                     {
-                        temp.ContactID = (int)sqlDataReader["ContactID"];
+                        temporaryEvent.ContactID = (int)sqlDataReader["ContactID"];
                     }
 
                     if (sqlDataReader["ContactName"] == DBNull.Value)
                     {
-                        temp.ContactName = "";
+                        temporaryEvent.ContactName = "";
                     }
                     else
                     {
-                        temp.ContactName = sqlDataReader["ContactName"].ToString();
+                        temporaryEvent.ContactName = sqlDataReader["ContactName"].ToString();
                     }
 
 
-                    if (temp.Type)
-                    {// appointment=1-TRUE
-                        temp.TypeName = "Appointment";
+                    if (temporaryEvent.Type)
+                    {
+                        temporaryEvent.TypeName = "Appointment";
                     }
                     else
-                    {// task=0-FALSE
-                        temp.TypeName = "Task";
+                    {
+                        temporaryEvent.TypeName = "Task";
                     }
-                    eventList.Add(temp);
 
-
+                    eventsList.Add(temporaryEvent);
                 }
-                sqlConnection.Close();
-
-
             }
             catch (Exception ex)
             {
                 Logger.Error(ex.Message);
-                sqlConnection.Close();
             }
-
-
-            return eventList;
+            finally
+            {
+                sqlConnection.Dispose();
+            }
+            return eventsList;
         }
-
-
-        //Add Event
-        public bool AddEvent(Event objectEvent)
+        
+        public bool AddEvent(Event temporaryEvent)
         {
-            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
-            //Add Event query
-            string sqlAddEventQuery = "INSERT INTO Events ([UserID],[Name],[Type],[Location],[AddedDate],[Note],[ContactID]) VALUES(@UserID,@Name,@Type,@Location,@CreatedDate,@Note,@ContactID);";
+            string query = "INSERT INTO Events ([UserID],[Name],[Type],[Location],[AddedDate],[Note],[ContactID]) VALUES(@UserID,@Name,@Type,@Location,@CreatedDate,@Note,@ContactID);";
+            string connectionString = ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString;
 
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
 
             try
             {
-                SqlCommand sqlCommand = new SqlCommand(sqlAddEventQuery, sqlConnection);
-                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = objectEvent.UserID;
-                sqlCommand.Parameters.Add("@Name", SqlDbType.NVarChar).Value = objectEvent.Name;
-                sqlCommand.Parameters.Add("@Type", SqlDbType.Bit).Value = objectEvent.Type;
-                sqlCommand.Parameters.Add("@Location", SqlDbType.NVarChar).Value = objectEvent.Location;
-                sqlCommand.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = objectEvent.CreatedDate;
-                sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = objectEvent.Note;
-
-
-                SqlParameter contactparameter = new SqlParameter("@ContactID", SqlDbType.Int);
-
-
-                //
-                if (objectEvent.ContactID == 0)
-                {
-                    contactparameter.Value = DBNull.Value;
-                }
-                else
-                {
-                    contactparameter.Value = objectEvent.ContactID;
-                }
-                sqlCommand.Parameters.Add(contactparameter);
-
-
                 sqlConnection.Open();
 
-
-                var i = sqlCommand.ExecuteNonQuery();
-                if (i > 0)
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = temporaryEvent.UserID;
+                sqlCommand.Parameters.Add("@Name", SqlDbType.NVarChar).Value = temporaryEvent.Name;
+                sqlCommand.Parameters.Add("@Type", SqlDbType.Bit).Value = temporaryEvent.Type;
+                sqlCommand.Parameters.Add("@Location", SqlDbType.NVarChar).Value = temporaryEvent.Location;
+                sqlCommand.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = temporaryEvent.CreatedDate;
+                sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = temporaryEvent.Note;
+                
+                SqlParameter eventContact = new SqlParameter("@ContactID", SqlDbType.Int);
+                
+                if (temporaryEvent.ContactID == 0)
                 {
-                    sqlConnection.Close();
-                    return true;
-
+                    eventContact.Value = DBNull.Value;
                 }
                 else
                 {
-                    sqlConnection.Close();
-                    return false;
+                    eventContact.Value = temporaryEvent.ContactID;
                 }
+                sqlCommand.Parameters.Add(eventContact);
 
+                var result = sqlCommand.ExecuteNonQuery();
+
+                return (result > 0) ? true : false;
             }
             catch (Exception ex)
             {
-                sqlConnection.Close();
+                Logger.Error(ex.Message);
                 return false;
+            }
+            finally
+            {
+                sqlConnection.Dispose();
             }
 
         }
-
-        //Delete Event
-        public bool DeleteEvent(Event objectEvent)
+        
+        public bool DeleteEvent(Event temporaryEvent)
         {
-            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
-            string DeleteEventQuery = "Delete FROM Events WHERE [ID] = @ID and [UserID]=@UserID";
+            string connectionString = ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString;
+            string query = "Delete FROM Events WHERE [ID] = @ID and [UserID]=@UserID";
+
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
             try
             {
-                SqlCommand sqlCommand = new SqlCommand(DeleteEventQuery, sqlConnection);
-                sqlCommand.Parameters.Add("@ID", SqlDbType.Int).Value = objectEvent.ID;
-                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = objectEvent.UserID;
+                sqlConnection.Open();
+
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlCommand.Parameters.Add("@ID", SqlDbType.Int).Value = temporaryEvent.ID;
+                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = temporaryEvent.UserID;
+                
+                var result = sqlCommand.ExecuteNonQuery();
+
+                return (result > 0) ? true : false;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message);
+                return false;
+            }
+            finally
+            {
+                sqlConnection.Dispose();
+            }
+
+        }
+        
+        public bool EditEvent(Event temporaryEvent)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString;
+            string query = "UPDATE Events SET [EventName] = @EventName,[EventType] = @EventType,[EventDateTime] = @EventDateTime,[EventLocation] = @EventLocation,[EventNote] = @EventNote, [FK_ContactID] = @FK_ContactID WHERE [FK_UserID] = @FK_UserID AND [EventID] = @EventID";
+
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+
+            try
+            {
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlCommand.Parameters.Add("@ID", SqlDbType.Int).Value = temporaryEvent.ID;
+                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = temporaryEvent.UserID;
+                sqlCommand.Parameters.Add("@Name", SqlDbType.NVarChar).Value = temporaryEvent.Name;
+                sqlCommand.Parameters.Add("@Type", SqlDbType.Bit).Value = temporaryEvent.Type;
+                sqlCommand.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = temporaryEvent.CreatedDate;
+                sqlCommand.Parameters.Add("@Location", SqlDbType.NVarChar).Value = temporaryEvent.Location;
+                sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = temporaryEvent.Note;
+                
+                SqlParameter eventContact = new SqlParameter("@ContactID", SqlDbType.Int);
+                if (temporaryEvent.ContactID == 0)
+                {
+                    eventContact.Value = DBNull.Value;
+                }
+                else
+                {
+                    eventContact.Value = temporaryEvent.ContactID;
+                }
+                sqlCommand.Parameters.Add(eventContact);
 
                 sqlConnection.Open();
 
                 var result = sqlCommand.ExecuteNonQuery();
-                sqlConnection.Close();
-                if (result > 0)
-                    return true;
-                else
-                    return false;
-            }
-            catch (Exception ex)
-            {
-                sqlConnection.Close();
-                return false;
-            }
-
-        }
-
-        //Edit Event
-
-        public bool EditEvent(Event objectEditEvent)
-        {
-            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
-            string EditEventQuery = "UPDATE Events SET [EventName] = @EventName,[EventType] = @EventType,[EventDateTime] = @EventDateTime,[EventLocation] = @EventLocation,[EventNote] = @EventNote, [FK_ContactID] = @FK_ContactID WHERE [FK_UserID] = @FK_UserID AND [EventID] = @EventID";
-
-            try
-            {
-                SqlCommand sqlCommand = new SqlCommand(EditEventQuery, sqlConnection);
-                sqlCommand.Parameters.Add("@ID", SqlDbType.Int).Value = objectEditEvent.ID;
-                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = objectEditEvent.UserID;
-                sqlCommand.Parameters.Add("@Name", SqlDbType.NVarChar).Value = objectEditEvent.Name;
-                sqlCommand.Parameters.Add("@Type", SqlDbType.Bit).Value = objectEditEvent.Type;
-                sqlCommand.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = objectEditEvent.CreatedDate;
-                sqlCommand.Parameters.Add("@Location", SqlDbType.NVarChar).Value = objectEditEvent.Location;
-                sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = objectEditEvent.Note;
-
-
-                SqlParameter contactparameter = new SqlParameter("@ContactID", SqlDbType.Int);
-
-
-                //
-                if (objectEditEvent.ContactID == 0)
-                {
-                    contactparameter.Value = DBNull.Value;
-                }
-                else
-                {
-                    contactparameter.Value = objectEditEvent.ContactID;
-                }
-                sqlCommand.Parameters.Add(contactparameter);
-
-                sqlConnection.Open();
-
-                var result = sqlCommand.ExecuteNonQuery();
-                sqlConnection.Close();
                 if (result > 0)
                     return true;
 
@@ -242,12 +206,13 @@ namespace MoneyApp.Repositories
             }
             catch (Exception ex)
             {
-                sqlConnection.Close();
+                Logger.Error(ex.Message);
                 return false;
             }
-
-
-
+            finally
+            {
+                sqlConnection.Dispose();
+            }
         }
     }
 }

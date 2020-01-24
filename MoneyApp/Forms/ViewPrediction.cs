@@ -22,8 +22,8 @@ namespace MoneyApp.Forms
         public ViewPrediction()
         {
             InitializeComponent();
-            transactionRepository = TransactionRepository.Instance();
-            recurringTransactionRepository = RecurringTransactionRepository.Instance();
+            transactionRepository = TransactionRepository.Instance;
+            recurringTransactionRepository = RecurringTransactionRepository.Instance;
             dtp_date.MinDate = DateTime.Now.AddDays(1);
         }
 
@@ -178,12 +178,17 @@ namespace MoneyApp.Forms
             
             if (average > totalRecurring)
             {
-                lbl_result.Text = "Result: " + average;
+                lbl_result.Text = "£" + average.ToString("0.00");
             } else
             {
-                lbl_result.Text = "Result: " + totalRecurring;
+                lbl_result.Text = "£" + totalRecurring.ToString("0.00");
             }
 
+        }
+
+        private void FormClosedEvent(object sender, FormClosedEventArgs e)
+        {
+            Dispose();
         }
     }
 }

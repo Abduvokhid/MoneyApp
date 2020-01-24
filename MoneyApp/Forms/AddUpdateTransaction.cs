@@ -31,6 +31,9 @@ namespace MoneyApp.Forms
                 UserID = Instances.User.ID
             };
             lblHeadingTransaction.Text = "Add Transaction";
+            ResizePanel();
+            comboBoxTStatus.SelectedIndex = 0;
+            comboBoxType.SelectedIndex = 0;
         }
 
         //update 
@@ -48,6 +51,7 @@ namespace MoneyApp.Forms
 
             groupBoxRecTrans.Visible = false;
             checkBoxTRecurring.Visible = false;
+            ResizePanel();
         }
 
         //update 
@@ -75,6 +79,7 @@ namespace MoneyApp.Forms
 
             groupBoxRecTrans.Visible = true;
             checkBoxTRecurring.Visible = false;
+            ResizePanel();
         }
 
         //
@@ -98,7 +103,7 @@ namespace MoneyApp.Forms
                 MessageBox.Show("Transaction is Empty! Please add a transaction name.");
                 return;
             }
-            TransactionRepository transactionsRepository = TransactionRepository.Instance();
+            TransactionRepository transactionsRepository = TransactionRepository.Instance;
             auTransactionObj.Name = txtTransactionName.Text;
             auTransactionObj.TypeName = comboBoxType.Text;
             auTransactionObj.Amount = numericUpDownAmount.Value;
@@ -127,8 +132,8 @@ namespace MoneyApp.Forms
                 }
                 else
                 {
-                    ContactRepository contactsRepository = ContactRepository.Instance();
-                    auTransactionObj.ContactID = await Task.Run(() => contactsRepository.AddContact(new Contact { Name = comboBoxContact.Text, UserID = Instances.User.ID }));
+                    ContactRepository contactsRepository = ContactRepository.Instance;
+                    auTransactionObj.ContactID = contactsRepository.AddContact(new Contact { Name = comboBoxContact.Text, UserID = Instances.User.ID });
                 }
             }
             else
@@ -159,7 +164,7 @@ namespace MoneyApp.Forms
                 }
                 rt.Status = comboBoxTStatus.Text;
 
-                RecurringTransactionRepository recurringTransactionRepository = RecurringTransactionRepository.Instance();
+                RecurringTransactionRepository recurringTransactionRepository = RecurringTransactionRepository.Instance;
                 bool i = await Task.Run(() => recurringTransactionRepository.AddTransaction(rt));
                 if (i == false)
                 {
@@ -206,7 +211,7 @@ namespace MoneyApp.Forms
                 MessageBox.Show("Transaction is Empty! Please add a transaction name.");
                 return;
             }
-            RecurringTransactionRepository recurringTransactionsRepository = RecurringTransactionRepository.Instance();
+            RecurringTransactionRepository recurringTransactionsRepository = RecurringTransactionRepository.Instance;
             auRecTransactionObj.Name = txtTransactionName.Text;
             auRecTransactionObj.TypeName = comboBoxType.Text;
             auRecTransactionObj.Amount = numericUpDownAmount.Value;
@@ -235,7 +240,7 @@ namespace MoneyApp.Forms
                 }
                 else
                 {
-                    ContactRepository contactsRepository = ContactRepository.Instance();
+                    ContactRepository contactsRepository = ContactRepository.Instance;
                     auRecTransactionObj.ContactID = await Task.Run(() => contactsRepository.AddContact(new Contact { Name = comboBoxContact.Text, UserID = Instances.User.ID }));
                 }
             }
@@ -273,7 +278,7 @@ namespace MoneyApp.Forms
         private async void AddUpdateTransaction_Load(object sender, EventArgs e)
         {
 
-            ContactRepository ContactRepo = ContactRepository.Instance();
+            ContactRepository ContactRepo = ContactRepository.Instance;
             // Gets the contact list 
             List<Contact> ContactList = await Task.Run(() => ContactRepo.GetUserContacts(Instances.User.ID));
             comboBoxContact.DataSource = ContactList;
@@ -342,6 +347,19 @@ namespace MoneyApp.Forms
         {
             if (chbx_infinite.Checked == true) dateTimePickerEndDate.Enabled = false;
             else dateTimePickerEndDate.Enabled = true;
+        }
+
+        private void ResizePanel()
+        {
+            int x = ((Width - pl_main.Width) / 2);
+            int y = ((Height - pl_main.Height) / 2);
+
+            pl_main.Location = new Point(x, y);
+        }
+
+        private void AddEditTransactionSizeChanged(object sender, EventArgs e)
+        {
+            ResizePanel();
         }
     }
 }

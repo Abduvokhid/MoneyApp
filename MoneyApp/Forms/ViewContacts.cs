@@ -18,16 +18,13 @@ namespace MoneyApp.Forms
         public ViewContacts()
         {
             InitializeComponent();
-            contactRepository = ContactRepository.Instance();
+            contactRepository = ContactRepository.Instance;
             Instances.MoneyApp.Hide();
-            //Instances.MoneyApp.Location = new Point(10000, 10000);
-            //Instances.MoneyApp.ShowInTaskbar = false;
-
+            lv_contacts.Columns[0].Width = lv_contacts.Width - 20;
         }
 
         private async void ViewContactsActivated(object sender, EventArgs e)
         {
-            //List<Contact> contacts = contactRepository.GetUserContacts(Instances.User.ID);
             List<Contact> contacts = await Task.Run(() => contactRepository.GetUserContacts(Instances.User.ID));
             lv_contacts.Items.Clear();
             foreach (Contact contact in contacts)
@@ -42,11 +39,8 @@ namespace MoneyApp.Forms
 
         private void ViewContactsFormClosed(object sender, FormClosedEventArgs e)
         {
-            Instances.MoneyApp.UnBlur();
             Instances.MoneyApp.Activate();
             Instances.MoneyApp.Show();
-            //Instances.MoneyApp.Location = this.Location;
-            //Instances.MoneyApp.ShowInTaskbar = true;
             Dispose();
         }
 
@@ -81,6 +75,11 @@ namespace MoneyApp.Forms
                     MessageBox.Show(i ? "Deleted" : "Error");
                 }
             }
+        }
+
+        private void ContactsSizeChanged(object sender, EventArgs e)
+        {
+            lv_contacts.Columns[0].Width = lv_contacts.Width - 20;
         }
     }
 }

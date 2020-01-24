@@ -25,7 +25,7 @@ namespace MoneyApp.Forms
         public ViewReport()
         {
             InitializeComponent();
-            transactionRepository = TransactionRepository.Instance();
+            transactionRepository = TransactionRepository.Instance;
             cbx_show.SelectedIndex = 0;
         }
 
@@ -199,14 +199,6 @@ namespace MoneyApp.Forms
 
 
             }
-
-            cartesianChart1.Series = new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Values = new ChartValues<decimal>(transactions.Select(t => t.Amount))
-                }
-            };
         }
 
         private void PanelSizeChanged(object sender, EventArgs e)
@@ -364,10 +356,10 @@ namespace MoneyApp.Forms
             lblItemType.Font = new Font("Arial", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
             if (t.Type == true)
             {
-                lblItemType.ForeColor = Color.FromArgb(211, 47, 47);
+                lblItemType.ForeColor = Color.FromArgb(46, 125, 50);
             } else
             {
-                lblItemType.ForeColor = Color.FromArgb(46, 125, 50);
+                lblItemType.ForeColor = Color.FromArgb(211, 47, 47);
             }
             lblItemType.Location = new Point(widthLeft + widthMiddle, height);
             lblItemType.TextAlign = ContentAlignment.TopCenter;

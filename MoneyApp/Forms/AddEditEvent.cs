@@ -27,7 +27,10 @@ namespace MoneyApp.Forms
             {
                 UserID = Instances.User.ID
             };
+            ResizePanel();
             lblHeadingEvent.Text = "Add Event";
+            comboBoxEStatus.SelectedIndex = 0;
+            comboBoxEvType.SelectedIndex = 0;
         }
 
 
@@ -47,6 +50,7 @@ namespace MoneyApp.Forms
 
             groupBoxRecEv.Visible = false;
             checkBoxERecurring.Visible = false;
+            ResizePanel();
         }
 
         // constructer recurring Event edit
@@ -76,6 +80,7 @@ namespace MoneyApp.Forms
 
             groupBoxRecEv.Visible = true;
             checkBoxERecurring.Visible = false;
+            ResizePanel();
 
         }
         //
@@ -103,7 +108,7 @@ namespace MoneyApp.Forms
                 MessageBox.Show("Event is Empty! Please add a Event name.");
                 return;
             }
-            EventRepository eventRepository = EventRepository.Instance();
+            EventRepository eventRepository = EventRepository.Instance;
             auEventObj.Name = txtEventName.Text;
             auEventObj.TypeName = comboBoxEvType.Text;
             auEventObj.Location = eventLocation.Text;
@@ -137,7 +142,7 @@ namespace MoneyApp.Forms
                 }
                 else
                 {
-                    ContactRepository contactsRepository = ContactRepository.Instance();
+                    ContactRepository contactsRepository = ContactRepository.Instance;
                     auEventObj.ContactID = await Task.Run(() => contactsRepository.AddContact(new Contact
                     { Name = comboBoxContact.Text, UserID = Instances.User.ID }));
                 }
@@ -174,8 +179,8 @@ namespace MoneyApp.Forms
 
                 recEvents.Status = comboBoxEStatus.Text;
 
-                RecurringEventRepository recEventsRepo = RecurringEventRepository.Instance();
-                bool i = await Task.Run(() => recEventsRepo.AddrecEvents(recEvents));
+                RecurringEventRepository recEventsRepo = RecurringEventRepository.Instance;
+                bool i = await Task.Run(() => recEventsRepo.AddRecurringEvent(recEvents));
 
                 if (i == false)
                 {
@@ -226,7 +231,7 @@ namespace MoneyApp.Forms
                 MessageBox.Show("Event is Empty! Please add a Event name.");
                 return;
             }
-            RecurringEventRepository eventRepository = RecurringEventRepository.Instance();
+            RecurringEventRepository eventRepository = RecurringEventRepository.Instance;
             auRecEventObj.Name = txtEventName.Text;
             auRecEventObj.TypeName = comboBoxEvType.Text;
             auRecEventObj.Location = eventLocation.Text;
@@ -258,7 +263,7 @@ namespace MoneyApp.Forms
                 }
                 else
                 {
-                    ContactRepository contactsRepository = ContactRepository.Instance();
+                    ContactRepository contactsRepository = ContactRepository.Instance;
                     auRecEventObj.ContactID = await Task.Run(() => contactsRepository.AddContact(new Contact { Name = comboBoxContact.Text, UserID = Instances.User.ID }));
                 }
             }
@@ -283,7 +288,7 @@ namespace MoneyApp.Forms
 
             //add /edit Event
 
-            result = await Task.Run(() => eventRepository.EditrecEvent(auRecEventObj));
+            result = await Task.Run(() => eventRepository.EditRecurringEvent(auRecEventObj));
 
 
             //messageBox for edit and add Event
@@ -305,7 +310,7 @@ namespace MoneyApp.Forms
         private async void AddUpdateEvent_Load(object sender, EventArgs e)
         {
 
-            ContactRepository ContactRepo = ContactRepository.Instance();
+            ContactRepository ContactRepo = ContactRepository.Instance;
             // Gets the contact list 
             List<Contact> ContactList = await Task.Run(() => ContactRepo.GetUserContacts(Instances.User.ID));
             comboBoxContact.DataSource = ContactList;
@@ -383,6 +388,19 @@ namespace MoneyApp.Forms
             else dateTimeEvEndDate.Enabled = true;
 
 
+        }
+
+        private void AddEditEventSizeChange(object sender, EventArgs e)
+        {
+            ResizePanel();
+        }
+
+        private void ResizePanel()
+        {
+            int x = ((Width - pl_main.Width) / 2);
+            int y = ((Height - pl_main.Height) / 2);
+
+            pl_main.Location = new Point(x, y);
         }
     }
 }

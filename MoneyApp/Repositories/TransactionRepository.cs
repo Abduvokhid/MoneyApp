@@ -1,4 +1,5 @@
 ﻿using MoneyApp.Models;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,33 +13,29 @@ namespace MoneyApp.Repositories
 {
     class TransactionRepository
     {
-        private static TransactionRepository instance;
-        private TransactionRepository() { }
+        private Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly TransactionRepository instance = new TransactionRepository();
+        public static TransactionRepository Instance { get { return instance; } }
 
-        public static TransactionRepository Instance()
-        {
-            if (instance == null)
-            {
-                instance = new TransactionRepository();
-            }
-            return instance;
-        }
         public List<Transaction> GetUserTransactions(int id)
         {
-            List<Transaction> transactions = new List<Transaction>();
+            List<Transaction> transactionsList = new List<Transaction>();
             string query = "SELECT Transactions.*, Contacts.Name AS ContactName FROM Transactions LEFT JOIN Contacts ON Contacts.ID = Transactions.ContactID WHERE Transactions.UserID = @id";
-            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
+            string connectionString = ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString;
+
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
 
             try
             {
+                sqlConnection.Open();
+
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
                 sqlCommand.Parameters.Add("@id", SqlDbType.Int).Value = id;
-                sqlConnection.Open();
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
 
                 while (sqlDataReader.Read())
                 {
-                    Transaction transaction = new Transaction {
+                    Transaction temporaryTransaction = new Transaction {
                         ID = (int)sqlDataReader["ID"],
                         UserID = (int)sqlDataReader["UserID"],
                         Name = sqlDataReader["Name"].ToString(),
@@ -48,109 +45,134 @@ namespace MoneyApp.Repositories
                         CreatedDate = (DateTime)sqlDataReader["AddedDate"],
                     };
 
-                    if (sqlDataReader["ContactID"] == DBNull.Value) transaction.ContactID = 0;
-                    else transaction.ContactID = (int)sqlDataReader["ContactID"];
-                    if (sqlDataReader["ContactName"] == DBNull.Value) transaction.ContactName = "";
-                    else transaction.ContactName = sqlDataReader["ContactName"].ToString();
+                    temporaryTransaction.ContactID = (sqlDataReader["ContactID"] == DBNull.Value) ? 0 : (int)sqlDataReader["ContactID"];
 
-                    // True - income, False - expense
-                    transaction.TypeName = transaction.Type ? "Income" : "Expense";
-                    transactions.Add(transaction);
+                    temporaryTransaction.ContactName = (sqlDataReader["ContactName"] == DBNull.Value) ? "" : sqlDataReader["ContactName"].ToString();
+
+                    temporaryTransaction.TypeName = temporaryTransaction.Type ? "Income" : "Expense";
+
+                    transactionsList.Add(temporaryTransaction);
                 }
 
-                sqlConnection.Close();
             }
             catch (Exception ex)
             {
-
+                Logger.Error(ex.Message);
             }
-            return transactions;
+            finally
+            {
+                sqlConnection.Dispose();
+            }
+
+            return transactionsList;
         }
 
         public bool DeleteTransaction(Transaction transaction)
         {
             string query = "DELETE FROM Transactions WHERE [UserID] = @UserID AND [ID] = @ID";
-            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
+            string connectionString = ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString;
+
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
 
             try
             {
+                sqlConnection.Open();
+
                 SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
                 sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = transaction.UserID;
                 sqlCommand.Parameters.Add("@ID", SqlDbType.Int).Value = transaction.ID;
-                sqlConnection.Open();
-                var i = sqlCommand.ExecuteNonQuery();
+
+                var result = sqlCommand.ExecuteNonQuery();
                 
-                sqlConnection.Close();
-                return (i > 0) ? true : false;
+                return (result > 0) ? true : false;
             }
             catch (Exception ex)
             {
+                Logger.Error(ex.Message);
                 return false;
+            }
+            finally
+            {
+                sqlConnection.Dispose();
             }
         }
 
-        public bool AddTransaction(Transaction transaction)
+        public bool AddTransaction(Transaction temporaryTransaction)
         {
             string query = "INSERT INTO Transactions ([UserID], [Name], [ContactID], [Type], [Amount], [Note], [AddedDate]) VALUES (@UserID, @Name, @ContactID, @Type, @Amount, @Note, @CreatedDate)";
-            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
+            string connectionString = ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString;
+
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
 
             try
             {
-                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
-                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = transaction.UserID;
-                sqlCommand.Parameters.Add("@Name", SqlDbType.NVarChar).Value = transaction.Name;
-                sqlCommand.Parameters.Add("@Type", SqlDbType.Bit).Value = transaction.Type;
-                sqlCommand.Parameters.Add("@Amount", SqlDbType.Money).Value = transaction.Amount;
-                sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = transaction.Note;
-                sqlCommand.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = transaction.CreatedDate;
-
-                SqlParameter ContactID = new SqlParameter("@ContactID", SqlDbType.Int);
-                if (transaction.ContactID == 0) ContactID.Value = DBNull.Value;
-                else ContactID.Value = transaction.ContactID;
-                sqlCommand.Parameters.Add(ContactID);
-
                 sqlConnection.Open();
-                var i = sqlCommand.ExecuteNonQuery();
-                sqlConnection.Close();
-                return (i > 0) ? true : false;
+
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = temporaryTransaction.UserID;
+                sqlCommand.Parameters.Add("@Name", SqlDbType.NVarChar).Value = temporaryTransaction.Name;
+                sqlCommand.Parameters.Add("@Type", SqlDbType.Bit).Value = temporaryTransaction.Type;
+                sqlCommand.Parameters.Add("@Amount", SqlDbType.Money).Value = temporaryTransaction.Amount;
+                sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = temporaryTransaction.Note;
+                sqlCommand.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = temporaryTransaction.CreatedDate;
+
+                SqlParameter transactionContact = new SqlParameter("@ContactID", SqlDbType.Int);
+                if (temporaryTransaction.ContactID == 0) transactionContact.Value = DBNull.Value;
+                else transactionContact.Value = temporaryTransaction.ContactID;
+                sqlCommand.Parameters.Add(transactionContact);
+
+                var result = sqlCommand.ExecuteNonQuery();
+
+                return (result > 0) ? true : false;
             }
             catch (Exception ex)
             {
+                Logger.Error(ex.Message);
                 return false;
+            }
+            finally
+            {
+                sqlConnection.Dispose();
             }
         }
 
-        public bool EditTransaction(Transaction transaction)
+        public bool EditTransaction(Transaction temporaryTransaction)
         {
             string query = "UPDATE Transactions SET [Name] = @Name, [ContactID] = @ContactID, [Type] = @Type, [Amount] = @Amount, [Note] = @Note, [AddedDate] = @CreatedDate WHERE [ID] = @ID AND [UserID] = @UserID";
-            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString);
+            string connectionString = ConfigurationManager.ConnectionStrings["AzureConnection"].ConnectionString;
+
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
 
             try
             {
-                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
-                sqlCommand.Parameters.Add("@ID", SqlDbType.Int).Value = transaction.ID;
-                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = transaction.UserID;
-                sqlCommand.Parameters.Add("@Name", SqlDbType.NVarChar).Value = transaction.Name;
-                sqlCommand.Parameters.Add("@Type", SqlDbType.Bit).Value = transaction.Type;
-                sqlCommand.Parameters.Add("@Amount", SqlDbType.Money).Value = transaction.Amount;
-                sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = transaction.Note;
-                sqlCommand.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = transaction.CreatedDate;
-
-                SqlParameter ContactID = new SqlParameter("@ContactID", SqlDbType.Int);
-                if (transaction.ContactID == 0) ContactID.Value = DBNull.Value;
-                else ContactID.Value = transaction.ContactID;
-                sqlCommand.Parameters.Add(ContactID);
-
                 sqlConnection.Open();
-                var i = sqlCommand.ExecuteNonQuery();
 
-                sqlConnection.Close();
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+                sqlCommand.Parameters.Add("@ID", SqlDbType.Int).Value = temporaryTransaction.ID;
+                sqlCommand.Parameters.Add("@UserID", SqlDbType.Int).Value = temporaryTransaction.UserID;
+                sqlCommand.Parameters.Add("@Name", SqlDbType.NVarChar).Value = temporaryTransaction.Name;
+                sqlCommand.Parameters.Add("@Type", SqlDbType.Bit).Value = temporaryTransaction.Type;
+                sqlCommand.Parameters.Add("@Amount", SqlDbType.Money).Value = temporaryTransaction.Amount;
+                sqlCommand.Parameters.Add("@Note", SqlDbType.NVarChar).Value = temporaryTransaction.Note;
+                sqlCommand.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = temporaryTransaction.CreatedDate;
 
-                return (i > 0) ? true : false;
+                SqlParameter transactionContact = new SqlParameter("@ContactID", SqlDbType.Int);
+                if (temporaryTransaction.ContactID == 0) transactionContact.Value = DBNull.Value;
+                else transactionContact.Value = temporaryTransaction.ContactID;
+                sqlCommand.Parameters.Add(transactionContact);
+
+                var result = sqlCommand.ExecuteNonQuery();
+                
+                return (result > 0) ? true : false;
             }
             catch (Exception ex)
             {
+                Logger.Error(ex.Message);
                 return false;
+            }
+            finally
+            {
+                sqlConnection.Dispose();
             }
         }
     }

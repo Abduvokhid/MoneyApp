@@ -28,180 +28,152 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.lblEventsList = new System.Windows.Forms.Label();
-            this.listViewEvents = new System.Windows.Forms.ListView();
-            this.col_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.eventLocation = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Contact = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.DateTime_col = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Note = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnDeleteEvent = new System.Windows.Forms.Button();
-            this.btnEditEvent = new System.Windows.Forms.Button();
-            this.btn_addEvent = new System.Windows.Forms.Button();
-            this.panel1.SuspendLayout();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ViewEvents));
+            this.btn_delete = new System.Windows.Forms.Button();
+            this.btn_edit = new System.Windows.Forms.Button();
+            this.btn_add = new System.Windows.Forms.Button();
+            this.lv_events = new MaterialSkin.Controls.MaterialListView();
+            this.ch_name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ch_contact = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ch_type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ch_location = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ch_note = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ch_date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
-            // panel1
+            // btn_delete
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.btn_delete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(67)))), ((int)(((byte)(54)))));
+            this.btn_delete.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
+            this.btn_delete.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
+            this.btn_delete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(115)))), ((int)(((byte)(115)))));
+            this.btn_delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_delete.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btn_delete.ForeColor = System.Drawing.Color.White;
+            this.btn_delete.Location = new System.Drawing.Point(304, 12);
+            this.btn_delete.Name = "btn_delete";
+            this.btn_delete.Size = new System.Drawing.Size(140, 34);
+            this.btn_delete.TabIndex = 17;
+            this.btn_delete.Text = "Delete event";
+            this.btn_delete.UseVisualStyleBackColor = false;
+            this.btn_delete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btn_edit
+            // 
+            this.btn_edit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(152)))), ((int)(((byte)(0)))));
+            this.btn_edit.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(124)))), ((int)(((byte)(0)))));
+            this.btn_edit.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(124)))), ((int)(((byte)(0)))));
+            this.btn_edit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(183)))), ((int)(((byte)(77)))));
+            this.btn_edit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_edit.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btn_edit.ForeColor = System.Drawing.Color.White;
+            this.btn_edit.Location = new System.Drawing.Point(158, 12);
+            this.btn_edit.Name = "btn_edit";
+            this.btn_edit.Size = new System.Drawing.Size(140, 34);
+            this.btn_edit.TabIndex = 16;
+            this.btn_edit.Text = "Edit event";
+            this.btn_edit.UseVisualStyleBackColor = false;
+            this.btn_edit.Click += new System.EventHandler(this.btn_editEvent_Click);
+            // 
+            // btn_add
+            // 
+            this.btn_add.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(175)))), ((int)(((byte)(80)))));
+            this.btn_add.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(142)))), ((int)(((byte)(60)))));
+            this.btn_add.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(142)))), ((int)(((byte)(60)))));
+            this.btn_add.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(129)))), ((int)(((byte)(199)))), ((int)(((byte)(132)))));
+            this.btn_add.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_add.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btn_add.ForeColor = System.Drawing.Color.White;
+            this.btn_add.Location = new System.Drawing.Point(12, 12);
+            this.btn_add.Name = "btn_add";
+            this.btn_add.Size = new System.Drawing.Size(140, 34);
+            this.btn_add.TabIndex = 15;
+            this.btn_add.Text = "Add event";
+            this.btn_add.UseVisualStyleBackColor = false;
+            this.btn_add.Click += new System.EventHandler(this.btn_addEvent_Click);
+            // 
+            // lv_events
+            // 
+            this.lv_events.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(78)))), ((int)(((byte)(130)))));
-            this.panel1.Controls.Add(this.lblEventsList);
-            this.panel1.Location = new System.Drawing.Point(2, 2);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(706, 72);
-            this.panel1.TabIndex = 8;
+            this.lv_events.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lv_events.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.ch_name,
+            this.ch_contact,
+            this.ch_type,
+            this.ch_location,
+            this.ch_note,
+            this.ch_date});
+            this.lv_events.Depth = 0;
+            this.lv_events.Font = new System.Drawing.Font("Roboto", 32F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(204)));
+            this.lv_events.FullRowSelect = true;
+            this.lv_events.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.lv_events.Location = new System.Drawing.Point(12, 52);
+            this.lv_events.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.lv_events.MouseState = MaterialSkin.MouseState.OUT;
+            this.lv_events.Name = "lv_events";
+            this.lv_events.OwnerDraw = true;
+            this.lv_events.Size = new System.Drawing.Size(660, 397);
+            this.lv_events.TabIndex = 18;
+            this.lv_events.UseCompatibleStateImageBehavior = false;
+            this.lv_events.View = System.Windows.Forms.View.Details;
             // 
-            // lblEventsList
+            // ch_name
             // 
-            this.lblEventsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblEventsList.AutoSize = true;
-            this.lblEventsList.Font = new System.Drawing.Font("Times New Roman", 22.125F, System.Drawing.FontStyle.Bold);
-            this.lblEventsList.ForeColor = System.Drawing.Color.White;
-            this.lblEventsList.Location = new System.Drawing.Point(259, 20);
-            this.lblEventsList.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblEventsList.Name = "lblEventsList";
-            this.lblEventsList.Size = new System.Drawing.Size(158, 35);
-            this.lblEventsList.TabIndex = 6;
-            this.lblEventsList.Text = "Events List";
+            this.ch_name.Text = "Name";
             // 
-            // listViewEvents
+            // ch_contact
             // 
-            this.listViewEvents.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewEvents.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.col_Name,
-            this.Type,
-            this.eventLocation,
-            this.Contact,
-            this.DateTime_col,
-            this.Note});
-            this.listViewEvents.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
-            this.listViewEvents.FullRowSelect = true;
-            this.listViewEvents.HideSelection = false;
-            this.listViewEvents.Location = new System.Drawing.Point(60, 118);
-            this.listViewEvents.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.listViewEvents.MultiSelect = false;
-            this.listViewEvents.Name = "listViewEvents";
-            this.listViewEvents.Size = new System.Drawing.Size(534, 232);
-            this.listViewEvents.TabIndex = 11;
-            this.listViewEvents.UseCompatibleStateImageBehavior = false;
-            this.listViewEvents.View = System.Windows.Forms.View.Details;
+            this.ch_contact.Text = "Contact";
             // 
-            // col_Name
+            // ch_type
             // 
-            this.col_Name.Text = "Name";
-            this.col_Name.Width = 200;
+            this.ch_type.Text = "Type";
             // 
-            // Type
+            // ch_location
             // 
-            this.Type.Text = "Type";
-            this.Type.Width = 100;
+            this.ch_location.Text = "Location";
             // 
-            // eventLocation
+            // ch_note
             // 
-            this.eventLocation.Text = "Location";
-            this.eventLocation.Width = 200;
+            this.ch_note.Text = "Note";
             // 
-            // Contact
+            // ch_date
             // 
-            this.Contact.Text = "Contact";
-            this.Contact.Width = 200;
-            // 
-            // DateTime_col
-            // 
-            this.DateTime_col.Text = "Date-Time";
-            this.DateTime_col.Width = 250;
-            // 
-            // Note
-            // 
-            this.Note.Text = "Note";
-            this.Note.Width = 100;
-            // 
-            // btnDeleteEvent
-            // 
-            this.btnDeleteEvent.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btnDeleteEvent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(78)))), ((int)(((byte)(130)))));
-            this.btnDeleteEvent.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
-            this.btnDeleteEvent.ForeColor = System.Drawing.Color.White;
-            this.btnDeleteEvent.Location = new System.Drawing.Point(458, 387);
-            this.btnDeleteEvent.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.btnDeleteEvent.Name = "btnDeleteEvent";
-            this.btnDeleteEvent.Size = new System.Drawing.Size(116, 31);
-            this.btnDeleteEvent.TabIndex = 14;
-            this.btnDeleteEvent.Text = "Delete";
-            this.btnDeleteEvent.UseVisualStyleBackColor = false;
-            this.btnDeleteEvent.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
-            // btnEditEvent
-            // 
-            this.btnEditEvent.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btnEditEvent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(78)))), ((int)(((byte)(130)))));
-            this.btnEditEvent.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
-            this.btnEditEvent.ForeColor = System.Drawing.Color.White;
-            this.btnEditEvent.Location = new System.Drawing.Point(259, 387);
-            this.btnEditEvent.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.btnEditEvent.Name = "btnEditEvent";
-            this.btnEditEvent.Size = new System.Drawing.Size(116, 31);
-            this.btnEditEvent.TabIndex = 13;
-            this.btnEditEvent.Text = "Edit";
-            this.btnEditEvent.UseVisualStyleBackColor = false;
-            this.btnEditEvent.Click += new System.EventHandler(this.btn_editEvent_Click);
-            // 
-            // btn_addEvent
-            // 
-            this.btn_addEvent.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btn_addEvent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(78)))), ((int)(((byte)(130)))));
-            this.btn_addEvent.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
-            this.btn_addEvent.ForeColor = System.Drawing.Color.White;
-            this.btn_addEvent.Location = new System.Drawing.Point(60, 387);
-            this.btn_addEvent.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.btn_addEvent.Name = "btn_addEvent";
-            this.btn_addEvent.Size = new System.Drawing.Size(116, 31);
-            this.btn_addEvent.TabIndex = 12;
-            this.btn_addEvent.Text = "Add ";
-            this.btn_addEvent.UseVisualStyleBackColor = false;
-            this.btn_addEvent.Click += new System.EventHandler(this.btn_addEvent_Click);
+            this.ch_date.Text = "Date & Time";
             // 
             // ViewEvents
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.AliceBlue;
-            this.ClientSize = new System.Drawing.Size(686, 486);
-            this.Controls.Add(this.btnDeleteEvent);
-            this.Controls.Add(this.btnEditEvent);
-            this.Controls.Add(this.btn_addEvent);
-            this.Controls.Add(this.listViewEvents);
-            this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(238)))), ((int)(((byte)(242)))));
+            this.ClientSize = new System.Drawing.Size(684, 461);
+            this.Controls.Add(this.lv_events);
+            this.Controls.Add(this.btn_delete);
+            this.Controls.Add(this.btn_edit);
+            this.Controls.Add(this.btn_add);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MinimumSize = new System.Drawing.Size(700, 500);
             this.Name = "ViewEvents";
-            this.Text = "ViewEventsForm";
+            this.Text = "Events";
             this.Activated += new System.EventHandler(this.viewEventFormActivated);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ViewEventForm_FormClosed);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.SizeChanged += new System.EventHandler(this.EventsSizeChanged);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label lblEventsList;
-        private System.Windows.Forms.ListView listViewEvents;
-        private System.Windows.Forms.ColumnHeader col_Name;
-        private System.Windows.Forms.ColumnHeader Type;
-        private System.Windows.Forms.ColumnHeader DateTime_col;
-        private System.Windows.Forms.ColumnHeader Note;
-        private System.Windows.Forms.ColumnHeader Contact;
-        private System.Windows.Forms.Button btnDeleteEvent;
-        private System.Windows.Forms.Button btnEditEvent;
-        private System.Windows.Forms.Button btn_addEvent;
-        private System.Windows.Forms.ColumnHeader eventLocation;
+        private System.Windows.Forms.Button btn_delete;
+        private System.Windows.Forms.Button btn_edit;
+        private System.Windows.Forms.Button btn_add;
+        private MaterialSkin.Controls.MaterialListView lv_events;
+        private System.Windows.Forms.ColumnHeader ch_name;
+        private System.Windows.Forms.ColumnHeader ch_contact;
+        private System.Windows.Forms.ColumnHeader ch_type;
+        private System.Windows.Forms.ColumnHeader ch_location;
+        private System.Windows.Forms.ColumnHeader ch_note;
+        private System.Windows.Forms.ColumnHeader ch_date;
     }
 }

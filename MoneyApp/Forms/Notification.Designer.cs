@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Notification));
             this.lbl_close = new System.Windows.Forms.Label();
             this.bw_wait = new System.ComponentModel.BackgroundWorker();
             this.lbl_title = new System.Windows.Forms.Label();
@@ -86,6 +87,7 @@
             this.Controls.Add(this.lbl_title);
             this.Controls.Add(this.lbl_close);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Notification";
             this.Text = "Notification";
             this.ResumeLayout(false);
