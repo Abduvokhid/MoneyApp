@@ -12,12 +12,12 @@ using MoneyApp.Repositories;
 
 namespace MoneyApp.Forms
 {
-    public partial class AddUpdateTransaction : Form
+    public partial class AddEditTransaction : Form
     {
         private Transaction auTransactionObj;
         private RecurringTransaction auRecTransactionObj;
         private bool isRecurring = false;
-        public AddUpdateTransaction()
+        public AddEditTransaction()
         {
             AddTransaction();
         }
@@ -37,7 +37,7 @@ namespace MoneyApp.Forms
         }
 
         //update 
-        public AddUpdateTransaction(Transaction transactionObj)
+        public AddEditTransaction(Transaction transactionObj)
         {
             InitializeComponent();
             auTransactionObj = transactionObj;
@@ -55,7 +55,7 @@ namespace MoneyApp.Forms
         }
 
         //update 
-        public AddUpdateTransaction(RecurringTransaction transactionObj)
+        public AddEditTransaction(RecurringTransaction transactionObj)
         {
             InitializeComponent();
             isRecurring = true;

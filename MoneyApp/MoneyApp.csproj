@@ -51,7 +51,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>MoneyApp.Program</StartupObject>
@@ -117,11 +117,11 @@
     <Compile Include="Forms\AddEditEvent.Designer.cs">
       <DependentUpon>AddEditEvent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AddUpdateTransaction.cs">
+    <Compile Include="Forms\AddEditTransaction.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AddUpdateTransaction.Designer.cs">
-      <DependentUpon>AddUpdateTransaction.cs</DependentUpon>
+    <Compile Include="Forms\AddEditTransaction.Designer.cs">
+      <DependentUpon>AddEditTransaction.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Authorization.cs">
       <SubType>Form</SubType>
@@ -193,8 +193,8 @@
     <EmbeddedResource Include="Forms\AddEditEvent.resx">
       <DependentUpon>AddEditEvent.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddUpdateTransaction.resx">
-      <DependentUpon>AddUpdateTransaction.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\AddEditTransaction.resx">
+      <DependentUpon>AddEditTransaction.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Authorization.resx">
       <DependentUpon>Authorization.cs</DependentUpon>
@@ -230,7 +230,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Content Include="logo.ico">
+    <Content Include="Resources\logo.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="NLog.config">
@@ -253,9 +253,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
       <Visible>False</Visible>

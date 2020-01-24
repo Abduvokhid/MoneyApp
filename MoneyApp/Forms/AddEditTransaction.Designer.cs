@@ -1,6 +1,6 @@
 ﻿namespace MoneyApp.Forms
 {
-    partial class AddUpdateTransaction
+    partial class AddEditTransaction
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddUpdateTransaction));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddEditTransaction));
             this.lbl_Add_ContName = new System.Windows.Forms.Label();
             this.txtTransactionName = new System.Windows.Forms.TextBox();
             this.lblHeadingTransaction = new System.Windows.Forms.Label();
@@ -100,7 +100,7 @@
             this.comboBoxType.Location = new System.Drawing.Point(95, 86);
             this.comboBoxType.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxType.Name = "comboBoxType";
-            this.comboBoxType.Size = new System.Drawing.Size(200, 23);
+            this.comboBoxType.Size = new System.Drawing.Size(200, 25);
             this.comboBoxType.TabIndex = 8;
             // 
             // label1
@@ -216,7 +216,7 @@
             this.comboBoxContact.Location = new System.Drawing.Point(95, 115);
             this.comboBoxContact.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxContact.Name = "comboBoxContact";
-            this.comboBoxContact.Size = new System.Drawing.Size(200, 23);
+            this.comboBoxContact.Size = new System.Drawing.Size(200, 25);
             this.comboBoxContact.TabIndex = 19;
             // 
             // groupBoxRecTrans
@@ -294,7 +294,7 @@
             this.comboBoxTStatus.Location = new System.Drawing.Point(83, 16);
             this.comboBoxTStatus.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxTStatus.Name = "comboBoxTStatus";
-            this.comboBoxTStatus.Size = new System.Drawing.Size(200, 23);
+            this.comboBoxTStatus.Size = new System.Drawing.Size(200, 25);
             this.comboBoxTStatus.TabIndex = 0;
             // 
             // checkBoxTRecurring
@@ -349,7 +349,7 @@
             this.btn_add_editTransaction.Text = "Action";
             this.btn_add_editTransaction.UseVisualStyleBackColor = false;
             // 
-            // AddUpdateTransaction
+            // AddEditTransaction
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -358,7 +358,7 @@
             this.Controls.Add(this.pl_main);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "AddUpdateTransaction";
+            this.Name = "AddEditTransaction";
             this.Text = "AddUpdateTransaction";
             this.Load += new System.EventHandler(this.AddUpdateTransaction_Load);
             this.SizeChanged += new System.EventHandler(this.AddEditTransactionSizeChanged);

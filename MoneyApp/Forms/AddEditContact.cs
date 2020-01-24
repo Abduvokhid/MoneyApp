@@ -32,7 +32,7 @@ namespace MoneyApp.Forms
             tbx_name.Text = c.Name;
         }
 
-        private async void btn_action_Click(object sender, EventArgs e)
+        private async void ActionClick(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(tbx_name.Text))
             {
@@ -47,6 +47,11 @@ namespace MoneyApp.Forms
             int i = contact.ID > 0 ? await Task.Run(()=> contactRepository.EditContact(contact)) : await Task.Run(() => contactRepository.AddContact(contact));
             MessageBox.Show(i > 0 ? (contact.ID > 0) ? "Edited okay" : "Added okay" : "Error");
             Close();
+            Dispose();
+        }
+
+        private void AddEditContactFormClosed(object sender, FormClosedEventArgs e)
+        {
             Dispose();
         }
     }

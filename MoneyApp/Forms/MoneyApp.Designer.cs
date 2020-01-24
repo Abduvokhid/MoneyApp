@@ -79,7 +79,7 @@ namespace MoneyApp
             this.btn_predict.TabIndex = 10;
             this.btn_predict.Text = "Predict";
             this.btn_predict.UseVisualStyleBackColor = false;
-            this.btn_predict.Click += new System.EventHandler(this.btn_predict_Click);
+            this.btn_predict.Click += new System.EventHandler(this.PredictClick);
             // 
             // btn_report
             // 
@@ -119,7 +119,7 @@ namespace MoneyApp
             this.btn_recurring_transactions.TabIndex = 2;
             this.btn_recurring_transactions.Text = "Recurring transactions";
             this.btn_recurring_transactions.UseVisualStyleBackColor = false;
-            this.btn_recurring_transactions.Click += new System.EventHandler(this.btn_recurring_transactions_Click);
+            this.btn_recurring_transactions.Click += new System.EventHandler(this.RecurringTransactionsClick);
             // 
             // btn_transactions
             // 
@@ -145,8 +145,8 @@ namespace MoneyApp
             // 
             this.bw_recurring.WorkerReportsProgress = true;
             this.bw_recurring.WorkerSupportsCancellation = true;
-            this.bw_recurring.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bw_recurring_DoWork);
-            this.bw_recurring.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bw_recurring_ProgressChanged);
+            this.bw_recurring.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorkerDoWork);
+            this.bw_recurring.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BackgroundWorkerProgressChanged);
             // 
             // btn_contacts
             // 
@@ -186,7 +186,7 @@ namespace MoneyApp
             this.btn_event.TabIndex = 11;
             this.btn_event.Text = "Events";
             this.btn_event.UseVisualStyleBackColor = false;
-            this.btn_event.Click += new System.EventHandler(this.btn_event_Click);
+            this.btn_event.Click += new System.EventHandler(this.EventsClick);
             // 
             // btn_recurring_events
             // 
@@ -206,7 +206,7 @@ namespace MoneyApp
             this.btn_recurring_events.TabIndex = 12;
             this.btn_recurring_events.Text = "Recurring events";
             this.btn_recurring_events.UseVisualStyleBackColor = false;
-            this.btn_recurring_events.Click += new System.EventHandler(this.btn_recurring_events_Click);
+            this.btn_recurring_events.Click += new System.EventHandler(this.RecurringEventsClick);
             // 
             // pl_left
             // 
@@ -248,7 +248,7 @@ namespace MoneyApp
             this.mc_calendar.Name = "mc_calendar";
             this.mc_calendar.TabIndex = 0;
             this.mc_calendar.TitleBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(238)))), ((int)(((byte)(242)))));
-            this.mc_calendar.DateSelected += new System.Windows.Forms.DateRangeEventHandler(this.MoneyAppDateSelected);
+            this.mc_calendar.DateSelected += new System.Windows.Forms.DateRangeEventHandler(this.DashboardDateSelected);
             // 
             // pl_middle
             // 
@@ -370,7 +370,7 @@ namespace MoneyApp
             this.MinimumSize = new System.Drawing.Size(800, 450);
             this.Name = "MoneyApp";
             this.Text = "Money App";
-            this.Activated += new System.EventHandler(this.MoneyApp_Activated);
+            this.Activated += new System.EventHandler(this.MoneyAppActivated);
             this.pl_left.ResumeLayout(false);
             this.pl_right.ResumeLayout(false);
             this.pl_middle.ResumeLayout(false);

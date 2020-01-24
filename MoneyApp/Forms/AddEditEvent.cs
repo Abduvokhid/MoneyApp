@@ -14,51 +14,50 @@ namespace MoneyApp.Forms
 {
     public partial class AddEditEvent : Form
     {
-        //constructer
-        private Event auEventObj;
-        private RecurringEvent auRecEventObj;
+        private Event temporaryEvent;
+        private RecurringEvent temporaryRecurringEvent;
         private bool isRecurring = false;
 
         public AddEditEvent()
         {
             InitializeComponent();
+
             btn_add_editEvent.Text = "Add Event";
-            auEventObj = new Event
-            {
-                UserID = Instances.User.ID
-            };
-            ResizePanel();
+            Text = "Add Event";
             lblHeadingEvent.Text = "Add Event";
             comboBoxEStatus.SelectedIndex = 0;
             comboBoxEvType.SelectedIndex = 0;
+
+            temporaryEvent = new Event { UserID = Instances.User.ID };
+
+            ResizePanel();
         }
 
-
-        //update 
         public AddEditEvent(Event eventObj)
         {
             InitializeComponent();
-            auEventObj = eventObj;
+
+            Text = "Update Event";
             lblHeadingEvent.Text = "Update Event";
             btn_add_editEvent.Text = "Update Event";
+
+            temporaryEvent = eventObj;
             txtEventName.Text = eventObj.Name;
             comboBoxEvType.Text = eventObj.TypeName;
             eventLocation.Text = eventObj.Location;
             eventDateTimePick.Value = eventObj.CreatedDate;
             richTextBoxEvNote.Text = eventObj.Note;
-
-
             groupBoxRecEv.Visible = false;
             checkBoxERecurring.Visible = false;
+
             ResizePanel();
         }
 
-        // constructer recurring Event edit
         public AddEditEvent(RecurringEvent eventObj)
         {
             InitializeComponent();
             isRecurring = true;
-            auRecEventObj = eventObj;
+            temporaryRecurringEvent = eventObj;
             lblHeadingEvent.Text = "Update Recurring Event";
             btn_add_editEvent.Text = "Update Recurring Event";
             txtEventName.Text = eventObj.Name;
@@ -83,7 +82,7 @@ namespace MoneyApp.Forms
             ResizePanel();
 
         }
-        //
+        
         private void btn_add_editEvent_Click(object sender, EventArgs e)
 
         {
@@ -97,10 +96,7 @@ namespace MoneyApp.Forms
                 AddUpadateNormalEvent();
             }
         }
-
-
-
-
+        
         private async void AddUpadateNormalEvent()
         {
             if (txtEventName.Text.Equals(""))
@@ -109,11 +105,11 @@ namespace MoneyApp.Forms
                 return;
             }
             EventRepository eventRepository = EventRepository.Instance;
-            auEventObj.Name = txtEventName.Text;
-            auEventObj.TypeName = comboBoxEvType.Text;
-            auEventObj.Location = eventLocation.Text;
-            auEventObj.CreatedDate = eventDateTimePick.Value;
-            auEventObj.Note = richTextBoxEvNote.Text;
+            temporaryEvent.Name = txtEventName.Text;
+            temporaryEvent.TypeName = comboBoxEvType.Text;
+            temporaryEvent.Location = eventLocation.Text;
+            temporaryEvent.CreatedDate = eventDateTimePick.Value;
+            temporaryEvent.Note = richTextBoxEvNote.Text;
 
             RecurringEvent recurringEvent = new RecurringEvent();
             recurringEvent.Status = comboBoxEStatus.Text;
@@ -122,15 +118,15 @@ namespace MoneyApp.Forms
             bool result = false;
 
             //Combo box type of Event
-            if (auEventObj.TypeName.Equals("Task"))
+            if (temporaryEvent.TypeName.Equals("Task"))
             {
                 //Task-  0
-                auEventObj.Type = false;
+                temporaryEvent.Type = false;
             }
             else
             {
                 //Appointment-  1
-                auEventObj.Type = true;
+                temporaryEvent.Type = true;
             }
 
             Contact contact = (Contact)comboBoxContact.SelectedItem;
@@ -138,33 +134,33 @@ namespace MoneyApp.Forms
             {
                 if (string.IsNullOrWhiteSpace(comboBoxContact.Text))
                 {
-                    auEventObj.ContactID = 0;
+                    temporaryEvent.ContactID = 0;
                 }
                 else
                 {
                     ContactRepository contactsRepository = ContactRepository.Instance;
-                    auEventObj.ContactID = await Task.Run(() => contactsRepository.AddContact(new Contact
+                    temporaryEvent.ContactID = await Task.Run(() => contactsRepository.AddContact(new Contact
                     { Name = comboBoxContact.Text, UserID = Instances.User.ID }));
                 }
             }
             else
             {
-                auEventObj.ContactID = contact.ID;
+                temporaryEvent.ContactID = contact.ID;
             }
 
             // 0 -- ADDING
             // MORE THAN 0 EDITING
-            if (checkBoxERecurring.Checked && auEventObj.ID == 0)
+            if (checkBoxERecurring.Checked && temporaryEvent.ID == 0)
             {
                 RecurringEvent recEvents = new RecurringEvent
                 {
-                    Name = auEventObj.Name,
-                    Location = auEventObj.Location,
-                    Type = auEventObj.Type,
-                    Note = auEventObj.Note,
-                    CreatedDate = auEventObj.CreatedDate,
-                    UserID = auEventObj.UserID,
-                    ContactID = auEventObj.ContactID
+                    Name = temporaryEvent.Name,
+                    Location = temporaryEvent.Location,
+                    Type = temporaryEvent.Type,
+                    Note = temporaryEvent.Note,
+                    CreatedDate = temporaryEvent.CreatedDate,
+                    UserID = temporaryEvent.UserID,
+                    ContactID = temporaryEvent.ContactID
 
                 };
                 if (cbEUndefined.Checked)
@@ -193,18 +189,18 @@ namespace MoneyApp.Forms
 
 
             //add /edit Event
-            if (auEventObj.ID > 0)
+            if (temporaryEvent.ID > 0)
             {
 
-                result = await Task.Run(() => eventRepository.EditEvent(auEventObj));
+                result = await Task.Run(() => eventRepository.EditEvent(temporaryEvent));
             }
             else
             {
-                result = await Task.Run(() => eventRepository.AddEvent(auEventObj));
+                result = await Task.Run(() => eventRepository.AddEvent(temporaryEvent));
             }
 
             //messageBox for edit and add Event
-            if (auEventObj.ID > 0 && result)
+            if (temporaryEvent.ID > 0 && result)
             {
                 MessageBox.Show("Edited Successfully");
                 Dispose();
@@ -232,26 +228,26 @@ namespace MoneyApp.Forms
                 return;
             }
             RecurringEventRepository eventRepository = RecurringEventRepository.Instance;
-            auRecEventObj.Name = txtEventName.Text;
-            auRecEventObj.TypeName = comboBoxEvType.Text;
-            auRecEventObj.Location = eventLocation.Text;
-            auRecEventObj.CreatedDate = eventDateTimePick.Value;
-            auRecEventObj.Note = richTextBoxEvNote.Text;
+            temporaryRecurringEvent.Name = txtEventName.Text;
+            temporaryRecurringEvent.TypeName = comboBoxEvType.Text;
+            temporaryRecurringEvent.Location = eventLocation.Text;
+            temporaryRecurringEvent.CreatedDate = eventDateTimePick.Value;
+            temporaryRecurringEvent.Note = richTextBoxEvNote.Text;
             RecurringEvent recurringEvent = new RecurringEvent();
             recurringEvent.Status = comboBoxEStatus.Text;
             recurringEvent.EndDate = dateTimeEvEndDate.Value;
             bool result = false;
 
             //Combo box type of  rec event
-            if (auRecEventObj.TypeName.Equals("Task"))
+            if (temporaryRecurringEvent.TypeName.Equals("Task"))
             {
                 //income-0
-                auRecEventObj.Type = false;
+                temporaryRecurringEvent.Type = false;
             }
             else
             {
                 //expense -1
-                auRecEventObj.Type = true;
+                temporaryRecurringEvent.Type = true;
             }
 
             Contact contact = (Contact)comboBoxContact.SelectedItem;
@@ -259,40 +255,40 @@ namespace MoneyApp.Forms
             {
                 if (string.IsNullOrWhiteSpace(comboBoxContact.Text))
                 {
-                    auRecEventObj.ContactID = 0;
+                    temporaryRecurringEvent.ContactID = 0;
                 }
                 else
                 {
                     ContactRepository contactsRepository = ContactRepository.Instance;
-                    auRecEventObj.ContactID = await Task.Run(() => contactsRepository.AddContact(new Contact { Name = comboBoxContact.Text, UserID = Instances.User.ID }));
+                    temporaryRecurringEvent.ContactID = await Task.Run(() => contactsRepository.AddContact(new Contact { Name = comboBoxContact.Text, UserID = Instances.User.ID }));
                 }
             }
             else
             {
-                auRecEventObj.ContactID = contact.ID;
+                temporaryRecurringEvent.ContactID = contact.ID;
             }
 
             if (cbEUndefined.Checked)
             {
-                auRecEventObj.EndDate = DateTime.MinValue;
+                temporaryRecurringEvent.EndDate = DateTime.MinValue;
 
             }
             else
             {
-                auRecEventObj.EndDate = dateTimeEvEndDate.Value;
+                temporaryRecurringEvent.EndDate = dateTimeEvEndDate.Value;
             }
 
-            auRecEventObj.Status = comboBoxEStatus.Text;
+            temporaryRecurringEvent.Status = comboBoxEStatus.Text;
             // 0 -- ADDING
             // MORE THAN 0 EDITING
 
             //add /edit Event
 
-            result = await Task.Run(() => eventRepository.EditRecurringEvent(auRecEventObj));
+            result = await Task.Run(() => eventRepository.EditRecurringEvent(temporaryRecurringEvent));
 
 
             //messageBox for edit and add Event
-            if (auRecEventObj.ID > 0 && result)
+            if (temporaryRecurringEvent.ID > 0 && result)
             {
                 MessageBox.Show("Edited Successfully");
                 Dispose();
@@ -329,9 +325,9 @@ namespace MoneyApp.Forms
 
         private void SetEventContact(List<Contact> ContactList)
         {
-            if (auEventObj.ID > 0)
+            if (temporaryEvent.ID > 0)
             {
-                if (auEventObj.ContactID == 0)
+                if (temporaryEvent.ContactID == 0)
                 {
                     comboBoxContact.Text = "";
                 }
@@ -339,7 +335,7 @@ namespace MoneyApp.Forms
                 {
                     for (int i = 0; i < ContactList.Count; i++)
                     {
-                        if (auEventObj.ContactID == ContactList[i].ID)
+                        if (temporaryEvent.ContactID == ContactList[i].ID)
                         {
                             comboBoxContact.SelectedItem = comboBoxContact.Items[i];
                         }
@@ -351,9 +347,9 @@ namespace MoneyApp.Forms
 
         private void SetRecurringEventsContact(List<Contact> ContactList)
         {
-            if (auRecEventObj.ID > 0)
+            if (temporaryRecurringEvent.ID > 0)
             {
-                if (auRecEventObj.ContactID == 0)
+                if (temporaryRecurringEvent.ContactID == 0)
                 {
                     comboBoxContact.Text = "";
                 }
@@ -361,7 +357,7 @@ namespace MoneyApp.Forms
                 {
                     for (int i = 0; i < ContactList.Count; i++)
                     {
-                        if (auRecEventObj.ContactID == ContactList[i].ID)
+                        if (temporaryRecurringEvent.ContactID == ContactList[i].ID)
                         {
                             comboBoxContact.SelectedItem = comboBoxContact.Items[i];
                         }

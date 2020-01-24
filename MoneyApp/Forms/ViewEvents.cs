@@ -112,6 +112,7 @@ namespace MoneyApp.Forms
         //Editing event
         private void btn_editEvent_Click(object sender, EventArgs e)
         {
+            if (lv_events.SelectedItems.Count > 0)
             {
                 if (isRecurring)
                 {

@@ -87,6 +87,7 @@
             this.MinimizeBox = false;
             this.Name = "AddEditContact";
             this.Text = "AddEditContact";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AddEditContactFormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 

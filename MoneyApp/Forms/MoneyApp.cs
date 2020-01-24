@@ -21,6 +21,7 @@ namespace MoneyApp
     public partial class MoneyApp : Form
     {
         private bool isFirst = true;
+
         public MoneyApp()
         {
             InitializeComponent();
@@ -29,60 +30,7 @@ namespace MoneyApp
             mc_calendar.SelectionStart = DateTime.Now;
         }
 
-        private void GenerateInfo()
-        {
-            TransactionRepository transactionRepository = TransactionRepository.Instance;
-            List<Transaction> transactions = transactionRepository.GetUserTransactions(Instances.User.ID);
-            List<DateTime> dates = new List<DateTime>();
-            List<decimal> totalIncomes = new List<decimal>();
-            List<decimal> totalExpenses = new List<decimal>();
-            for (int i = 0; i < DateTime.Now.Day; i++)
-            {
-                dates.Add(new DateTime(DateTime.Now.Year, DateTime.Now.Month, i + 1));
-                totalIncomes.Add(0);
-                totalExpenses.Add(0);
-            }
-            decimal income = 0;
-            decimal expense = 0;
-            transactions = transactions.Where(t => t.CreatedDate.Month == DateTime.Now.Month).ToList();
-            transactions.ForEach(t =>
-            {
-                if (t.Type)
-                {
-                    income += t.Amount;
-                    totalIncomes[t.CreatedDate.Day - 1] += t.Amount;
-                }
-                else
-                {
-                    expense += t.Amount;
-                    totalExpenses[t.CreatedDate.Day - 1] += t.Amount;
-                }
-            });
-            lbl_income_amount.Text = "£" + income.ToString("0.00");
-            lbl_expense_amount.Text = "£" + expense.ToString("0.00");
-
-            cch_month.Series = new LiveCharts.SeriesCollection
-            {
-                new LineSeries { Title = "Income", Values = new ChartValues<decimal>(totalIncomes)},
-                new LineSeries { Title = "Expense", Values = new ChartValues<decimal>(totalExpenses)}
-            };
-
-            List<string> vs = new List<string>();
-            foreach (DateTime d in dates)
-            {
-                vs.Add(d.Day.ToString());
-            }
-
-            cch_month.AxisX.Clear();
-
-            cch_month.AxisX.Add(new Axis
-            {
-                Title = "Month",
-                Labels = vs.ToArray()
-            });
-        }
-
-        private void MoneyApp_Activated(object sender, EventArgs e)
+        private void MoneyAppActivated(object sender, EventArgs e)
         {
             if (Instances.User == null)
             {
@@ -110,13 +58,12 @@ namespace MoneyApp
             transactionsView.Show();
         }
 
-        private void btn_recurring_transactions_Click(object sender, EventArgs e)
+        private void RecurringTransactionsClick(object sender, EventArgs e)
         {
             ViewTransactions transactionsView = new ViewTransactions(true);
             transactionsView.Activate();
             transactionsView.Show();
         }
-        
 
         private void ReportClick(object sender, EventArgs e)
         {
@@ -125,15 +72,14 @@ namespace MoneyApp
             viewReport.Show();
         }
 
-        private void btn_predict_Click(object sender, EventArgs e)
+        private void PredictClick(object sender, EventArgs e)
         {
             ViewPrediction viewPrediction = new ViewPrediction();
             viewPrediction.Activate();
             viewPrediction.ShowDialog();
         }
         
-
-        private void bw_recurring_DoWork(object sender, DoWorkEventArgs e)
+        private void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker bw = (BackgroundWorker)sender;
             while (!bw.CancellationPending)
@@ -147,12 +93,41 @@ namespace MoneyApp
             }
         }
 
+        private void BackgroundWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (!isFirst)
+            {
+                string text = (string)e.UserState;
+                new Notification(text).Show();
+            }
+        }
+
+        private void EventsClick(object sender, EventArgs e)
+        {
+
+            ViewEvents viewEvents = new ViewEvents();
+            viewEvents.Activate();
+            viewEvents.Show();
+        }
+
+        private void RecurringEventsClick(object sender, EventArgs e)
+        {
+            ViewEvents viewEvents = new ViewEvents(true);
+            viewEvents.Activate();
+            viewEvents.Show();
+        }
+
+        private void DashboardDateSelected(object sender, DateRangeEventArgs e)
+        {
+            ShowEventsForDate(mc_calendar.SelectionStart);
+        }
+
         private async void DoRecurringTransaction()
         {
             TransactionRepository transactionRepository = TransactionRepository.Instance;
             RecurringTransactionRepository recurringTransactionRepository = RecurringTransactionRepository.Instance;
             List<RecurringTransaction> recurringTransactions = recurringTransactionRepository.GetUserTransactions(Instances.User.ID);
-            foreach(RecurringTransaction recurringTransaction in recurringTransactions)
+            foreach (RecurringTransaction recurringTransaction in recurringTransactions)
             {
                 if (DateTime.Now > recurringTransaction.EndDate && recurringTransaction.EndDate != DateTime.MinValue) continue;
                 DateTime accTime = Instances.User.LastAccessDate;
@@ -160,8 +135,8 @@ namespace MoneyApp
                 int days = (nowTime - accTime).Days;
                 DateTime recTime = Instances.User.LastAccessDate;
                 TimeSpan ts = new TimeSpan(
-                    recurringTransaction.CreatedDate.Hour, 
-                    recurringTransaction.CreatedDate.Minute, 
+                    recurringTransaction.CreatedDate.Hour,
+                    recurringTransaction.CreatedDate.Minute,
                     recurringTransaction.CreatedDate.Second
                     );
                 recTime = recTime.Date + ts;
@@ -195,7 +170,8 @@ namespace MoneyApp
                     }
                     if (recTime > accTime && recTime <= nowTime && recTime > recurringTransaction.CreatedDate)
                     {
-                        await Task.Run(() => transactionRepository.AddTransaction(new Transaction {
+                        await Task.Run(() => transactionRepository.AddTransaction(new Transaction
+                        {
                             Name = recurringTransaction.Name,
                             UserID = recurringTransaction.UserID,
                             ContactID = recurringTransaction.ContactID,
@@ -276,36 +252,6 @@ namespace MoneyApp
             }
         }
 
-
-        private void bw_recurring_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if (!isFirst)
-            {
-                string text = (string)e.UserState;
-                new Notification(text).Show();
-            }
-        }
-
-        private void btn_event_Click(object sender, EventArgs e)
-        {
-
-            ViewEvents viewEvents = new ViewEvents();
-            viewEvents.Activate();
-            viewEvents.Show();
-        }
-
-        private void btn_recurring_events_Click(object sender, EventArgs e)
-        {
-            ViewEvents viewEvents = new ViewEvents(true);
-            viewEvents.Activate();
-            viewEvents.Show();
-        }
-
-        private void MoneyAppDateSelected(object sender, DateRangeEventArgs e)
-        {
-            ShowEventsForDate(mc_calendar.SelectionStart);
-        }
-
         private void ShowEventsForDate(DateTime d)
         {
 
@@ -365,7 +311,60 @@ namespace MoneyApp
 
                 pl_right.Controls.Add(p);
             });
-            
+
+        }
+
+        private void GenerateInfo()
+        {
+            TransactionRepository transactionRepository = TransactionRepository.Instance;
+            List<Transaction> transactions = transactionRepository.GetUserTransactions(Instances.User.ID);
+            List<DateTime> dates = new List<DateTime>();
+            List<decimal> totalIncomes = new List<decimal>();
+            List<decimal> totalExpenses = new List<decimal>();
+            for (int i = 0; i < DateTime.Now.Day; i++)
+            {
+                dates.Add(new DateTime(DateTime.Now.Year, DateTime.Now.Month, i + 1));
+                totalIncomes.Add(0);
+                totalExpenses.Add(0);
+            }
+            decimal income = 0;
+            decimal expense = 0;
+            transactions = transactions.Where(t => t.CreatedDate.Month == DateTime.Now.Month).ToList();
+            transactions.ForEach(t =>
+            {
+                if (t.Type)
+                {
+                    income += t.Amount;
+                    totalIncomes[t.CreatedDate.Day - 1] += t.Amount;
+                }
+                else
+                {
+                    expense += t.Amount;
+                    totalExpenses[t.CreatedDate.Day - 1] += t.Amount;
+                }
+            });
+            lbl_income_amount.Text = "£" + income.ToString("0.00");
+            lbl_expense_amount.Text = "£" + expense.ToString("0.00");
+
+            cch_month.Series = new LiveCharts.SeriesCollection
+            {
+                new LineSeries { Title = "Income", Values = new ChartValues<decimal>(totalIncomes)},
+                new LineSeries { Title = "Expense", Values = new ChartValues<decimal>(totalExpenses)}
+            };
+
+            List<string> vs = new List<string>();
+            foreach (DateTime d in dates)
+            {
+                vs.Add(d.Day.ToString());
+            }
+
+            cch_month.AxisX.Clear();
+
+            cch_month.AxisX.Add(new Axis
+            {
+                Title = "Month",
+                Labels = vs.ToArray()
+            });
         }
     }
 }

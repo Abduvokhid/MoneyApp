@@ -89,7 +89,7 @@
             this.lbl_result.Font = new System.Drawing.Font("Roboto", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lbl_result.Location = new System.Drawing.Point(12, 125);
             this.lbl_result.Name = "lbl_result";
-            this.lbl_result.Size = new System.Drawing.Size(87, 24);
+            this.lbl_result.Size = new System.Drawing.Size(87, 23);
             this.lbl_result.TabIndex = 6;
             this.lbl_result.Text = "Unknown";
             // 

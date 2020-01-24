@@ -76,7 +76,7 @@
             this.comboBoxContact.Location = new System.Drawing.Point(114, 109);
             this.comboBoxContact.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxContact.Name = "comboBoxContact";
-            this.comboBoxContact.Size = new System.Drawing.Size(200, 23);
+            this.comboBoxContact.Size = new System.Drawing.Size(200, 25);
             this.comboBoxContact.TabIndex = 34;
             // 
             // lblContact
@@ -156,7 +156,7 @@
             this.comboBoxEvType.Location = new System.Drawing.Point(114, 76);
             this.comboBoxEvType.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxEvType.Name = "comboBoxEvType";
-            this.comboBoxEvType.Size = new System.Drawing.Size(200, 23);
+            this.comboBoxEvType.Size = new System.Drawing.Size(200, 25);
             this.comboBoxEvType.TabIndex = 25;
             // 
             // lbl_Add_ContName
@@ -321,7 +321,7 @@
             this.comboBoxEStatus.Location = new System.Drawing.Point(89, 15);
             this.comboBoxEStatus.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxEStatus.Name = "comboBoxEStatus";
-            this.comboBoxEStatus.Size = new System.Drawing.Size(200, 23);
+            this.comboBoxEStatus.Size = new System.Drawing.Size(200, 25);
             this.comboBoxEStatus.TabIndex = 0;
             // 
             // pl_main

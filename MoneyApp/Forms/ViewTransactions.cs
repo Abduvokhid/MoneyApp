@@ -39,7 +39,7 @@ namespace MoneyApp.Forms
 
         private void AddClick(object sender, EventArgs e)
         {
-            AddUpdateTransaction addEditTransaction = new AddUpdateTransaction();
+            AddEditTransaction addEditTransaction = new AddEditTransaction();
             addEditTransaction.Activate();
             addEditTransaction.ShowDialog();
         }
@@ -51,13 +51,13 @@ namespace MoneyApp.Forms
                 if (isRecurring)
                 {
                     RecurringTransaction transaction = (RecurringTransaction)lv_transactions.SelectedItems[0].Tag;
-                    AddUpdateTransaction addEditTransaction = new AddUpdateTransaction(transaction);
+                    AddEditTransaction addEditTransaction = new AddEditTransaction(transaction);
                     addEditTransaction.Activate();
                     addEditTransaction.ShowDialog();
                 } else
                 {
                     Transaction transaction = (Transaction)lv_transactions.SelectedItems[0].Tag;
-                    AddUpdateTransaction addEditTransaction = new AddUpdateTransaction(transaction);
+                    AddEditTransaction addEditTransaction = new AddEditTransaction(transaction);
                     addEditTransaction.Activate();
                     addEditTransaction.ShowDialog();
                 }

@@ -18,7 +18,7 @@ namespace MoneyApp.Forms
 {
     public partial class Authorization : Form
     {
-        private string new_name, new_username, new_password, new_repeat_password;
+        private string newName, newUsername, newPassword, newRepeatPassword;
         private string username, password;
         UserRepository userRepository;
         public Authorization()
@@ -47,10 +47,10 @@ namespace MoneyApp.Forms
 
         private async void SignUpClick(object sender, EventArgs e)
         {
-            new_name = tbx_new_name.Text;
-            new_username = tbx_new_username.Text;
-            new_password = tbx_new_password.Text;
-            new_repeat_password = tbx_new_validate_password.Text;
+            newName = tbx_new_name.Text;
+            newUsername = tbx_new_username.Text;
+            newPassword = tbx_new_password.Text;
+            newRepeatPassword = tbx_new_validate_password.Text;
 
             if (!ValidateSignUpInput()) return;
 
@@ -58,7 +58,7 @@ namespace MoneyApp.Forms
 
             EncryptPassword();
 
-            bool result = await Task.Run(() => userRepository.AddUser(new User { Name = new_name, Username = new_username, Password = new_password }));
+            bool result = await Task.Run(() => userRepository.AddUser(new User { Name = newName, Username = newUsername, Password = newPassword }));
 
             if (!result) ShowMessage(btn_sign_up, "Something went wrong!");
             else
@@ -68,6 +68,53 @@ namespace MoneyApp.Forms
                 btn_sign_up.BackColor = Color.FromArgb(165, 214, 167);
                 btn_sign_up.ForeColor = Color.FromArgb(76, 175, 80);
                 btn_sign_up.FlatAppearance.BorderColor = Color.FromArgb(76, 175, 80);
+            }
+        }
+
+        private void AuthorizationFormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (Instances.User == null)
+            {
+                Instances.MoneyApp.Close();
+            }
+            else
+            {
+                Instances.MoneyApp.Activate();
+                Instances.MoneyApp.Show();
+            }
+            Dispose();
+        }
+
+        private void DoWait(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker bw = (BackgroundWorker)sender;
+            bw.ReportProgress(0, (Button)e.Argument);
+            Thread.Sleep(3000);
+            bw.ReportProgress(1, (Button)e.Argument);
+        }
+
+        private void DoProgress(object sender, ProgressChangedEventArgs e)
+        {
+            Button btn = (Button)e.UserState;
+            if (e.ProgressPercentage == 0)
+            {
+                string t = (string)btn.Tag;
+                btn.Tag = btn.Text;
+                btn.Text = t;
+                btn.Enabled = false;
+                btn.BackColor = Color.FromArgb(255, 205, 210);
+                btn.ForeColor = Color.FromArgb(229, 115, 115);
+                btn.FlatAppearance.BorderColor = Color.FromArgb(229, 115, 115);
+            }
+            else if (e.ProgressPercentage == 1)
+            {
+                btn.Text = (string)btn.Tag;
+                btn.Enabled = true;
+                btn.BackColor = Color.FromArgb(33, 150, 243);
+                btn.ForeColor = Color.White;
+                btn.FlatAppearance.BorderColor = Color.FromArgb(30, 136, 229);
+                if (!tbx_password.ContainsFocus) tbx_password.Status = TBX.BoxStatus.None;
+                if (!tbx_username.ContainsFocus) tbx_username.Status = TBX.BoxStatus.None;                
             }
         }
 
@@ -96,27 +143,14 @@ namespace MoneyApp.Forms
             return true;
         }
 
-        private void AuthorizationFormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (Instances.User == null)
-            {
-                Instances.MoneyApp.Close();
-            } else
-            {
-                Instances.MoneyApp.Activate();
-                Instances.MoneyApp.Show();
-            }
-            Dispose();
-        }
-
         private void EncryptPassword()
         {
-            new_password = bcrypt.HashPassword("MlADmsKS" + new_password + "FCkvSlS", bcrypt.GenerateSalt());
+            newPassword = bcrypt.HashPassword("MlADmsKS" + newPassword + "FCkvSlS", bcrypt.GenerateSalt());
         }
 
         private async Task<bool> CheckUsername()
         {
-            User user = await Task.Run(() => userRepository.GetUserByUsername(new_username));
+            User user = await Task.Run(() => userRepository.GetUserByUsername(newUsername));
             if (user.ID > 0)
             {
                 tbx_new_username.Status = TBX.BoxStatus.Error;
@@ -146,67 +180,67 @@ namespace MoneyApp.Forms
 
         private bool ValidateSignUpInput()
         {
-            if (string.IsNullOrWhiteSpace(new_username))
+            if (string.IsNullOrWhiteSpace(newUsername))
             {
                 tbx_new_username.Status = TBX.BoxStatus.Error;
                 ShowMessage(btn_sign_up, "Username field cannot be empty!");
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(new_name))
+            if (string.IsNullOrWhiteSpace(newName))
             {
                 tbx_new_name.Status = TBX.BoxStatus.Error;
                 ShowMessage(btn_sign_up, "Name field cannot be empty!");
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(new_password))
+            if (string.IsNullOrWhiteSpace(newPassword))
             {
                 tbx_new_password.Status = TBX.BoxStatus.Error;
                 ShowMessage(btn_sign_up, "Password field cannot be empty!");
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(new_repeat_password))
+            if (string.IsNullOrWhiteSpace(newRepeatPassword))
             {
                 tbx_new_validate_password.Status = TBX.BoxStatus.Error;
                 ShowMessage(btn_sign_up, "Repeat password field cannot be empty!");
                 return false;
             }
 
-            if (new_name.Length < 3)
+            if (newName.Length < 3)
             {
                 tbx_new_name.Status = TBX.BoxStatus.Error;
                 ShowMessage(btn_sign_up, "Name must be at least from 3 symbols!");
                 return false;
-            } else if (new_name.Length > 50)
+            } else if (newName.Length > 50)
             {
                 tbx_new_name.Status = TBX.BoxStatus.Error;
                 ShowMessage(btn_sign_up, "Name must not be more than 50 symbols!");
                 return false;
             }
 
-            if (new_username.Length < 5)
+            if (newUsername.Length < 5)
             {
                 tbx_new_username.Status = TBX.BoxStatus.Error;
                 ShowMessage(btn_sign_up, "Username must be at least from 5 symbols!");
                 return false;
             }
-            else if (new_username.Length > 50)
+            else if (newUsername.Length > 50)
             {
                 tbx_new_username.Status = TBX.BoxStatus.Error;
                 ShowMessage(btn_sign_up, "Username must not be more than 50 symbols!");
                 return false;
             }
 
-            if (new_password.Length > 50)
+            if (newPassword.Length > 50)
             {
                 tbx_new_password.Status = TBX.BoxStatus.Error;
                 ShowMessage(btn_sign_up, "Password must not be more than 50 symbols!");
                 return false;
             }
 
-            if (!new_password.Equals(new_repeat_password))
+            if (!newPassword.Equals(newRepeatPassword))
             {
                 tbx_new_password.Status = TBX.BoxStatus.Error;
                 ShowMessage(btn_sign_up, "Passwords do not match!");
@@ -223,36 +257,6 @@ namespace MoneyApp.Forms
             bw.DoWork += DoWait;
             bw.ProgressChanged += DoProgress;
             bw.RunWorkerAsync(btn);
-        }
-
-        private void DoWait(object sender, DoWorkEventArgs e)
-        {
-            BackgroundWorker bw = (BackgroundWorker)sender;
-            bw.ReportProgress(0, (Button)e.Argument);
-            Thread.Sleep(3000);
-            bw.ReportProgress(1, (Button)e.Argument);
-        }
-
-        private void DoProgress(object sender, ProgressChangedEventArgs e)
-        {
-            Button btn = (Button)e.UserState;
-            if (e.ProgressPercentage == 0)
-            {
-                string t = (string)btn.Tag;
-                btn.Tag = btn.Text;
-                btn.Text = t;
-                btn.Enabled = false;
-                btn.BackColor = Color.FromArgb(255, 205, 210);
-                btn.ForeColor = Color.FromArgb(229, 115, 115);
-                btn.FlatAppearance.BorderColor = Color.FromArgb(229, 115, 115);
-            } else if (e.ProgressPercentage == 1)
-            {
-                btn.Text = (string)btn.Tag;
-                btn.Enabled = true;
-                btn.BackColor = Color.FromArgb(33, 150, 243);
-                btn.ForeColor = Color.White;
-                btn.FlatAppearance.BorderColor = Color.FromArgb(30, 136, 229);
-            }
         }
     }
 }
