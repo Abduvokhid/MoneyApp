@@ -59,6 +59,7 @@
             this.btn_action.TabIndex = 2;
             this.btn_action.Text = "Action";
             this.btn_action.UseVisualStyleBackColor = false;
+            this.btn_action.Click += new System.EventHandler(this.ActionClick);
             // 
             // tbx_name
             // 

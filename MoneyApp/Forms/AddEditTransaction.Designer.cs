@@ -48,7 +48,7 @@
             this.dateTimePickerEndDate = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.comboBoxTStatus = new System.Windows.Forms.ComboBox();
-            this.checkBoxTRecurring = new System.Windows.Forms.CheckBox();
+            this.cbx_recurring = new System.Windows.Forms.CheckBox();
             this.pl_main = new System.Windows.Forms.Panel();
             this.btn_add_editTransaction = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAmount)).BeginInit();
@@ -63,7 +63,7 @@
             this.lbl_Add_ContName.Location = new System.Drawing.Point(46, 62);
             this.lbl_Add_ContName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbl_Add_ContName.Name = "lbl_Add_ContName";
-            this.lbl_Add_ContName.Size = new System.Drawing.Size(44, 15);
+            this.lbl_Add_ContName.Size = new System.Drawing.Size(45, 17);
             this.lbl_Add_ContName.TabIndex = 7;
             this.lbl_Add_ContName.Text = "Name:";
             // 
@@ -110,7 +110,7 @@
             this.label1.Location = new System.Drawing.Point(52, 89);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 15);
+            this.label1.Size = new System.Drawing.Size(39, 17);
             this.label1.TabIndex = 9;
             this.label1.Text = "Type:";
             // 
@@ -121,7 +121,7 @@
             this.lblAmount.Location = new System.Drawing.Point(36, 146);
             this.lblAmount.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblAmount.Name = "lblAmount";
-            this.lblAmount.Size = new System.Drawing.Size(54, 15);
+            this.lblAmount.Size = new System.Drawing.Size(55, 17);
             this.lblAmount.TabIndex = 10;
             this.lblAmount.Text = "Amount:";
             // 
@@ -170,7 +170,7 @@
             this.lblDateTime.Location = new System.Drawing.Point(53, 170);
             this.lblDateTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblDateTime.Name = "lblDateTime";
-            this.lblDateTime.Size = new System.Drawing.Size(37, 15);
+            this.lblDateTime.Size = new System.Drawing.Size(38, 17);
             this.lblDateTime.TabIndex = 14;
             this.lblDateTime.Text = "Date:";
             // 
@@ -192,7 +192,7 @@
             this.lblNote.Location = new System.Drawing.Point(53, 224);
             this.lblNote.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblNote.Name = "lblNote";
-            this.lblNote.Size = new System.Drawing.Size(37, 15);
+            this.lblNote.Size = new System.Drawing.Size(38, 17);
             this.lblNote.TabIndex = 17;
             this.lblNote.Text = "Note:";
             // 
@@ -203,7 +203,7 @@
             this.label2.Location = new System.Drawing.Point(36, 118);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(54, 15);
+            this.label2.Size = new System.Drawing.Size(55, 17);
             this.label2.TabIndex = 18;
             this.label2.Text = "Contact:";
             // 
@@ -242,7 +242,7 @@
             this.chbx_infinite.Font = new System.Drawing.Font("Roboto", 9.75F);
             this.chbx_infinite.Location = new System.Drawing.Point(83, 71);
             this.chbx_infinite.Name = "chbx_infinite";
-            this.chbx_infinite.Size = new System.Drawing.Size(90, 19);
+            this.chbx_infinite.Size = new System.Drawing.Size(91, 21);
             this.chbx_infinite.TabIndex = 23;
             this.chbx_infinite.Text = "Never ends";
             this.chbx_infinite.UseVisualStyleBackColor = true;
@@ -255,7 +255,7 @@
             this.label4.Location = new System.Drawing.Point(19, 50);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(59, 15);
+            this.label4.Size = new System.Drawing.Size(60, 17);
             this.label4.TabIndex = 16;
             this.label4.Text = "End date:";
             // 
@@ -277,7 +277,7 @@
             this.label3.Location = new System.Drawing.Point(9, 19);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(69, 15);
+            this.label3.Size = new System.Drawing.Size(70, 17);
             this.label3.TabIndex = 1;
             this.label3.Text = "Frequency:";
             // 
@@ -297,24 +297,24 @@
             this.comboBoxTStatus.Size = new System.Drawing.Size(200, 25);
             this.comboBoxTStatus.TabIndex = 0;
             // 
-            // checkBoxTRecurring
+            // cbx_recurring
             // 
-            this.checkBoxTRecurring.AutoSize = true;
-            this.checkBoxTRecurring.Font = new System.Drawing.Font("Roboto", 9.75F);
-            this.checkBoxTRecurring.Location = new System.Drawing.Point(95, 268);
-            this.checkBoxTRecurring.Margin = new System.Windows.Forms.Padding(2);
-            this.checkBoxTRecurring.Name = "checkBoxTRecurring";
-            this.checkBoxTRecurring.Size = new System.Drawing.Size(173, 19);
-            this.checkBoxTRecurring.TabIndex = 22;
-            this.checkBoxTRecurring.Text = "Is it recurring transaction?";
-            this.checkBoxTRecurring.UseVisualStyleBackColor = true;
-            this.checkBoxTRecurring.CheckedChanged += new System.EventHandler(this.checkBoxTRecurring_CheckedChanged);
+            this.cbx_recurring.AutoSize = true;
+            this.cbx_recurring.Font = new System.Drawing.Font("Roboto", 9.75F);
+            this.cbx_recurring.Location = new System.Drawing.Point(95, 268);
+            this.cbx_recurring.Margin = new System.Windows.Forms.Padding(2);
+            this.cbx_recurring.Name = "cbx_recurring";
+            this.cbx_recurring.Size = new System.Drawing.Size(174, 21);
+            this.cbx_recurring.TabIndex = 22;
+            this.cbx_recurring.Text = "Is it recurring transaction?";
+            this.cbx_recurring.UseVisualStyleBackColor = true;
+            this.cbx_recurring.CheckedChanged += new System.EventHandler(this.checkBoxTRecurring_CheckedChanged);
             // 
             // pl_main
             // 
             this.pl_main.Controls.Add(this.btn_add_editTransaction);
             this.pl_main.Controls.Add(this.richTextBoxTransactionNote);
-            this.pl_main.Controls.Add(this.checkBoxTRecurring);
+            this.pl_main.Controls.Add(this.cbx_recurring);
             this.pl_main.Controls.Add(this.lblHeadingTransaction);
             this.pl_main.Controls.Add(this.groupBoxRecTrans);
             this.pl_main.Controls.Add(this.txtTransactionName);
@@ -389,7 +389,7 @@
         private System.Windows.Forms.GroupBox groupBoxRecTrans;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboBoxTStatus;
-        private System.Windows.Forms.CheckBox checkBoxTRecurring;
+        private System.Windows.Forms.CheckBox cbx_recurring;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker dateTimePickerEndDate;
         private System.Windows.Forms.CheckBox chbx_infinite;

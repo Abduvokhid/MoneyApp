@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Strings = MoneyApp.Properties.Strings;
 
 namespace MoneyApp.Forms
 {
@@ -22,137 +23,147 @@ namespace MoneyApp.Forms
         {
             InitializeComponent();
 
-            btn_add_editEvent.Text = "Add Event";
+            btn_action.Text = "Add Event";
             Text = "Add Event";
             lblHeadingEvent.Text = "Add Event";
-            comboBoxEStatus.SelectedIndex = 0;
-            comboBoxEvType.SelectedIndex = 0;
+            cbx_frequency.SelectedIndex = 0;
+            cbx_type.SelectedIndex = 0;
 
             temporaryEvent = new Event { UserID = Instances.User.ID };
 
             ResizePanel();
         }
 
-        public AddEditEvent(Event eventObj)
+        public AddEditEvent(Event temporaryEvent)
         {
             InitializeComponent();
 
-            Text = "Update Event";
-            lblHeadingEvent.Text = "Update Event";
-            btn_add_editEvent.Text = "Update Event";
+            Text = Strings.EditEvent;
+            lblHeadingEvent.Text = Strings.EditEvent;
+            btn_action.Text = Strings.Edit;
+            gb_recurring.Visible = false;
+            cbx_recurring.Visible = false;
 
-            temporaryEvent = eventObj;
-            txtEventName.Text = eventObj.Name;
-            comboBoxEvType.Text = eventObj.TypeName;
-            eventLocation.Text = eventObj.Location;
-            eventDateTimePick.Value = eventObj.CreatedDate;
-            richTextBoxEvNote.Text = eventObj.Note;
-            groupBoxRecEv.Visible = false;
-            checkBoxERecurring.Visible = false;
+            this.temporaryEvent = temporaryEvent;
+            tbx_name.Text = temporaryEvent.Name;
+            cbx_type.Text = temporaryEvent.TypeName;
+            tbx_location.Text = temporaryEvent.Location;
+            dtp_date.Value = temporaryEvent.CreatedDate;
+            rtbx_note.Text = temporaryEvent.Note;
 
             ResizePanel();
         }
 
-        public AddEditEvent(RecurringEvent eventObj)
+        public AddEditEvent(RecurringEvent temporaryRecurringEvent)
         {
             InitializeComponent();
+
+            Text = Strings.EditRecurringEvent;
+            lblHeadingEvent.Text = Strings.EditRecurringEvent;
+            btn_action.Text = Strings.Edit;
+            gb_recurring.Visible = true;
+            cbx_recurring.Visible = false;
             isRecurring = true;
-            temporaryRecurringEvent = eventObj;
-            lblHeadingEvent.Text = "Update Recurring Event";
-            btn_add_editEvent.Text = "Update Recurring Event";
-            txtEventName.Text = eventObj.Name;
-            comboBoxEvType.Text = eventObj.TypeName;
-            eventLocation.Text = eventObj.Location;
-            eventDateTimePick.Value = eventObj.CreatedDate;
-            richTextBoxEvNote.Text = eventObj.Note;
-            comboBoxEStatus.Text = eventObj.Status;
 
-            if (eventObj.EndDate == DateTime.MinValue)
-            {
-                dateTimeEvEndDate.Enabled = false;
-                cbEUndefined.Checked = true;
-            }
-            else
-            {
-                dateTimeEvEndDate.Value = eventObj.EndDate;
-            }
+            this.temporaryRecurringEvent = temporaryRecurringEvent;
+            tbx_name.Text = temporaryRecurringEvent.Name;
+            cbx_type.Text = temporaryRecurringEvent.TypeName;
+            tbx_location.Text = temporaryRecurringEvent.Location;
+            dtp_date.Value = temporaryRecurringEvent.CreatedDate;
+            rtbx_note.Text = temporaryRecurringEvent.Note;
+            cbx_frequency.Text = temporaryRecurringEvent.Status;
 
-            groupBoxRecEv.Visible = true;
-            checkBoxERecurring.Visible = false;
+            if (temporaryRecurringEvent.EndDate == DateTime.MinValue)
+            {
+                dtp_enddate.Enabled = false;
+                chbx_infinite.Checked = true;
+            }
+            else dtp_enddate.Value = temporaryRecurringEvent.EndDate;
+            
             ResizePanel();
-
         }
         
-        private void btn_add_editEvent_Click(object sender, EventArgs e)
-
+        private void ActionClick(object sender, EventArgs e)
         {
-            if (isRecurring)
-            {
-                UpdateRecurringEvent();
-
-            }
-            else
-            {
-                AddUpadateNormalEvent();
-            }
+            if (isRecurring) UpdateRecurringEvent();
+            else AddUpadateNormalEvent();
         }
         
+        private async void AddUpdateEventLoad(object sender, EventArgs e)
+        {
+            ContactRepository contactRepository = ContactRepository.Instance;
+            List<Contact> contactsList = await Task.Run(() => contactRepository.GetUserContacts(Instances.User.ID));
+            cbx_contact.DataSource = contactsList;
+            cbx_contact.DisplayMember = "Name";
+
+            if (isRecurring) SetRecurringEventsContact(contactsList);
+            else SetEventContact(contactsList);
+        }
+
+        private void RecurringCheckboxChanged(object sender, EventArgs e)
+        {
+            if (cbx_recurring.Checked == true) gb_recurring.Visible = true;
+            else gb_recurring.Visible = false;
+        }
+
+        private void InfiniteCheckboxChanged(object sender, EventArgs e)
+        {
+            if (chbx_infinite.Checked == true) dtp_enddate.Enabled = false;
+            else dtp_enddate.Enabled = true;
+        }
+
+        private void AddEditEventSizeChange(object sender, EventArgs e)
+        {
+            ResizePanel();
+        }
+
+        private void ResizePanel()
+        {
+            int x = ((Width - pl_main.Width) / 2);
+            int y = ((Height - pl_main.Height) / 2);
+
+            pl_main.Location = new Point(x, y);
+        }
+
         private async void AddUpadateNormalEvent()
         {
-            if (txtEventName.Text.Equals(""))
+            if (tbx_name.Text.Equals(""))
             {
                 MessageBox.Show("Event is Empty! Please add a Event name.");
                 return;
             }
             EventRepository eventRepository = EventRepository.Instance;
-            temporaryEvent.Name = txtEventName.Text;
-            temporaryEvent.TypeName = comboBoxEvType.Text;
-            temporaryEvent.Location = eventLocation.Text;
-            temporaryEvent.CreatedDate = eventDateTimePick.Value;
-            temporaryEvent.Note = richTextBoxEvNote.Text;
+            temporaryEvent.Name = tbx_name.Text;
+            temporaryEvent.TypeName = cbx_type.Text;
+            temporaryEvent.Location = tbx_location.Text;
+            temporaryEvent.CreatedDate = dtp_date.Value;
+            temporaryEvent.Note = rtbx_note.Text;
 
             RecurringEvent recurringEvent = new RecurringEvent();
-            recurringEvent.Status = comboBoxEStatus.Text;
-            recurringEvent.EndDate = dateTimeEvEndDate.Value;
+            recurringEvent.Status = cbx_frequency.Text;
+            recurringEvent.EndDate = dtp_enddate.Value;
 
             bool result = false;
 
-            //Combo box type of Event
-            if (temporaryEvent.TypeName.Equals("Task"))
-            {
-                //Task-  0
-                temporaryEvent.Type = false;
-            }
-            else
-            {
-                //Appointment-  1
-                temporaryEvent.Type = true;
-            }
+            if (temporaryEvent.TypeName.Equals("Task")) temporaryEvent.Type = false;
+            else temporaryEvent.Type = true;
 
-            Contact contact = (Contact)comboBoxContact.SelectedItem;
+            Contact contact = (Contact)cbx_contact.SelectedItem;
             if (contact == null)
             {
-                if (string.IsNullOrWhiteSpace(comboBoxContact.Text))
-                {
-                    temporaryEvent.ContactID = 0;
-                }
+                if (string.IsNullOrWhiteSpace(cbx_contact.Text)) temporaryEvent.ContactID = 0;
                 else
                 {
                     ContactRepository contactsRepository = ContactRepository.Instance;
                     temporaryEvent.ContactID = await Task.Run(() => contactsRepository.AddContact(new Contact
-                    { Name = comboBoxContact.Text, UserID = Instances.User.ID }));
+                    { Name = cbx_contact.Text, UserID = Instances.User.ID }));
                 }
             }
-            else
-            {
-                temporaryEvent.ContactID = contact.ID;
-            }
+            else temporaryEvent.ContactID = contact.ID;
 
-            // 0 -- ADDING
-            // MORE THAN 0 EDITING
-            if (checkBoxERecurring.Checked && temporaryEvent.ID == 0)
+            if (cbx_recurring.Checked && temporaryEvent.ID == 0)
             {
-                RecurringEvent recEvents = new RecurringEvent
+                RecurringEvent temporaryRecurringEvent = new RecurringEvent
                 {
                     Name = temporaryEvent.Name,
                     Location = temporaryEvent.Location,
@@ -161,45 +172,26 @@ namespace MoneyApp.Forms
                     CreatedDate = temporaryEvent.CreatedDate,
                     UserID = temporaryEvent.UserID,
                     ContactID = temporaryEvent.ContactID
-
                 };
-                if (cbEUndefined.Checked)
-                {
-                    recEvents.EndDate = DateTime.MinValue;
 
-                }
-                else
-                {
-                    recEvents.EndDate = dateTimeEvEndDate.Value;
-                }
+                if (chbx_infinite.Checked) temporaryRecurringEvent.EndDate = DateTime.MinValue;
+                else temporaryRecurringEvent.EndDate = dtp_enddate.Value;
 
-                recEvents.Status = comboBoxEStatus.Text;
+                temporaryRecurringEvent.Status = cbx_frequency.Text;
 
-                RecurringEventRepository recEventsRepo = RecurringEventRepository.Instance;
-                bool i = await Task.Run(() => recEventsRepo.AddRecurringEvent(recEvents));
+                RecurringEventRepository recurringEventRepository = RecurringEventRepository.Instance;
+                bool i = await Task.Run(() => recurringEventRepository.AddRecurringEvent(temporaryRecurringEvent));
 
                 if (i == false)
                 {
                     MessageBox.Show("Cannot Add Recurring Event!");
                     return;
-
                 }
             }
 
+            if (temporaryEvent.ID > 0) result = await Task.Run(() => eventRepository.EditEvent(temporaryEvent));
+            else result = await Task.Run(() => eventRepository.AddEvent(temporaryEvent));
 
-
-            //add /edit Event
-            if (temporaryEvent.ID > 0)
-            {
-
-                result = await Task.Run(() => eventRepository.EditEvent(temporaryEvent));
-            }
-            else
-            {
-                result = await Task.Run(() => eventRepository.AddEvent(temporaryEvent));
-            }
-
-            //messageBox for edit and add Event
             if (temporaryEvent.ID > 0 && result)
             {
                 MessageBox.Show("Edited Successfully");
@@ -214,136 +206,71 @@ namespace MoneyApp.Forms
             {
                 MessageBox.Show("Error!");
             }
-
-
-
         }
 
         private async void UpdateRecurringEvent()
         {
-
-            if (txtEventName.Text.Equals(""))
+            if (tbx_name.Text.Equals(""))
             {
                 MessageBox.Show("Event is Empty! Please add a Event name.");
                 return;
             }
+
             RecurringEventRepository eventRepository = RecurringEventRepository.Instance;
-            temporaryRecurringEvent.Name = txtEventName.Text;
-            temporaryRecurringEvent.TypeName = comboBoxEvType.Text;
-            temporaryRecurringEvent.Location = eventLocation.Text;
-            temporaryRecurringEvent.CreatedDate = eventDateTimePick.Value;
-            temporaryRecurringEvent.Note = richTextBoxEvNote.Text;
+            temporaryRecurringEvent.Name = tbx_name.Text;
+            temporaryRecurringEvent.TypeName = cbx_type.Text;
+            temporaryRecurringEvent.Location = tbx_location.Text;
+            temporaryRecurringEvent.CreatedDate = dtp_date.Value;
+            temporaryRecurringEvent.Note = rtbx_note.Text;
             RecurringEvent recurringEvent = new RecurringEvent();
-            recurringEvent.Status = comboBoxEStatus.Text;
-            recurringEvent.EndDate = dateTimeEvEndDate.Value;
+            recurringEvent.Status = cbx_frequency.Text;
+            recurringEvent.EndDate = dtp_enddate.Value;
             bool result = false;
 
-            //Combo box type of  rec event
-            if (temporaryRecurringEvent.TypeName.Equals("Task"))
-            {
-                //income-0
-                temporaryRecurringEvent.Type = false;
-            }
-            else
-            {
-                //expense -1
-                temporaryRecurringEvent.Type = true;
-            }
+            if (temporaryRecurringEvent.TypeName.Equals("Task")) temporaryRecurringEvent.Type = false;
+            else temporaryRecurringEvent.Type = true;
 
-            Contact contact = (Contact)comboBoxContact.SelectedItem;
+            Contact contact = (Contact)cbx_contact.SelectedItem;
             if (contact == null)
             {
-                if (string.IsNullOrWhiteSpace(comboBoxContact.Text))
-                {
-                    temporaryRecurringEvent.ContactID = 0;
-                }
+                if (string.IsNullOrWhiteSpace(cbx_contact.Text)) temporaryRecurringEvent.ContactID = 0;
                 else
                 {
-                    ContactRepository contactsRepository = ContactRepository.Instance;
-                    temporaryRecurringEvent.ContactID = await Task.Run(() => contactsRepository.AddContact(new Contact { Name = comboBoxContact.Text, UserID = Instances.User.ID }));
+                    ContactRepository contactRepository = ContactRepository.Instance;
+                    temporaryRecurringEvent.ContactID = await Task.Run(() => contactRepository.AddContact(new Contact { Name = cbx_contact.Text, UserID = Instances.User.ID }));
                 }
             }
-            else
-            {
-                temporaryRecurringEvent.ContactID = contact.ID;
-            }
+            else temporaryRecurringEvent.ContactID = contact.ID;
 
-            if (cbEUndefined.Checked)
-            {
-                temporaryRecurringEvent.EndDate = DateTime.MinValue;
+            if (chbx_infinite.Checked) temporaryRecurringEvent.EndDate = DateTime.MinValue;
+            else temporaryRecurringEvent.EndDate = dtp_enddate.Value;
 
-            }
-            else
-            {
-                temporaryRecurringEvent.EndDate = dateTimeEvEndDate.Value;
-            }
-
-            temporaryRecurringEvent.Status = comboBoxEStatus.Text;
-            // 0 -- ADDING
-            // MORE THAN 0 EDITING
-
-            //add /edit Event
+            temporaryRecurringEvent.Status = cbx_frequency.Text;
 
             result = await Task.Run(() => eventRepository.EditRecurringEvent(temporaryRecurringEvent));
 
-
-            //messageBox for edit and add Event
             if (temporaryRecurringEvent.ID > 0 && result)
             {
                 MessageBox.Show("Edited Successfully");
                 Dispose();
             }
-
-            else
-            {
-                MessageBox.Show("Error!");
-            }
-
-
-
-        }
-        //
-        private async void AddUpdateEvent_Load(object sender, EventArgs e)
-        {
-
-            ContactRepository ContactRepo = ContactRepository.Instance;
-            // Gets the contact list 
-            List<Contact> ContactList = await Task.Run(() => ContactRepo.GetUserContacts(Instances.User.ID));
-            comboBoxContact.DataSource = ContactList;
-            comboBoxContact.DisplayMember = "Name";
-
-            if (isRecurring)
-
-            {
-                SetRecurringEventsContact(ContactList);
-            }
-            else
-            {
-                SetEventContact(ContactList);
-            }
+            else MessageBox.Show("Error!");
         }
 
         private void SetEventContact(List<Contact> ContactList)
         {
             if (temporaryEvent.ID > 0)
             {
-                if (temporaryEvent.ContactID == 0)
-                {
-                    comboBoxContact.Text = "";
-                }
+                if (temporaryEvent.ContactID == 0) cbx_contact.Text = "";
                 else
                 {
                     for (int i = 0; i < ContactList.Count; i++)
                     {
-                        if (temporaryEvent.ContactID == ContactList[i].ID)
-                        {
-                            comboBoxContact.SelectedItem = comboBoxContact.Items[i];
-                        }
+                        if (temporaryEvent.ContactID == ContactList[i].ID) cbx_contact.SelectedItem = cbx_contact.Items[i];
                     }
                 }
             }
         }
-
 
         private void SetRecurringEventsContact(List<Contact> ContactList)
         {
@@ -351,7 +278,7 @@ namespace MoneyApp.Forms
             {
                 if (temporaryRecurringEvent.ContactID == 0)
                 {
-                    comboBoxContact.Text = "";
+                    cbx_contact.Text = "";
                 }
                 else
                 {
@@ -359,44 +286,11 @@ namespace MoneyApp.Forms
                     {
                         if (temporaryRecurringEvent.ContactID == ContactList[i].ID)
                         {
-                            comboBoxContact.SelectedItem = comboBoxContact.Items[i];
+                            cbx_contact.SelectedItem = cbx_contact.Items[i];
                         }
                     }
                 }
             }
-        }
-
-
-
-        //Check box Recurring Event and visibility of the groupbox if checked
-        private void checkBoxERecurring_CheckedChanged(object sender, EventArgs e)
-        {
-            {
-                if (checkBoxERecurring.Checked == true) groupBoxRecEv.Visible = true;
-                else groupBoxRecEv.Visible = false;
-
-            }
-        }
-
-        private void cbEUndefined_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbEUndefined.Checked == true) dateTimeEvEndDate.Enabled = false;
-            else dateTimeEvEndDate.Enabled = true;
-
-
-        }
-
-        private void AddEditEventSizeChange(object sender, EventArgs e)
-        {
-            ResizePanel();
-        }
-
-        private void ResizePanel()
-        {
-            int x = ((Width - pl_main.Width) / 2);
-            int y = ((Height - pl_main.Height) / 2);
-
-            pl_main.Location = new Point(x, y);
         }
     }
 }

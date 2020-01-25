@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Strings = MoneyApp.Properties.Strings;
 
 namespace MoneyApp.Forms
 {
@@ -18,8 +19,8 @@ namespace MoneyApp.Forms
         public AddEditContact()
         {
             InitializeComponent();
-            btn_action.Text = "Add contact";
-            Text = "Add contact";
+            btn_action.Text = Strings.Add;
+            Text = Strings.AddContact;
             contact = new Contact { UserID = Instances.User.ID };
         }
 
@@ -27,8 +28,8 @@ namespace MoneyApp.Forms
         {
             InitializeComponent();
             contact = c;
-            btn_action.Text = "Edit contact";
-            Text = "Edit contact";
+            btn_action.Text = Strings.Edit;
+            Text = Strings.EditContact;
             tbx_name.Text = c.Name;
         }
 
@@ -36,7 +37,13 @@ namespace MoneyApp.Forms
         {
             if (string.IsNullOrWhiteSpace(tbx_name.Text))
             {
-                MessageBox.Show("Error");
+                MessageBox.Show(Strings.ContactNameWrong, Strings.Error);
+                return;
+            }
+
+            if (tbx_name.Text.Length > 100)
+            {
+                MessageBox.Show(Strings.ContactNameMaxLengthError, Strings.Error);
                 return;
             }
 
@@ -45,8 +52,9 @@ namespace MoneyApp.Forms
 
             btn_action.Enabled = false;
             int i = contact.ID > 0 ? await Task.Run(()=> contactRepository.EditContact(contact)) : await Task.Run(() => contactRepository.AddContact(contact));
-            MessageBox.Show(i > 0 ? (contact.ID > 0) ? "Edited okay" : "Added okay" : "Error");
-            Close();
+            string messageText = i > 0 ? (contact.ID > 0) ? Strings.EditContactOkay : Strings.AddContactOkay : Strings.SomethingError;
+            string captionText = i > 0 ? Strings.Success : Strings.Error;
+            MessageBox.Show(messageText, captionText);
             Dispose();
         }
 

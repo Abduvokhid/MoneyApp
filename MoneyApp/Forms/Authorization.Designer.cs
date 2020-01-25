@@ -291,7 +291,7 @@
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(146)))), ((int)(((byte)(162)))));
             this.label1.Location = new System.Drawing.Point(178, 195);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(22, 13);
+            this.label1.Size = new System.Drawing.Size(22, 14);
             this.label1.TabIndex = 17;
             this.label1.Text = "OR";
             // 

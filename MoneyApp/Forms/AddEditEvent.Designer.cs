@@ -30,31 +30,31 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddEditEvent));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.comboBoxContact = new System.Windows.Forms.ComboBox();
+            this.cbx_contact = new System.Windows.Forms.ComboBox();
             this.lblContact = new System.Windows.Forms.Label();
             this.lblNote = new System.Windows.Forms.Label();
-            this.richTextBoxEvNote = new System.Windows.Forms.RichTextBox();
+            this.rtbx_note = new System.Windows.Forms.RichTextBox();
             this.lblDateTime = new System.Windows.Forms.Label();
-            this.eventDateTimePick = new System.Windows.Forms.DateTimePicker();
+            this.dtp_date = new System.Windows.Forms.DateTimePicker();
             this.lblType = new System.Windows.Forms.Label();
-            this.comboBoxEvType = new System.Windows.Forms.ComboBox();
+            this.cbx_type = new System.Windows.Forms.ComboBox();
             this.lbl_Add_ContName = new System.Windows.Forms.Label();
-            this.txtEventName = new System.Windows.Forms.TextBox();
+            this.tbx_name = new System.Windows.Forms.TextBox();
             this.lblHeadingTransaction = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblHeadingEvent = new System.Windows.Forms.Label();
             this.lbllocation = new System.Windows.Forms.Label();
-            this.eventLocation = new System.Windows.Forms.TextBox();
-            this.checkBoxERecurring = new System.Windows.Forms.CheckBox();
-            this.groupBoxRecEv = new System.Windows.Forms.GroupBox();
-            this.cbEUndefined = new System.Windows.Forms.CheckBox();
+            this.tbx_location = new System.Windows.Forms.TextBox();
+            this.cbx_recurring = new System.Windows.Forms.CheckBox();
+            this.gb_recurring = new System.Windows.Forms.GroupBox();
+            this.chbx_infinite = new System.Windows.Forms.CheckBox();
             this.lblEndDate = new System.Windows.Forms.Label();
-            this.dateTimeEvEndDate = new System.Windows.Forms.DateTimePicker();
+            this.dtp_enddate = new System.Windows.Forms.DateTimePicker();
             this.lblEventStatus = new System.Windows.Forms.Label();
-            this.comboBoxEStatus = new System.Windows.Forms.ComboBox();
+            this.cbx_frequency = new System.Windows.Forms.ComboBox();
             this.pl_main = new System.Windows.Forms.Panel();
-            this.btn_add_editEvent = new System.Windows.Forms.Button();
-            this.groupBoxRecEv.SuspendLayout();
+            this.btn_action = new System.Windows.Forms.Button();
+            this.gb_recurring.SuspendLayout();
             this.pl_main.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,17 +67,17 @@
             this.panel1.Size = new System.Drawing.Size(874, 25);
             this.panel1.TabIndex = 35;
             // 
-            // comboBoxContact
+            // cbx_contact
             // 
-            this.comboBoxContact.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.comboBoxContact.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBoxContact.Font = new System.Drawing.Font("Roboto", 9.75F);
-            this.comboBoxContact.FormattingEnabled = true;
-            this.comboBoxContact.Location = new System.Drawing.Point(114, 109);
-            this.comboBoxContact.Margin = new System.Windows.Forms.Padding(4);
-            this.comboBoxContact.Name = "comboBoxContact";
-            this.comboBoxContact.Size = new System.Drawing.Size(200, 25);
-            this.comboBoxContact.TabIndex = 34;
+            this.cbx_contact.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbx_contact.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cbx_contact.Font = new System.Drawing.Font("Roboto", 9.75F);
+            this.cbx_contact.FormattingEnabled = true;
+            this.cbx_contact.Location = new System.Drawing.Point(114, 109);
+            this.cbx_contact.Margin = new System.Windows.Forms.Padding(4);
+            this.cbx_contact.Name = "cbx_contact";
+            this.cbx_contact.Size = new System.Drawing.Size(200, 25);
+            this.cbx_contact.TabIndex = 34;
             // 
             // lblContact
             // 
@@ -86,7 +86,7 @@
             this.lblContact.Location = new System.Drawing.Point(51, 112);
             this.lblContact.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblContact.Name = "lblContact";
-            this.lblContact.Size = new System.Drawing.Size(54, 15);
+            this.lblContact.Size = new System.Drawing.Size(55, 17);
             this.lblContact.TabIndex = 33;
             this.lblContact.Text = "Contact:";
             // 
@@ -97,20 +97,20 @@
             this.lblNote.Location = new System.Drawing.Point(72, 231);
             this.lblNote.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblNote.Name = "lblNote";
-            this.lblNote.Size = new System.Drawing.Size(37, 15);
+            this.lblNote.Size = new System.Drawing.Size(38, 17);
             this.lblNote.TabIndex = 32;
             this.lblNote.Text = "Note:";
             // 
-            // richTextBoxEvNote
+            // rtbx_note
             // 
-            this.richTextBoxEvNote.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBoxEvNote.Font = new System.Drawing.Font("Roboto", 9.75F);
-            this.richTextBoxEvNote.Location = new System.Drawing.Point(114, 204);
-            this.richTextBoxEvNote.Margin = new System.Windows.Forms.Padding(4);
-            this.richTextBoxEvNote.Name = "richTextBoxEvNote";
-            this.richTextBoxEvNote.Size = new System.Drawing.Size(200, 71);
-            this.richTextBoxEvNote.TabIndex = 31;
-            this.richTextBoxEvNote.Text = "";
+            this.rtbx_note.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbx_note.Font = new System.Drawing.Font("Roboto", 9.75F);
+            this.rtbx_note.Location = new System.Drawing.Point(114, 204);
+            this.rtbx_note.Margin = new System.Windows.Forms.Padding(4);
+            this.rtbx_note.Name = "rtbx_note";
+            this.rtbx_note.Size = new System.Drawing.Size(200, 71);
+            this.rtbx_note.TabIndex = 31;
+            this.rtbx_note.Text = "";
             // 
             // lblDateTime
             // 
@@ -119,20 +119,20 @@
             this.lblDateTime.Location = new System.Drawing.Point(68, 178);
             this.lblDateTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDateTime.Name = "lblDateTime";
-            this.lblDateTime.Size = new System.Drawing.Size(37, 15);
+            this.lblDateTime.Size = new System.Drawing.Size(38, 17);
             this.lblDateTime.TabIndex = 30;
             this.lblDateTime.Text = "Date:";
             // 
-            // eventDateTimePick
+            // dtp_date
             // 
-            this.eventDateTimePick.CustomFormat = "dd/MM/yyyy HH:mm";
-            this.eventDateTimePick.Font = new System.Drawing.Font("Roboto", 9.75F);
-            this.eventDateTimePick.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.eventDateTimePick.Location = new System.Drawing.Point(114, 173);
-            this.eventDateTimePick.Margin = new System.Windows.Forms.Padding(4);
-            this.eventDateTimePick.Name = "eventDateTimePick";
-            this.eventDateTimePick.Size = new System.Drawing.Size(200, 23);
-            this.eventDateTimePick.TabIndex = 29;
+            this.dtp_date.CustomFormat = "dd/MM/yyyy HH:mm";
+            this.dtp_date.Font = new System.Drawing.Font("Roboto", 9.75F);
+            this.dtp_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtp_date.Location = new System.Drawing.Point(114, 173);
+            this.dtp_date.Margin = new System.Windows.Forms.Padding(4);
+            this.dtp_date.Name = "dtp_date";
+            this.dtp_date.Size = new System.Drawing.Size(200, 23);
+            this.dtp_date.TabIndex = 29;
             // 
             // lblType
             // 
@@ -141,23 +141,23 @@
             this.lblType.Location = new System.Drawing.Point(71, 79);
             this.lblType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblType.Name = "lblType";
-            this.lblType.Size = new System.Drawing.Size(38, 15);
+            this.lblType.Size = new System.Drawing.Size(39, 17);
             this.lblType.TabIndex = 26;
             this.lblType.Text = "Type:";
             // 
-            // comboBoxEvType
+            // cbx_type
             // 
-            this.comboBoxEvType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxEvType.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.comboBoxEvType.FormattingEnabled = true;
-            this.comboBoxEvType.Items.AddRange(new object[] {
+            this.cbx_type.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbx_type.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbx_type.FormattingEnabled = true;
+            this.cbx_type.Items.AddRange(new object[] {
             "Task",
             "Appointment"});
-            this.comboBoxEvType.Location = new System.Drawing.Point(114, 76);
-            this.comboBoxEvType.Margin = new System.Windows.Forms.Padding(4);
-            this.comboBoxEvType.Name = "comboBoxEvType";
-            this.comboBoxEvType.Size = new System.Drawing.Size(200, 25);
-            this.comboBoxEvType.TabIndex = 25;
+            this.cbx_type.Location = new System.Drawing.Point(114, 76);
+            this.cbx_type.Margin = new System.Windows.Forms.Padding(4);
+            this.cbx_type.Name = "cbx_type";
+            this.cbx_type.Size = new System.Drawing.Size(200, 25);
+            this.cbx_type.TabIndex = 25;
             // 
             // lbl_Add_ContName
             // 
@@ -170,14 +170,14 @@
             this.lbl_Add_ContName.TabIndex = 24;
             this.lbl_Add_ContName.Text = "Name:";
             // 
-            // txtEventName
+            // tbx_name
             // 
-            this.txtEventName.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtEventName.Location = new System.Drawing.Point(114, 45);
-            this.txtEventName.Margin = new System.Windows.Forms.Padding(4);
-            this.txtEventName.Name = "txtEventName";
-            this.txtEventName.Size = new System.Drawing.Size(200, 23);
-            this.txtEventName.TabIndex = 23;
+            this.tbx_name.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbx_name.Location = new System.Drawing.Point(114, 45);
+            this.tbx_name.Margin = new System.Windows.Forms.Padding(4);
+            this.tbx_name.Name = "tbx_name";
+            this.tbx_name.Size = new System.Drawing.Size(200, 23);
+            this.tbx_name.TabIndex = 23;
             // 
             // lblHeadingTransaction
             // 
@@ -220,60 +220,60 @@
             this.lbllocation.Location = new System.Drawing.Point(50, 145);
             this.lbllocation.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbllocation.Name = "lbllocation";
-            this.lbllocation.Size = new System.Drawing.Size(59, 15);
+            this.lbllocation.Size = new System.Drawing.Size(60, 17);
             this.lbllocation.TabIndex = 39;
             this.lbllocation.Text = "Location:";
             // 
-            // eventLocation
+            // tbx_location
             // 
-            this.eventLocation.Font = new System.Drawing.Font("Roboto", 9.75F);
-            this.eventLocation.Location = new System.Drawing.Point(114, 142);
-            this.eventLocation.Margin = new System.Windows.Forms.Padding(4);
-            this.eventLocation.Name = "eventLocation";
-            this.eventLocation.Size = new System.Drawing.Size(200, 23);
-            this.eventLocation.TabIndex = 38;
+            this.tbx_location.Font = new System.Drawing.Font("Roboto", 9.75F);
+            this.tbx_location.Location = new System.Drawing.Point(114, 142);
+            this.tbx_location.Margin = new System.Windows.Forms.Padding(4);
+            this.tbx_location.Name = "tbx_location";
+            this.tbx_location.Size = new System.Drawing.Size(200, 23);
+            this.tbx_location.TabIndex = 38;
             // 
-            // checkBoxERecurring
+            // cbx_recurring
             // 
-            this.checkBoxERecurring.AutoSize = true;
-            this.checkBoxERecurring.Font = new System.Drawing.Font("Roboto", 9.75F);
-            this.checkBoxERecurring.Location = new System.Drawing.Point(114, 283);
-            this.checkBoxERecurring.Margin = new System.Windows.Forms.Padding(4);
-            this.checkBoxERecurring.Name = "checkBoxERecurring";
-            this.checkBoxERecurring.Size = new System.Drawing.Size(140, 19);
-            this.checkBoxERecurring.TabIndex = 41;
-            this.checkBoxERecurring.Text = "Is it recurring event?";
-            this.checkBoxERecurring.UseVisualStyleBackColor = true;
-            this.checkBoxERecurring.CheckedChanged += new System.EventHandler(this.checkBoxERecurring_CheckedChanged);
+            this.cbx_recurring.AutoSize = true;
+            this.cbx_recurring.Font = new System.Drawing.Font("Roboto", 9.75F);
+            this.cbx_recurring.Location = new System.Drawing.Point(114, 283);
+            this.cbx_recurring.Margin = new System.Windows.Forms.Padding(4);
+            this.cbx_recurring.Name = "cbx_recurring";
+            this.cbx_recurring.Size = new System.Drawing.Size(141, 21);
+            this.cbx_recurring.TabIndex = 41;
+            this.cbx_recurring.Text = "Is it recurring event?";
+            this.cbx_recurring.UseVisualStyleBackColor = true;
+            this.cbx_recurring.CheckedChanged += new System.EventHandler(this.RecurringCheckboxChanged);
             // 
-            // groupBoxRecEv
+            // gb_recurring
             // 
-            this.groupBoxRecEv.Controls.Add(this.cbEUndefined);
-            this.groupBoxRecEv.Controls.Add(this.lblEndDate);
-            this.groupBoxRecEv.Controls.Add(this.dateTimeEvEndDate);
-            this.groupBoxRecEv.Controls.Add(this.lblEventStatus);
-            this.groupBoxRecEv.Controls.Add(this.comboBoxEStatus);
-            this.groupBoxRecEv.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Bold);
-            this.groupBoxRecEv.Location = new System.Drawing.Point(27, 305);
-            this.groupBoxRecEv.Margin = new System.Windows.Forms.Padding(4);
-            this.groupBoxRecEv.Name = "groupBoxRecEv";
-            this.groupBoxRecEv.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBoxRecEv.Size = new System.Drawing.Size(309, 106);
-            this.groupBoxRecEv.TabIndex = 40;
-            this.groupBoxRecEv.TabStop = false;
-            this.groupBoxRecEv.Visible = false;
+            this.gb_recurring.Controls.Add(this.chbx_infinite);
+            this.gb_recurring.Controls.Add(this.lblEndDate);
+            this.gb_recurring.Controls.Add(this.dtp_enddate);
+            this.gb_recurring.Controls.Add(this.lblEventStatus);
+            this.gb_recurring.Controls.Add(this.cbx_frequency);
+            this.gb_recurring.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Bold);
+            this.gb_recurring.Location = new System.Drawing.Point(27, 305);
+            this.gb_recurring.Margin = new System.Windows.Forms.Padding(4);
+            this.gb_recurring.Name = "gb_recurring";
+            this.gb_recurring.Padding = new System.Windows.Forms.Padding(4);
+            this.gb_recurring.Size = new System.Drawing.Size(309, 106);
+            this.gb_recurring.TabIndex = 40;
+            this.gb_recurring.TabStop = false;
+            this.gb_recurring.Visible = false;
             // 
-            // cbEUndefined
+            // chbx_infinite
             // 
-            this.cbEUndefined.AutoSize = true;
-            this.cbEUndefined.Font = new System.Drawing.Font("Roboto", 9.75F);
-            this.cbEUndefined.Location = new System.Drawing.Point(89, 75);
-            this.cbEUndefined.Name = "cbEUndefined";
-            this.cbEUndefined.Size = new System.Drawing.Size(90, 19);
-            this.cbEUndefined.TabIndex = 18;
-            this.cbEUndefined.Text = "Never ends";
-            this.cbEUndefined.UseVisualStyleBackColor = true;
-            this.cbEUndefined.CheckedChanged += new System.EventHandler(this.cbEUndefined_CheckedChanged);
+            this.chbx_infinite.AutoSize = true;
+            this.chbx_infinite.Font = new System.Drawing.Font("Roboto", 9.75F);
+            this.chbx_infinite.Location = new System.Drawing.Point(89, 75);
+            this.chbx_infinite.Name = "chbx_infinite";
+            this.chbx_infinite.Size = new System.Drawing.Size(91, 21);
+            this.chbx_infinite.TabIndex = 18;
+            this.chbx_infinite.Text = "Never ends";
+            this.chbx_infinite.UseVisualStyleBackColor = true;
+            this.chbx_infinite.CheckedChanged += new System.EventHandler(this.InfiniteCheckboxChanged);
             // 
             // lblEndDate
             // 
@@ -282,20 +282,20 @@
             this.lblEndDate.Location = new System.Drawing.Point(21, 53);
             this.lblEndDate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblEndDate.Name = "lblEndDate";
-            this.lblEndDate.Size = new System.Drawing.Size(59, 15);
+            this.lblEndDate.Size = new System.Drawing.Size(60, 17);
             this.lblEndDate.TabIndex = 16;
             this.lblEndDate.Text = "End date:";
             // 
-            // dateTimeEvEndDate
+            // dtp_enddate
             // 
-            this.dateTimeEvEndDate.CustomFormat = "dd/MM/yyyy HH:mm";
-            this.dateTimeEvEndDate.Font = new System.Drawing.Font("Roboto", 9.75F);
-            this.dateTimeEvEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimeEvEndDate.Location = new System.Drawing.Point(89, 48);
-            this.dateTimeEvEndDate.Margin = new System.Windows.Forms.Padding(4);
-            this.dateTimeEvEndDate.Name = "dateTimeEvEndDate";
-            this.dateTimeEvEndDate.Size = new System.Drawing.Size(200, 23);
-            this.dateTimeEvEndDate.TabIndex = 15;
+            this.dtp_enddate.CustomFormat = "dd/MM/yyyy HH:mm";
+            this.dtp_enddate.Font = new System.Drawing.Font("Roboto", 9.75F);
+            this.dtp_enddate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtp_enddate.Location = new System.Drawing.Point(89, 48);
+            this.dtp_enddate.Margin = new System.Windows.Forms.Padding(4);
+            this.dtp_enddate.Name = "dtp_enddate";
+            this.dtp_enddate.Size = new System.Drawing.Size(200, 23);
+            this.dtp_enddate.TabIndex = 15;
             // 
             // lblEventStatus
             // 
@@ -304,65 +304,66 @@
             this.lblEventStatus.Location = new System.Drawing.Point(11, 18);
             this.lblEventStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblEventStatus.Name = "lblEventStatus";
-            this.lblEventStatus.Size = new System.Drawing.Size(69, 15);
+            this.lblEventStatus.Size = new System.Drawing.Size(70, 17);
             this.lblEventStatus.TabIndex = 1;
             this.lblEventStatus.Text = "Frequency:";
             // 
-            // comboBoxEStatus
+            // cbx_frequency
             // 
-            this.comboBoxEStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxEStatus.Font = new System.Drawing.Font("Roboto", 9.75F);
-            this.comboBoxEStatus.FormattingEnabled = true;
-            this.comboBoxEStatus.Items.AddRange(new object[] {
+            this.cbx_frequency.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbx_frequency.Font = new System.Drawing.Font("Roboto", 9.75F);
+            this.cbx_frequency.FormattingEnabled = true;
+            this.cbx_frequency.Items.AddRange(new object[] {
             "Daily",
             "Weekly",
             "Monthly",
             "Yearly"});
-            this.comboBoxEStatus.Location = new System.Drawing.Point(89, 15);
-            this.comboBoxEStatus.Margin = new System.Windows.Forms.Padding(4);
-            this.comboBoxEStatus.Name = "comboBoxEStatus";
-            this.comboBoxEStatus.Size = new System.Drawing.Size(200, 25);
-            this.comboBoxEStatus.TabIndex = 0;
+            this.cbx_frequency.Location = new System.Drawing.Point(89, 15);
+            this.cbx_frequency.Margin = new System.Windows.Forms.Padding(4);
+            this.cbx_frequency.Name = "cbx_frequency";
+            this.cbx_frequency.Size = new System.Drawing.Size(200, 25);
+            this.cbx_frequency.TabIndex = 0;
             // 
             // pl_main
             // 
-            this.pl_main.Controls.Add(this.btn_add_editEvent);
-            this.pl_main.Controls.Add(this.richTextBoxEvNote);
-            this.pl_main.Controls.Add(this.checkBoxERecurring);
-            this.pl_main.Controls.Add(this.groupBoxRecEv);
-            this.pl_main.Controls.Add(this.txtEventName);
+            this.pl_main.Controls.Add(this.btn_action);
+            this.pl_main.Controls.Add(this.rtbx_note);
+            this.pl_main.Controls.Add(this.cbx_recurring);
+            this.pl_main.Controls.Add(this.gb_recurring);
+            this.pl_main.Controls.Add(this.tbx_name);
             this.pl_main.Controls.Add(this.lbllocation);
             this.pl_main.Controls.Add(this.lbl_Add_ContName);
-            this.pl_main.Controls.Add(this.eventLocation);
-            this.pl_main.Controls.Add(this.comboBoxEvType);
+            this.pl_main.Controls.Add(this.tbx_location);
+            this.pl_main.Controls.Add(this.cbx_type);
             this.pl_main.Controls.Add(this.lblType);
             this.pl_main.Controls.Add(this.lblHeadingEvent);
-            this.pl_main.Controls.Add(this.eventDateTimePick);
+            this.pl_main.Controls.Add(this.dtp_date);
             this.pl_main.Controls.Add(this.lblDateTime);
-            this.pl_main.Controls.Add(this.comboBoxContact);
+            this.pl_main.Controls.Add(this.cbx_contact);
             this.pl_main.Controls.Add(this.lblNote);
             this.pl_main.Controls.Add(this.lblContact);
             this.pl_main.Location = new System.Drawing.Point(6, 11);
             this.pl_main.Name = "pl_main";
             this.pl_main.Size = new System.Drawing.Size(370, 468);
             this.pl_main.TabIndex = 42;
+            this.pl_main.Click += new System.EventHandler(this.ActionClick);
             // 
-            // btn_add_editEvent
+            // btn_action
             // 
-            this.btn_add_editEvent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
-            this.btn_add_editEvent.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(136)))), ((int)(((byte)(229)))));
-            this.btn_add_editEvent.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(136)))), ((int)(((byte)(229)))));
-            this.btn_add_editEvent.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(181)))), ((int)(((byte)(246)))));
-            this.btn_add_editEvent.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_add_editEvent.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btn_add_editEvent.ForeColor = System.Drawing.Color.White;
-            this.btn_add_editEvent.Location = new System.Drawing.Point(129, 418);
-            this.btn_add_editEvent.Name = "btn_add_editEvent";
-            this.btn_add_editEvent.Size = new System.Drawing.Size(100, 34);
-            this.btn_add_editEvent.TabIndex = 43;
-            this.btn_add_editEvent.Text = "Action";
-            this.btn_add_editEvent.UseVisualStyleBackColor = false;
-            this.btn_add_editEvent.Click += new System.EventHandler(this.btn_add_editEvent_Click);
+            this.btn_action.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
+            this.btn_action.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(136)))), ((int)(((byte)(229)))));
+            this.btn_action.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(136)))), ((int)(((byte)(229)))));
+            this.btn_action.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(181)))), ((int)(((byte)(246)))));
+            this.btn_action.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_action.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btn_action.ForeColor = System.Drawing.Color.White;
+            this.btn_action.Location = new System.Drawing.Point(129, 418);
+            this.btn_action.Name = "btn_action";
+            this.btn_action.Size = new System.Drawing.Size(100, 34);
+            this.btn_action.TabIndex = 43;
+            this.btn_action.Text = "Action";
+            this.btn_action.UseVisualStyleBackColor = false;
+            this.btn_action.Click += new System.EventHandler(this.ActionClick);
             // 
             // AddEditEvent
             // 
@@ -380,10 +381,10 @@
             this.MinimumSize = new System.Drawing.Size(400, 530);
             this.Name = "AddEditEvent";
             this.Text = "AddUpdateEvent";
-            this.Load += new System.EventHandler(this.AddUpdateEvent_Load);
+            this.Load += new System.EventHandler(this.AddUpdateEventLoad);
             this.SizeChanged += new System.EventHandler(this.AddEditEventSizeChange);
-            this.groupBoxRecEv.ResumeLayout(false);
-            this.groupBoxRecEv.PerformLayout();
+            this.gb_recurring.ResumeLayout(false);
+            this.gb_recurring.PerformLayout();
             this.pl_main.ResumeLayout(false);
             this.pl_main.PerformLayout();
             this.ResumeLayout(false);
@@ -394,29 +395,29 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ComboBox comboBoxContact;
+        private System.Windows.Forms.ComboBox cbx_contact;
         private System.Windows.Forms.Label lblContact;
         private System.Windows.Forms.Label lblNote;
-        private System.Windows.Forms.RichTextBox richTextBoxEvNote;
+        private System.Windows.Forms.RichTextBox rtbx_note;
         private System.Windows.Forms.Label lblDateTime;
-        private System.Windows.Forms.DateTimePicker eventDateTimePick;
+        private System.Windows.Forms.DateTimePicker dtp_date;
         private System.Windows.Forms.Label lblType;
-        private System.Windows.Forms.ComboBox comboBoxEvType;
+        private System.Windows.Forms.ComboBox cbx_type;
         private System.Windows.Forms.Label lbl_Add_ContName;
-        private System.Windows.Forms.TextBox txtEventName;
+        private System.Windows.Forms.TextBox tbx_name;
         private System.Windows.Forms.Label lblHeadingTransaction;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label lblHeadingEvent;
         private System.Windows.Forms.Label lbllocation;
-        private System.Windows.Forms.TextBox eventLocation;
-        private System.Windows.Forms.CheckBox checkBoxERecurring;
-        private System.Windows.Forms.GroupBox groupBoxRecEv;
+        private System.Windows.Forms.TextBox tbx_location;
+        private System.Windows.Forms.CheckBox cbx_recurring;
+        private System.Windows.Forms.GroupBox gb_recurring;
         private System.Windows.Forms.Label lblEndDate;
-        private System.Windows.Forms.DateTimePicker dateTimeEvEndDate;
+        private System.Windows.Forms.DateTimePicker dtp_enddate;
         private System.Windows.Forms.Label lblEventStatus;
-        private System.Windows.Forms.ComboBox comboBoxEStatus;
-        private System.Windows.Forms.CheckBox cbEUndefined;
+        private System.Windows.Forms.ComboBox cbx_frequency;
+        private System.Windows.Forms.CheckBox chbx_infinite;
         private System.Windows.Forms.Panel pl_main;
-        private System.Windows.Forms.Button btn_add_editEvent;
+        private System.Windows.Forms.Button btn_action;
     }
 }

@@ -50,7 +50,7 @@ namespace MoneyApp.Forms
             richTextBoxTransactionNote.Text = transactionObj.Note;
 
             groupBoxRecTrans.Visible = false;
-            checkBoxTRecurring.Visible = false;
+            cbx_recurring.Visible = false;
             ResizePanel();
         }
 
@@ -78,7 +78,7 @@ namespace MoneyApp.Forms
             }
 
             groupBoxRecTrans.Visible = true;
-            checkBoxTRecurring.Visible = false;
+            cbx_recurring.Visible = false;
             ResizePanel();
         }
 
@@ -141,7 +141,7 @@ namespace MoneyApp.Forms
                 auTransactionObj.ContactID = contact.ID;
             }
 
-            if (checkBoxTRecurring.Checked && auTransactionObj.ID == 0)
+            if (cbx_recurring.Checked && auTransactionObj.ID == 0)
             {
                 RecurringTransaction rt = new RecurringTransaction
                 {
@@ -338,7 +338,7 @@ namespace MoneyApp.Forms
         //Check box Recurring Transaction and visibility of the groupbox if checked
         private void checkBoxTRecurring_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxTRecurring.Checked == true) groupBoxRecTrans.Visible = true;
+            if (cbx_recurring.Checked == true) groupBoxRecTrans.Visible = true;
             else groupBoxRecTrans.Visible = false;
 
         }
