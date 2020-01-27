@@ -380,6 +380,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(400, 530);
             this.Name = "AddEditEvent";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AddUpdateEvent";
             this.Load += new System.EventHandler(this.AddUpdateEventLoad);
             this.SizeChanged += new System.EventHandler(this.AddEditEventSizeChange);

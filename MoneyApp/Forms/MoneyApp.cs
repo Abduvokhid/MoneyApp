@@ -12,7 +12,6 @@ using MoneyApp.Forms;
 using MoneyApp.Models;
 using MoneyApp.Repositories;
 using System.Runtime.InteropServices;
-using System.Threading;
 using LiveCharts.Wpf;
 using LiveCharts;
 
@@ -21,6 +20,7 @@ namespace MoneyApp
     public partial class MoneyApp : Form
     {
         private bool isFirst = true;
+        private bool isOpen = false;
 
         public MoneyApp()
         {
@@ -32,11 +32,12 @@ namespace MoneyApp
 
         private void MoneyAppActivated(object sender, EventArgs e)
         {
+            if (Instances.User == null) { Instances.User = new User { ID = 1, LastAccessDate = DateTime.Now, Name = "Abduvokhid" }; }
             if (Instances.User == null)
             {
                 Authorization auth = new Authorization();
                 auth.Activate();
-                auth.Show();
+                auth.ShowDialog();
             } else
             {
                 GenerateInfo();
@@ -48,28 +49,28 @@ namespace MoneyApp
         {
             ViewContacts contactsView = new ViewContacts();
             contactsView.Activate();
-            contactsView.Show();
+            contactsView.ShowDialog();
         }
 
         private void TransactionsClick(object sender, EventArgs e)
         {
             ViewTransactions transactionsView = new ViewTransactions();
             transactionsView.Activate();
-            transactionsView.Show();
+            transactionsView.ShowDialog();
         }
 
         private void RecurringTransactionsClick(object sender, EventArgs e)
         {
             ViewTransactions transactionsView = new ViewTransactions(true);
             transactionsView.Activate();
-            transactionsView.Show();
+            transactionsView.ShowDialog();
         }
 
         private void ReportClick(object sender, EventArgs e)
         {
             ViewReport viewReport = new ViewReport();
             viewReport.Activate();
-            viewReport.Show();
+            viewReport.ShowDialog();
         }
 
         private void PredictClick(object sender, EventArgs e)
@@ -84,11 +85,15 @@ namespace MoneyApp
             BackgroundWorker bw = (BackgroundWorker)sender;
             while (!bw.CancellationPending)
             {
+                if (Instances.User == null) continue;
                 DoRecurringTransaction();
+                if (Instances.User == null) continue;
                 DoRecurringEvent();
                 if (isFirst) isFirst = false;
+                if (Instances.User == null) continue;
                 Instances.User.LastAccessDate = DateTime.Now;
                 UserRepository userRepository = UserRepository.Instance;
+                if (Instances.User == null) continue;
                 userRepository.EditLastAccessDate(Instances.User);
             }
         }
@@ -98,6 +103,7 @@ namespace MoneyApp
             if (!isFirst)
             {
                 string text = (string)e.UserState;
+                if (Instances.User == null) return;
                 new Notification(text).Show();
             }
         }
@@ -107,14 +113,14 @@ namespace MoneyApp
 
             ViewEvents viewEvents = new ViewEvents();
             viewEvents.Activate();
-            viewEvents.Show();
+            viewEvents.ShowDialog();
         }
 
         private void RecurringEventsClick(object sender, EventArgs e)
         {
             ViewEvents viewEvents = new ViewEvents(true);
             viewEvents.Activate();
-            viewEvents.Show();
+            viewEvents.ShowDialog();
         }
 
         private void DashboardDateSelected(object sender, DateRangeEventArgs e)
@@ -126,9 +132,11 @@ namespace MoneyApp
         {
             TransactionRepository transactionRepository = TransactionRepository.Instance;
             RecurringTransactionRepository recurringTransactionRepository = RecurringTransactionRepository.Instance;
+            if (Instances.User == null) return;
             List<RecurringTransaction> recurringTransactions = recurringTransactionRepository.GetUserTransactions(Instances.User.ID);
             foreach (RecurringTransaction recurringTransaction in recurringTransactions)
             {
+                if (Instances.User == null) return;
                 if (DateTime.Now > recurringTransaction.EndDate && recurringTransaction.EndDate != DateTime.MinValue) continue;
                 DateTime accTime = Instances.User.LastAccessDate;
                 DateTime nowTime = DateTime.Now;
@@ -170,6 +178,7 @@ namespace MoneyApp
                     }
                     if (recTime > accTime && recTime <= nowTime && recTime > recurringTransaction.CreatedDate)
                     {
+                        if (Instances.User == null) return;
                         await Task.Run(() => transactionRepository.AddTransaction(new Transaction
                         {
                             Name = recurringTransaction.Name,
@@ -191,9 +200,11 @@ namespace MoneyApp
         {
             EventRepository transactionRepository = EventRepository.Instance;
             RecurringEventRepository recurringEventRepository = RecurringEventRepository.Instance;
+            if (Instances.User == null) return;
             List<RecurringEvent> recurringEvents = recurringEventRepository.GetRecurringEvents(Instances.User.ID);
             foreach (RecurringEvent recurringEvent in recurringEvents)
             {
+                if (Instances.User == null) return;
                 if (DateTime.Now > recurringEvent.EndDate && recurringEvent.EndDate != DateTime.MinValue) continue;
                 DateTime accTime = Instances.User.LastAccessDate;
                 DateTime nowTime = DateTime.Now;
@@ -235,6 +246,7 @@ namespace MoneyApp
                     }
                     if (recTime > accTime && recTime <= nowTime && recTime > recurringEvent.CreatedDate)
                     {
+                        if (Instances.User == null) return;
                         await Task.Run(() => transactionRepository.AddEvent(new Event
                         {
                             Name = recurringEvent.Name,
@@ -365,6 +377,58 @@ namespace MoneyApp
                 Title = "Month",
                 Labels = vs.ToArray()
             });
+        }
+
+        private void UserPanelMouseEnter(object sender, EventArgs e)
+        {
+            isOpen = true;
+            Timer timer = new Timer();
+            timer.Interval = 15;
+            timer.Tick += TimerTick;
+            timer.Start();
+        }
+
+        private void TimerTick(object sender, EventArgs e)
+        {
+            if (isOpen)
+            {
+                if (pl_user.Top > pl_left.Height - 120)
+                {
+                    pl_user.Top -= 5;
+                } else
+                {
+                    Timer timer = (Timer)sender;
+                    timer.Stop();
+                }
+            } else
+            {
+                if (pl_user.Top < pl_left.Height - 40)
+                {
+                    pl_user.Top += 5;
+                } else
+                {
+                    Timer timer = (Timer)sender;
+                    timer.Stop();
+                }
+            }
+        }
+
+        private void UserPanelMouseLeave(object sender, EventArgs e)
+        {
+            isOpen = false;
+            Timer timer = new Timer();
+            timer.Interval = 10;
+            timer.Tick += TimerTick;
+            timer.Start();
+        }
+
+        private void LogOutClick(object sender, EventArgs e)
+        {
+            bw_recurring.CancelAsync();
+            Instances.User = null;
+            Authorization auth = new Authorization();
+            auth.Activate();
+            auth.ShowDialog();
         }
     }
 }

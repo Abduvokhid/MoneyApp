@@ -19,7 +19,6 @@ namespace MoneyApp.Forms
         {
             InitializeComponent();
             contactRepository = ContactRepository.Instance;
-            Instances.MoneyApp.Hide();
             lv_contacts.Columns[0].Width = lv_contacts.Width - 20;
         }
 

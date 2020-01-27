@@ -157,6 +157,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(700, 500);
             this.Name = "ViewEvents";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Events";
             this.Activated += new System.EventHandler(this.viewEventFormActivated);
             this.SizeChanged += new System.EventHandler(this.EventsSizeChanged);

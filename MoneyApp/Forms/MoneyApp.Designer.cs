@@ -42,6 +42,10 @@ namespace MoneyApp
             this.btn_event = new System.Windows.Forms.Button();
             this.btn_recurring_events = new System.Windows.Forms.Button();
             this.pl_left = new System.Windows.Forms.Panel();
+            this.pl_user = new System.Windows.Forms.Panel();
+            this.btn_first_name = new System.Windows.Forms.Button();
+            this.btn_settings = new System.Windows.Forms.Button();
+            this.btn_log_out = new System.Windows.Forms.Button();
             this.pl_right = new System.Windows.Forms.Panel();
             this.mc_calendar = new System.Windows.Forms.MonthCalendar();
             this.pl_middle = new System.Windows.Forms.Panel();
@@ -54,6 +58,7 @@ namespace MoneyApp
             this.pl_graph = new System.Windows.Forms.Panel();
             this.cch_month = new LiveCharts.WinForms.CartesianChart();
             this.pl_left.SuspendLayout();
+            this.pl_user.SuspendLayout();
             this.pl_right.SuspendLayout();
             this.pl_middle.SuspendLayout();
             this.pl_income.SuspendLayout();
@@ -211,6 +216,7 @@ namespace MoneyApp
             // pl_left
             // 
             this.pl_left.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
+            this.pl_left.Controls.Add(this.pl_user);
             this.pl_left.Controls.Add(this.btn_transactions);
             this.pl_left.Controls.Add(this.btn_recurring_events);
             this.pl_left.Controls.Add(this.btn_recurring_transactions);
@@ -224,6 +230,81 @@ namespace MoneyApp
             this.pl_left.Name = "pl_left";
             this.pl_left.Size = new System.Drawing.Size(160, 411);
             this.pl_left.TabIndex = 13;
+            // 
+            // pl_user
+            // 
+            this.pl_user.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pl_user.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.pl_user.Controls.Add(this.btn_first_name);
+            this.pl_user.Controls.Add(this.btn_settings);
+            this.pl_user.Controls.Add(this.btn_log_out);
+            this.pl_user.Location = new System.Drawing.Point(0, 371);
+            this.pl_user.Name = "pl_user";
+            this.pl_user.Size = new System.Drawing.Size(160, 120);
+            this.pl_user.TabIndex = 13;
+            this.pl_user.MouseEnter += new System.EventHandler(this.UserPanelMouseEnter);
+            this.pl_user.MouseLeave += new System.EventHandler(this.UserPanelMouseLeave);
+            // 
+            // btn_first_name
+            // 
+            this.btn_first_name.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
+            this.btn_first_name.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
+            this.btn_first_name.FlatAppearance.BorderSize = 0;
+            this.btn_first_name.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
+            this.btn_first_name.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(243)))));
+            this.btn_first_name.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_first_name.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btn_first_name.ForeColor = System.Drawing.Color.White;
+            this.btn_first_name.Location = new System.Drawing.Point(0, 0);
+            this.btn_first_name.Margin = new System.Windows.Forms.Padding(0);
+            this.btn_first_name.Name = "btn_first_name";
+            this.btn_first_name.Size = new System.Drawing.Size(160, 40);
+            this.btn_first_name.TabIndex = 1;
+            this.btn_first_name.Text = "Abduvokhid";
+            this.btn_first_name.UseVisualStyleBackColor = false;
+            this.btn_first_name.MouseEnter += new System.EventHandler(this.UserPanelMouseEnter);
+            this.btn_first_name.MouseLeave += new System.EventHandler(this.UserPanelMouseLeave);
+            // 
+            // btn_settings
+            // 
+            this.btn_settings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.btn_settings.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.btn_settings.FlatAppearance.BorderSize = 0;
+            this.btn_settings.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.btn_settings.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
+            this.btn_settings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_settings.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btn_settings.ForeColor = System.Drawing.Color.White;
+            this.btn_settings.Location = new System.Drawing.Point(0, 40);
+            this.btn_settings.Margin = new System.Windows.Forms.Padding(0);
+            this.btn_settings.Name = "btn_settings";
+            this.btn_settings.Size = new System.Drawing.Size(160, 40);
+            this.btn_settings.TabIndex = 1;
+            this.btn_settings.Text = "Settings";
+            this.btn_settings.UseVisualStyleBackColor = false;
+            this.btn_settings.MouseEnter += new System.EventHandler(this.UserPanelMouseEnter);
+            this.btn_settings.MouseLeave += new System.EventHandler(this.UserPanelMouseLeave);
+            // 
+            // btn_log_out
+            // 
+            this.btn_log_out.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.btn_log_out.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.btn_log_out.FlatAppearance.BorderSize = 0;
+            this.btn_log_out.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.btn_log_out.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
+            this.btn_log_out.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_log_out.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btn_log_out.ForeColor = System.Drawing.Color.White;
+            this.btn_log_out.Location = new System.Drawing.Point(0, 80);
+            this.btn_log_out.Margin = new System.Windows.Forms.Padding(0);
+            this.btn_log_out.Name = "btn_log_out";
+            this.btn_log_out.Size = new System.Drawing.Size(160, 40);
+            this.btn_log_out.TabIndex = 1;
+            this.btn_log_out.Text = "Log out";
+            this.btn_log_out.UseVisualStyleBackColor = false;
+            this.btn_log_out.Click += new System.EventHandler(this.LogOutClick);
+            this.btn_log_out.MouseEnter += new System.EventHandler(this.UserPanelMouseEnter);
+            this.btn_log_out.MouseLeave += new System.EventHandler(this.UserPanelMouseLeave);
             // 
             // pl_right
             // 
@@ -282,7 +363,7 @@ namespace MoneyApp
             this.lbl_income_amount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
             this.lbl_income_amount.Location = new System.Drawing.Point(217, 13);
             this.lbl_income_amount.Name = "lbl_income_amount";
-            this.lbl_income_amount.Size = new System.Drawing.Size(87, 24);
+            this.lbl_income_amount.Size = new System.Drawing.Size(87, 23);
             this.lbl_income_amount.TabIndex = 1;
             this.lbl_income_amount.Text = "Unknown";
             // 
@@ -294,7 +375,7 @@ namespace MoneyApp
             this.lbl_income.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lbl_income.Location = new System.Drawing.Point(15, 16);
             this.lbl_income.Name = "lbl_income";
-            this.lbl_income.Size = new System.Drawing.Size(65, 20);
+            this.lbl_income.Size = new System.Drawing.Size(65, 19);
             this.lbl_income.TabIndex = 0;
             this.lbl_income.Text = "Income:";
             // 
@@ -319,7 +400,7 @@ namespace MoneyApp
             this.lbl_expense_amount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.lbl_expense_amount.Location = new System.Drawing.Point(217, 13);
             this.lbl_expense_amount.Name = "lbl_expense_amount";
-            this.lbl_expense_amount.Size = new System.Drawing.Size(87, 24);
+            this.lbl_expense_amount.Size = new System.Drawing.Size(87, 23);
             this.lbl_expense_amount.TabIndex = 3;
             this.lbl_expense_amount.Text = "Unknown";
             // 
@@ -331,7 +412,7 @@ namespace MoneyApp
             this.lbl_expense.Font = new System.Drawing.Font("Roboto", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lbl_expense.Location = new System.Drawing.Point(15, 16);
             this.lbl_expense.Name = "lbl_expense";
-            this.lbl_expense.Size = new System.Drawing.Size(72, 20);
+            this.lbl_expense.Size = new System.Drawing.Size(72, 19);
             this.lbl_expense.TabIndex = 2;
             this.lbl_expense.Text = "Expense:";
             // 
@@ -369,9 +450,11 @@ namespace MoneyApp
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(800, 450);
             this.Name = "MoneyApp";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Money App";
             this.Activated += new System.EventHandler(this.MoneyAppActivated);
             this.pl_left.ResumeLayout(false);
+            this.pl_user.ResumeLayout(false);
             this.pl_right.ResumeLayout(false);
             this.pl_middle.ResumeLayout(false);
             this.pl_income.ResumeLayout(false);
@@ -414,6 +497,10 @@ namespace MoneyApp
         private Label lbl_expense_amount;
         private Label lbl_expense;
         private LiveCharts.WinForms.CartesianChart cch_month;
+        private Panel pl_user;
+        private Button btn_first_name;
+        private Button btn_log_out;
+        private Button btn_settings;
     }
 }
 

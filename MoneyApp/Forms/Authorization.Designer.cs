@@ -49,8 +49,10 @@
             this.lbl_sign_up_title = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pl_sign_in.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // lbl_username
@@ -99,7 +101,7 @@
             this.pl_sign_in.Controls.Add(this.lbl_username);
             this.pl_sign_in.Controls.Add(this.tbx_password);
             this.pl_sign_in.Controls.Add(this.lbl_password);
-            this.pl_sign_in.Location = new System.Drawing.Point(20, 20);
+            this.pl_sign_in.Location = new System.Drawing.Point(20, 82);
             this.pl_sign_in.Name = "pl_sign_in";
             this.pl_sign_in.Size = new System.Drawing.Size(334, 167);
             this.pl_sign_in.TabIndex = 14;
@@ -154,7 +156,7 @@
             this.panel1.Controls.Add(this.tbx_new_name);
             this.panel1.Controls.Add(this.tbx_new_username);
             this.panel1.Controls.Add(this.lbl_sign_up_title);
-            this.panel1.Location = new System.Drawing.Point(20, 215);
+            this.panel1.Location = new System.Drawing.Point(20, 277);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(334, 218);
             this.panel1.TabIndex = 15;
@@ -279,7 +281,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(146)))), ((int)(((byte)(162)))));
-            this.panel2.Location = new System.Drawing.Point(20, 201);
+            this.panel2.Location = new System.Drawing.Point(20, 263);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(334, 1);
             this.panel2.TabIndex = 16;
@@ -289,33 +291,46 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Roboto", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(146)))), ((int)(((byte)(162)))));
-            this.label1.Location = new System.Drawing.Point(178, 195);
+            this.label1.Location = new System.Drawing.Point(178, 257);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(22, 14);
             this.label1.TabIndex = 17;
             this.label1.Text = "OR";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(143, -7);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(100, 100);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 18;
+            this.pictureBox1.TabStop = false;
             // 
             // Authorization
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(238)))), ((int)(((byte)(242)))));
-            this.ClientSize = new System.Drawing.Size(375, 454);
+            this.ClientSize = new System.Drawing.Size(375, 516);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pl_sign_in);
+            this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Authorization";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Money App - Sign In / Sign Up";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AuthorizationFormClosed);
             this.pl_sign_in.ResumeLayout(false);
             this.pl_sign_in.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -343,5 +358,6 @@
         private System.Windows.Forms.Button btn_sign_up;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

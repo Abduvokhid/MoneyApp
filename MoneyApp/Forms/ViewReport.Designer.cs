@@ -137,6 +137,7 @@
             this.Controls.Add(this.dt_start);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ViewReport";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ViewReport";
             this.ResumeLayout(false);
             this.PerformLayout();

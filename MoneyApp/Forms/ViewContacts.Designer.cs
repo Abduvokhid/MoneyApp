@@ -130,6 +130,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(320, 300);
             this.Name = "ViewContacts";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Contacts";
             this.Activated += new System.EventHandler(this.ViewContactsActivated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ViewContactsFormClosed);

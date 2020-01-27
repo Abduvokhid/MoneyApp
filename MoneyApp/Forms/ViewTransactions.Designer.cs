@@ -157,6 +157,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(700, 400);
             this.Name = "ViewTransactions";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Transactions";
             this.Activated += new System.EventHandler(this.ViewTransactionsActivated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ViewTransactionsFormClosed);
