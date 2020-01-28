@@ -56,7 +56,7 @@
             this.btn_delete.TabIndex = 17;
             this.btn_delete.Text = "Delete event";
             this.btn_delete.UseVisualStyleBackColor = false;
-            this.btn_delete.Click += new System.EventHandler(this.btnDelete_Click);
+            this.btn_delete.Click += new System.EventHandler(this.DeleteClick);
             // 
             // btn_edit
             // 
@@ -73,7 +73,7 @@
             this.btn_edit.TabIndex = 16;
             this.btn_edit.Text = "Edit event";
             this.btn_edit.UseVisualStyleBackColor = false;
-            this.btn_edit.Click += new System.EventHandler(this.btn_editEvent_Click);
+            this.btn_edit.Click += new System.EventHandler(this.EditClick);
             // 
             // btn_add
             // 
@@ -90,7 +90,7 @@
             this.btn_add.TabIndex = 15;
             this.btn_add.Text = "Add event";
             this.btn_add.UseVisualStyleBackColor = false;
-            this.btn_add.Click += new System.EventHandler(this.btn_addEvent_Click);
+            this.btn_add.Click += new System.EventHandler(this.AddClick);
             // 
             // lv_events
             // 
@@ -112,9 +112,10 @@
             this.lv_events.Location = new System.Drawing.Point(12, 52);
             this.lv_events.MouseLocation = new System.Drawing.Point(-1, -1);
             this.lv_events.MouseState = MaterialSkin.MouseState.OUT;
+            this.lv_events.MultiSelect = false;
             this.lv_events.Name = "lv_events";
             this.lv_events.OwnerDraw = true;
-            this.lv_events.Size = new System.Drawing.Size(660, 397);
+            this.lv_events.Size = new System.Drawing.Size(760, 397);
             this.lv_events.TabIndex = 18;
             this.lv_events.UseCompatibleStateImageBehavior = false;
             this.lv_events.View = System.Windows.Forms.View.Details;
@@ -148,18 +149,18 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(238)))), ((int)(((byte)(242)))));
-            this.ClientSize = new System.Drawing.Size(684, 461);
+            this.ClientSize = new System.Drawing.Size(784, 461);
             this.Controls.Add(this.lv_events);
             this.Controls.Add(this.btn_delete);
             this.Controls.Add(this.btn_edit);
             this.Controls.Add(this.btn_add);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.MinimumSize = new System.Drawing.Size(700, 500);
+            this.MinimumSize = new System.Drawing.Size(800, 400);
             this.Name = "ViewEvents";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Events";
-            this.Activated += new System.EventHandler(this.viewEventFormActivated);
+            this.Activated += new System.EventHandler(this.ViewEventsActivated);
             this.SizeChanged += new System.EventHandler(this.EventsSizeChanged);
             this.ResumeLayout(false);
 

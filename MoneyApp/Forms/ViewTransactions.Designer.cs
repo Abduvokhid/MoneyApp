@@ -115,7 +115,7 @@
             this.lv_transactions.MultiSelect = false;
             this.lv_transactions.Name = "lv_transactions";
             this.lv_transactions.OwnerDraw = true;
-            this.lv_transactions.Size = new System.Drawing.Size(660, 297);
+            this.lv_transactions.Size = new System.Drawing.Size(760, 297);
             this.lv_transactions.TabIndex = 11;
             this.lv_transactions.UseCompatibleStateImageBehavior = false;
             this.lv_transactions.View = System.Windows.Forms.View.Details;
@@ -149,13 +149,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(238)))), ((int)(((byte)(242)))));
-            this.ClientSize = new System.Drawing.Size(684, 361);
+            this.ClientSize = new System.Drawing.Size(784, 361);
             this.Controls.Add(this.lv_transactions);
             this.Controls.Add(this.btn_delete);
             this.Controls.Add(this.btn_edit);
             this.Controls.Add(this.btn_add);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(700, 400);
+            this.MinimumSize = new System.Drawing.Size(800, 400);
             this.Name = "ViewTransactions";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Transactions";

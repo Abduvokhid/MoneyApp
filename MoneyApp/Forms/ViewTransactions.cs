@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Strings = MoneyApp.Properties.Strings;
 
 namespace MoneyApp.Forms
 {
@@ -20,6 +21,7 @@ namespace MoneyApp.Forms
         public ViewTransactions()
         {
             InitializeComponent();
+            Text = Strings.Transactions;
             transactionRepository = TransactionRepository.Instance;
             ResizeColumns();
         }
@@ -27,6 +29,7 @@ namespace MoneyApp.Forms
         {
             InitializeComponent();
             isRecurring = recurring;
+            Text = Strings.RecurringTransactions;
             if (isRecurring)
             {
                 lv_transactions.Columns.Add("Status");
@@ -76,7 +79,8 @@ namespace MoneyApp.Forms
                     {
                         bool i = await Task.Run(() => recurringTransactionRepository.DeleteTransaction(transaction));
 
-                        MessageBox.Show(i ? "Deleted" : "Error");
+                        if (i) MessageBox.Show(Strings.DeleteSuccess, Strings.Success);
+                        else MessageBox.Show(Strings.SomethingError, Strings.Error);
                     }
                 } else
                 {
@@ -86,7 +90,8 @@ namespace MoneyApp.Forms
                     {
                         bool i = await Task.Run(() => transactionRepository.DeleteTransaction(transaction));
 
-                        MessageBox.Show(i ? "Deleted" : "Error");
+                        if (i) MessageBox.Show(Strings.DeleteSuccess, Strings.Success);
+                        else MessageBox.Show(Strings.SomethingError, Strings.Error);
                     }
                 }
             }
@@ -121,7 +126,6 @@ namespace MoneyApp.Forms
                         });
                     transactionListViewItem.Tag = transaction;
                     lv_transactions.Items.Add(transactionListViewItem);
-
                 }
             } else
             {

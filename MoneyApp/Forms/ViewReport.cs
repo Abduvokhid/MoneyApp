@@ -196,8 +196,6 @@ namespace MoneyApp.Forms
                     }
                 }
                 plList.AutoScroll = true;
-
-
             }
         }
 
@@ -235,22 +233,16 @@ namespace MoneyApp.Forms
             string transactionTitle = "Transaction Name";
             string contactTitle = "Contact Name";
             string dateTitle = "Date and Time";
-            string dayOfWeekTitle = "Day of Week";
             string amountTitle = "Amount";
-            string typeTitle = "Type";
 
             Panel plItem = new Panel();
-            Label lblItemDayOfWeek = new Label();
             Label lblItemDateTime = new Label();
             Label lblItemContact = new Label();
             Label lblItemName = new Label();
-            Label lblItemType = new Label();
             Label lblItemAmount = new Label();
             Panel plBorder = new Panel();
 
-            plItem.Controls.Add(lblItemType);
             plItem.Controls.Add(lblItemAmount);
-            plItem.Controls.Add(lblItemDayOfWeek);
             plItem.Controls.Add(lblItemDateTime);
             plItem.Controls.Add(lblItemContact);
             plItem.Controls.Add(lblItemName);
@@ -305,8 +297,8 @@ namespace MoneyApp.Forms
             lblItemDateTime.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             lblItemDateTime.ForeColor = Color.FromArgb(43, 56, 75);
             lblItemDateTime.Location = new Point(widthLeft, 0);
-            lblItemDateTime.TextAlign = ContentAlignment.BottomCenter;
-            lblItemDateTime.Size = new Size(widthMiddle, height);
+            lblItemDateTime.TextAlign = ContentAlignment.MiddleCenter;
+            lblItemDateTime.Size = new Size(widthMiddle, plItem.Height);
             lblItemDateTime.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             lblItemDateTime.Name = "lblItemDateTime" + t.ID;
             lblItemDateTime.Text = t.CreatedDate.ToString("dd/MM/yyyy hh:mm");
@@ -316,31 +308,14 @@ namespace MoneyApp.Forms
                 lblItemDateTime.BackColor = Color.FromArgb(249, 250, 252);
             }
             // 
-            // lblItemDayOfWeek
-            // 
-            lblItemDayOfWeek.AutoSize = false;
-            lblItemDayOfWeek.Font = new Font("Arial", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            lblItemDayOfWeek.ForeColor = Color.FromArgb(109, 116, 129);
-            lblItemDayOfWeek.Location = new Point(widthLeft, height);
-            lblItemDayOfWeek.TextAlign = ContentAlignment.TopCenter;
-            lblItemDayOfWeek.Size = new Size(widthMiddle, height);
-            lblItemDayOfWeek.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            lblItemDayOfWeek.Name = "lblItemDayOfWeek" + t.ID;
-            lblItemDayOfWeek.Text = t.CreatedDate.DayOfWeek.ToString();
-            if (t.ID == 0)
-            {
-                lblItemDayOfWeek.Text = dayOfWeekTitle;
-                lblItemDayOfWeek.BackColor = Color.FromArgb(249, 250, 252);
-            }
-            // 
             // lblItemAmount
             // 
             lblItemAmount.AutoSize = false;
             lblItemAmount.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             lblItemAmount.ForeColor = Color.FromArgb(43, 56, 75);
             lblItemAmount.Location = new Point(widthLeft + widthMiddle, 0);
-            lblItemAmount.TextAlign = ContentAlignment.BottomCenter;
-            lblItemAmount.Size = new Size(widthRight, height);
+            lblItemAmount.TextAlign = ContentAlignment.MiddleCenter;
+            lblItemAmount.Size = new Size(widthRight, plItem.Height);
             lblItemAmount.Anchor = AnchorStyles.Right;
             lblItemAmount.Name = "lblItemAmount" + t.ID;
             lblItemAmount.Text = t.Amount.ToString("£0.00");
@@ -349,29 +324,13 @@ namespace MoneyApp.Forms
                 lblItemAmount.Text = amountTitle;
                 lblItemAmount.BackColor = Color.FromArgb(249, 250, 252);
             }
-            // 
-            // lblItemType
-            // 
-            lblItemType.AutoSize = false;
-            lblItemType.Font = new Font("Arial", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            if (t.Type == true)
+            
+            if (t.Type == false)
             {
-                lblItemType.ForeColor = Color.FromArgb(46, 125, 50);
+                plItem.BackColor = Color.FromArgb(255, 235, 238);
             } else
             {
-                lblItemType.ForeColor = Color.FromArgb(211, 47, 47);
-            }
-            lblItemType.Location = new Point(widthLeft + widthMiddle, height);
-            lblItemType.TextAlign = ContentAlignment.TopCenter;
-            lblItemType.Size = new Size(widthRight, height);
-            lblItemType.Anchor = AnchorStyles.Right;
-            lblItemType.Name = "lblItemType" + t.ID;
-            lblItemType.Text = t.TypeName;
-            if (t.ID == 0)
-            {
-                lblItemType.ForeColor = Color.FromArgb(109, 116, 129);
-                lblItemType.Text = typeTitle;
-                lblItemType.BackColor = Color.FromArgb(249, 250, 252);
+                plItem.BackColor = Color.FromArgb(232, 245, 233);
             }
 
             plBorder.Width = plItem.Width;
@@ -406,17 +365,12 @@ namespace MoneyApp.Forms
             Panel plFour = new Panel();
 
             Label lblItemDateTime = new Label();
-            Label lblItemDayOfWeek = new Label();
             Label lblItemIncome = new Label();
             Label lblItemExpense = new Label();
             Label lblItemTotal = new Label();
             Panel plBorder = new Panel();
 
             plOne.Controls.Add(lblItemDateTime);
-            if (dateTime != DateTime.MinValue && reportType.Equals("years") == false)
-            {
-                plOne.Controls.Add(lblItemDayOfWeek);
-            }
             plTwo.Controls.Add(lblItemIncome);
             plThree.Controls.Add(lblItemExpense);
             plFour.Controls.Add(lblItemTotal);
@@ -468,8 +422,8 @@ namespace MoneyApp.Forms
             lblItemDateTime.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             lblItemDateTime.ForeColor = Color.FromArgb(43, 56, 75);
             lblItemDateTime.Location = new Point(0, 0);
-            lblItemDateTime.TextAlign = ContentAlignment.BottomCenter;
-            lblItemDateTime.Size = new Size(widthOne, height);
+            lblItemDateTime.TextAlign = ContentAlignment.MiddleCenter;
+            lblItemDateTime.Size = new Size(widthOne, plItem.Height);
             lblItemDateTime.Anchor = AnchorStyles.Right | AnchorStyles.Left;
             lblItemDateTime.TabIndex = 0;
             lblItemDateTime.Name = "lblItemDateTime" + id;
@@ -493,23 +447,6 @@ namespace MoneyApp.Forms
                 lblItemDateTime.Size = new Size(widthOne, plItem.Height);
                 lblItemDateTime.Text = dateTitle;
                 lblItemDateTime.BackColor = Color.FromArgb(249, 250, 252);
-            }
-            // 
-            // lblItemDayOfWeek
-            // 
-            lblItemDayOfWeek.AutoSize = false;
-            lblItemDayOfWeek.Font = new Font("Arial Condensed", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblItemDayOfWeek.ForeColor = Color.FromArgb(109, 116, 129);
-            lblItemDayOfWeek.Location = new Point(0, height);
-            lblItemDayOfWeek.TextAlign = ContentAlignment.TopCenter;
-            lblItemDayOfWeek.Size = new Size(widthOne, height);
-            lblItemDayOfWeek.Anchor = AnchorStyles.Right | AnchorStyles.Left;
-            lblItemDayOfWeek.TabIndex = 1;
-            lblItemDayOfWeek.Name = "lblItemDayOfWeek" + id;
-            lblItemDayOfWeek.Text = dateTime.DayOfWeek.ToString();
-            if (reportType.Equals("months"))
-            {
-                lblItemDayOfWeek.Text = dateTime.ToString("yyyy");
             }
             // 
             // lblItemIncome
@@ -554,16 +491,7 @@ namespace MoneyApp.Forms
             decimal total = income - expense;
             lblItemTotal.AutoSize = false;
             lblItemTotal.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            if (total < 0)
-            {
-                lblItemTotal.ForeColor = Color.FromArgb(211, 47, 47);
-            } else if (total > 0)
-            {
-                lblItemTotal.ForeColor = Color.FromArgb(46, 125, 50);
-            } else
-            {
-                lblItemTotal.ForeColor = Color.FromArgb(109, 116, 129);
-            }
+            lblItemTotal.ForeColor = Color.FromArgb(109, 116, 129);
             lblItemTotal.Location = new Point(0, 0);
             lblItemTotal.TextAlign = ContentAlignment.MiddleCenter;
             lblItemTotal.Size = new Size(widthAll, plItem.Height);
@@ -583,6 +511,19 @@ namespace MoneyApp.Forms
             plBorder.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             plBorder.Tag = 5;
             plBorder.BringToFront();
+
+            if (total < 0)
+            {
+                plItem.BackColor = Color.FromArgb(255, 235, 238);
+            }
+            else if (total > 0)
+            {
+                plItem.BackColor = Color.FromArgb(232, 245, 233);
+            }
+            else
+            {
+                plItem.BackColor = Color.FromArgb(250, 250, 250);
+            }
 
             plItem.Location = new Point(0, nowY);
             nowY += plItem.Height;

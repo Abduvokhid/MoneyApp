@@ -38,12 +38,13 @@
             // 
             // dtp_date
             // 
+            this.dtp_date.Font = new System.Drawing.Font("Roboto", 9.75F);
             this.dtp_date.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtp_date.Location = new System.Drawing.Point(12, 33);
             this.dtp_date.MaxDate = new System.DateTime(2200, 12, 31, 0, 0, 0, 0);
             this.dtp_date.MinDate = new System.DateTime(2000, 1, 1, 0, 0, 0, 0);
             this.dtp_date.Name = "dtp_date";
-            this.dtp_date.Size = new System.Drawing.Size(159, 20);
+            this.dtp_date.Size = new System.Drawing.Size(159, 23);
             this.dtp_date.TabIndex = 0;
             // 
             // lbl_date_title
@@ -65,13 +66,13 @@
             this.btn_predict.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_predict.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btn_predict.ForeColor = System.Drawing.Color.White;
-            this.btn_predict.Location = new System.Drawing.Point(12, 62);
+            this.btn_predict.Location = new System.Drawing.Point(12, 65);
             this.btn_predict.Name = "btn_predict";
             this.btn_predict.Size = new System.Drawing.Size(159, 34);
             this.btn_predict.TabIndex = 4;
             this.btn_predict.Text = "Predict";
             this.btn_predict.UseVisualStyleBackColor = false;
-            this.btn_predict.Click += new System.EventHandler(this.btn_predict_Click);
+            this.btn_predict.Click += new System.EventHandler(this.PredictClick);
             // 
             // lbl_result_title
             // 

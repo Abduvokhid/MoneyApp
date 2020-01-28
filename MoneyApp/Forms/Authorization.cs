@@ -26,6 +26,10 @@ namespace MoneyApp.Forms
             InitializeComponent();
             Instances.MoneyApp.Hide();
             userRepository = UserRepository.Instance;
+
+            List<Form> openForms = new List<Form>();
+            foreach (Form f in Application.OpenForms) openForms.Add(f);
+            foreach (Form f in openForms) if (f.Name != "Authorization" && f.Name != "MoneyApp") f.Dispose();
         }
 
         private async void SignInClick(object sender, EventArgs e)
@@ -79,8 +83,8 @@ namespace MoneyApp.Forms
             }
             else
             {
-                Instances.MoneyApp.Activate();
                 Instances.MoneyApp.Show();
+                Instances.MoneyApp.Activate();
             }
             Dispose();
         }

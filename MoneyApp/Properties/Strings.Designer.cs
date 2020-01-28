@@ -97,6 +97,33 @@ namespace MoneyApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Event has been added successfully!.
+        /// </summary>
+        internal static string AddEventOkay {
+            get {
+                return ResourceManager.GetString("AddEventOkay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add transaction.
+        /// </summary>
+        internal static string AddTransaction {
+            get {
+                return ResourceManager.GetString("AddTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaction has been added successfully!.
+        /// </summary>
+        internal static string AddTransactionOkay {
+            get {
+                return ResourceManager.GetString("AddTransactionOkay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contact name cannot contain more than 100 symbols!.
         /// </summary>
         internal static string ContactNameMaxLengthError {
@@ -111,6 +138,15 @@ namespace MoneyApp.Properties {
         internal static string ContactNameWrong {
             get {
                 return ResourceManager.GetString("ContactNameWrong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted successfully!.
+        /// </summary>
+        internal static string DeleteSuccess {
+            get {
+                return ResourceManager.GetString("DeleteSuccess", resourceCulture);
             }
         }
         
@@ -151,6 +187,15 @@ namespace MoneyApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Event has been edited successfully!.
+        /// </summary>
+        internal static string EditEventOkay {
+            get {
+                return ResourceManager.GetString("EditEventOkay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit recurring event.
         /// </summary>
         internal static string EditRecurringEvent {
@@ -160,11 +205,92 @@ namespace MoneyApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recurring event has been edited successfully!.
+        /// </summary>
+        internal static string EditRecurringEventOkay {
+            get {
+                return ResourceManager.GetString("EditRecurringEventOkay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit recurring transaction.
+        /// </summary>
+        internal static string EditRecurringTransaction {
+            get {
+                return ResourceManager.GetString("EditRecurringTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recurring transaction has been edited successfully!.
+        /// </summary>
+        internal static string EditRecurringTransactionOkay {
+            get {
+                return ResourceManager.GetString("EditRecurringTransactionOkay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit transaction.
+        /// </summary>
+        internal static string EditTransaction {
+            get {
+                return ResourceManager.GetString("EditTransaction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaction has been edited successfully!.
+        /// </summary>
+        internal static string EditTransactionOkay {
+            get {
+                return ResourceManager.GetString("EditTransactionOkay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name cannot be empty!.
+        /// </summary>
+        internal static string ErrorEmptyName {
+            get {
+                return ResourceManager.GetString("ErrorEmptyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Events.
+        /// </summary>
+        internal static string Events {
+            get {
+                return ResourceManager.GetString("Events", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recurring events.
+        /// </summary>
+        internal static string RecurringEvents {
+            get {
+                return ResourceManager.GetString("RecurringEvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recurring transactions.
+        /// </summary>
+        internal static string RecurringTransactions {
+            get {
+                return ResourceManager.GetString("RecurringTransactions", resourceCulture);
             }
         }
         
@@ -183,6 +309,15 @@ namespace MoneyApp.Properties {
         internal static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transactions.
+        /// </summary>
+        internal static string Transactions {
+            get {
+                return ResourceManager.GetString("Transactions", resourceCulture);
             }
         }
     }

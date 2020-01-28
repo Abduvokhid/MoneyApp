@@ -144,7 +144,7 @@ namespace MoneyApp.Forms
             return totalRecurringAmount;
         }
 
-        private async void btn_predict_Click(object sender, EventArgs e)
+        private async void PredictClick(object sender, EventArgs e)
         {
             if (transactions == null)
             {

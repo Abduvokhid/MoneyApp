@@ -9,357 +9,269 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MoneyApp.Repositories;
+using Strings = MoneyApp.Properties.Strings;
 
 namespace MoneyApp.Forms
 {
     public partial class AddEditTransaction : Form
     {
-        private Transaction auTransactionObj;
-        private RecurringTransaction auRecTransactionObj;
+        private Transaction transaction;
+        private RecurringTransaction recurringTransaction;
         private bool isRecurring = false;
         public AddEditTransaction()
         {
-            AddTransaction();
-        }
-
-        private void AddTransaction()
-        {
             InitializeComponent();
-            btn_add_editTransaction.Text = "Add Transaction";
-            auTransactionObj = new Transaction
+            btn_action.Text = Strings.Add;
+            transaction = new Transaction
             {
                 UserID = Instances.User.ID
             };
-            lblHeadingTransaction.Text = "Add Transaction";
-            ResizePanel();
-            comboBoxTStatus.SelectedIndex = 0;
-            comboBoxType.SelectedIndex = 0;
+            lbl_title.Text = Strings.AddTransaction;
+            Text = Strings.AddTransaction;
+            cbx_frequency.SelectedIndex = 0;
+            cbx_type.SelectedIndex = 0;
+            Height -= 100;
         }
 
-        //update 
-        public AddEditTransaction(Transaction transactionObj)
+        public AddEditTransaction(Transaction temporaryTransaction)
         {
             InitializeComponent();
-            auTransactionObj = transactionObj;
-            lblHeadingTransaction.Text = "Update Transaction";
-            btn_add_editTransaction.Text = "Update Transaction";
-            txtTransactionName.Text = transactionObj.Name;
-            comboBoxType.Text = transactionObj.TypeName;
-            numericUpDownAmount.Value = transactionObj.Amount;
-            transactionDateTimePick.Value = transactionObj.CreatedDate;
-            richTextBoxTransactionNote.Text = transactionObj.Note;
+            transaction = temporaryTransaction;
+            lbl_title.Text = Strings.EditTransaction;
+            Text = Strings.EditTransaction;
+            btn_action.Text = Strings.Edit;
+            tbx_name.Text = temporaryTransaction.Name;
+            cbx_type.Text = temporaryTransaction.TypeName;
+            nud_amount.Value = temporaryTransaction.Amount;
+            dtp_date.Value = temporaryTransaction.CreatedDate;
+            rtbx_note.Text = temporaryTransaction.Note;
 
-            groupBoxRecTrans.Visible = false;
-            cbx_recurring.Visible = false;
-            ResizePanel();
+            gbx_recurring.Visible = false;
+            chbx_recurring.Visible = false;
+            Height -= 120;
+            btn_action.Top -= 20;
         }
 
-        //update 
-        public AddEditTransaction(RecurringTransaction transactionObj)
+        public AddEditTransaction(RecurringTransaction temporaryRecurringTransaction)
         {
             InitializeComponent();
             isRecurring = true;
-            auRecTransactionObj = transactionObj;
-            lblHeadingTransaction.Text = "Update Recurring Transaction";
-            btn_add_editTransaction.Text = "Update Recurring Transaction";
-            txtTransactionName.Text = transactionObj.Name;
-            comboBoxType.Text = transactionObj.TypeName;
-            numericUpDownAmount.Value = transactionObj.Amount;
-            transactionDateTimePick.Value = transactionObj.CreatedDate;
-            richTextBoxTransactionNote.Text = transactionObj.Note;
-            comboBoxTStatus.Text = transactionObj.Status;
-            if (transactionObj.EndDate == DateTime.MinValue)
+            recurringTransaction = temporaryRecurringTransaction;
+            lbl_title.Text = Strings.EditRecurringTransaction;
+            Text = Strings.EditRecurringTransaction;
+            btn_action.Text = Strings.Edit;
+            tbx_name.Text = temporaryRecurringTransaction.Name;
+            cbx_type.Text = temporaryRecurringTransaction.TypeName;
+            nud_amount.Value = temporaryRecurringTransaction.Amount;
+            dtp_date.Value = temporaryRecurringTransaction.CreatedDate;
+            rtbx_note.Text = temporaryRecurringTransaction.Note;
+            cbx_frequency.Text = temporaryRecurringTransaction.Status;
+            if (temporaryRecurringTransaction.EndDate == DateTime.MinValue)
             {
-                dateTimePickerEndDate.Enabled = false;
+                dtp_end_date.Enabled = false;
                 chbx_infinite.Checked = true;
             } else
             {
-                dateTimePickerEndDate.Value = transactionObj.EndDate;
+                dtp_end_date.Value = temporaryRecurringTransaction.EndDate;
             }
 
-            groupBoxRecTrans.Visible = true;
-            cbx_recurring.Visible = false;
-            ResizePanel();
+            gbx_recurring.Visible = true;
+            chbx_recurring.Visible = false;
+            btn_action.Top -= 10;
+        }
+        
+        private void ActionClick(object sender, EventArgs e)
+        {
+            if (isRecurring) EditRecurringTransaction();
+            else AddTransaction();
         }
 
-        //
-        private void btn_add_editTransaction_Click(object sender, EventArgs e)
+        private async void AddTransaction()
         {
-            
-            if (isRecurring)
+            if (tbx_name.Text.Equals(""))
             {
-                UpdateRecurringTransaction();
-            } else
-            {
-                AddUpdateNormTransaction();
-            }
-
-        }
-
-        private async void AddUpdateNormTransaction()
-        {
-            if (txtTransactionName.Text.Equals(""))
-            {
-                MessageBox.Show("Transaction is Empty! Please add a transaction name.");
+                MessageBox.Show(Strings.ErrorEmptyName, Strings.Error);
                 return;
             }
-            TransactionRepository transactionsRepository = TransactionRepository.Instance;
-            auTransactionObj.Name = txtTransactionName.Text;
-            auTransactionObj.TypeName = comboBoxType.Text;
-            auTransactionObj.Amount = numericUpDownAmount.Value;
-            auTransactionObj.CreatedDate = transactionDateTimePick.Value;
-            auTransactionObj.Note = richTextBoxTransactionNote.Text;
-            bool result = false;
 
-            //Combo box type of transaction
-            if (auTransactionObj.TypeName.Equals("Income"))
-            {
-                //income-1
-                auTransactionObj.Type = true;
-            }
-            else
-            {
-                //expense-   2
-                auTransactionObj.Type = false;
-            }
+            TransactionRepository transactionRepository = TransactionRepository.Instance;
 
-            Contact contact = (Contact)comboBoxContact.SelectedItem;
+            transaction.Name = tbx_name.Text;
+            transaction.TypeName = cbx_type.Text;
+            transaction.Amount = nud_amount.Value;
+            transaction.CreatedDate = dtp_date.Value;
+            transaction.Note = rtbx_note.Text;
+            transaction.Type = transaction.TypeName.Equals("Income") ? true : false;
+
+            Contact contact = (Contact)cbx_contact.SelectedItem;
             if (contact == null)
             {
-                if (string.IsNullOrWhiteSpace(comboBoxContact.Text))
-                {
-                    auTransactionObj.ContactID = 0;
-                }
+                if (string.IsNullOrWhiteSpace(cbx_contact.Text)) transaction.ContactID = 0;
                 else
                 {
-                    ContactRepository contactsRepository = ContactRepository.Instance;
-                    auTransactionObj.ContactID = contactsRepository.AddContact(new Contact { Name = comboBoxContact.Text, UserID = Instances.User.ID });
+                    ContactRepository contactRepository = ContactRepository.Instance;
+                    transaction.ContactID = contactRepository.AddContact(new Contact { Name = cbx_contact.Text, UserID = Instances.User.ID });
                 }
             }
-            else
-            {
-                auTransactionObj.ContactID = contact.ID;
-            }
+            else transaction.ContactID = contact.ID;
 
-            if (cbx_recurring.Checked && auTransactionObj.ID == 0)
+            if (chbx_recurring.Checked && transaction.ID == 0)
             {
-                RecurringTransaction rt = new RecurringTransaction
+                RecurringTransaction temporaryRecurringTransaction = new RecurringTransaction
                 {
-                    Name = auTransactionObj.Name,
-                    Amount = auTransactionObj.Amount,
-                    UserID = auTransactionObj.UserID,
-                    Type = auTransactionObj.Type,
-                    CreatedDate = auTransactionObj.CreatedDate,
-                    Note = auTransactionObj.Note,
-                    ContactID = auTransactionObj.ContactID
+                    Name = transaction.Name,
+                    Amount = transaction.Amount,
+                    UserID = transaction.UserID,
+                    Type = transaction.Type,
+                    CreatedDate = transaction.CreatedDate,
+                    Note = transaction.Note,
+                    ContactID = transaction.ContactID
                 };
 
-                if (chbx_infinite.Checked)
-                {
-                    rt.EndDate = DateTime.MinValue;
-                }
-                else
-                {
-                    rt.EndDate = dateTimePickerEndDate.Value;
-                }
-                rt.Status = comboBoxTStatus.Text;
+                if (chbx_infinite.Checked) temporaryRecurringTransaction.EndDate = DateTime.MinValue;
+                else temporaryRecurringTransaction.EndDate = dtp_end_date.Value;
+
+                temporaryRecurringTransaction.Status = cbx_frequency.Text;
 
                 RecurringTransactionRepository recurringTransactionRepository = RecurringTransactionRepository.Instance;
-                bool i = await Task.Run(() => recurringTransactionRepository.AddTransaction(rt));
+
+                bool i = await Task.Run(() => recurringTransactionRepository.AddTransaction(temporaryRecurringTransaction));
                 if (i == false)
                 {
-                    MessageBox.Show("Error!");
+                    MessageBox.Show(Strings.SomethingError, Strings.Error);
                     return;
                 }
             }
 
 
+            bool result = false;
 
-            //add /edit transaction
-            if (auTransactionObj.ID > 0)
-            {
-                result = await Task.Run(() => transactionsRepository.EditTransaction(auTransactionObj));
-            }
-            else
-            {
-                result = await Task.Run(() => transactionsRepository.AddTransaction(auTransactionObj));
-            }
+            if (transaction.ID > 0) result = await Task.Run(() => transactionRepository.EditTransaction(transaction));
+            else result = await Task.Run(() => transactionRepository.AddTransaction(transaction));
 
-            //messageBox for edit and add transaction
-            if (auTransactionObj.ID > 0 && result)
+            if (transaction.ID > 0 && result)
             {
-                MessageBox.Show("Edited Successfully");
+                MessageBox.Show(Strings.EditTransactionOkay, Strings.Success);
                 Dispose();
             }
             else if (result)
             {
-                MessageBox.Show("Added Successfully");
+                MessageBox.Show(Strings.AddTransactionOkay, Strings.Success);
                 Dispose();
             }
-            else
-            {
-                MessageBox.Show("Error!");
-            }
+            else MessageBox.Show(Strings.SomethingError, Strings.Error);
 
         }
 
-
-        private async void UpdateRecurringTransaction()
+        private async void EditRecurringTransaction()
         {
-            if (txtTransactionName.Text.Equals(""))
+            if (tbx_name.Text.Equals(""))
             {
-                MessageBox.Show("Transaction is Empty! Please add a transaction name.");
+                MessageBox.Show(Strings.ErrorEmptyName);
                 return;
             }
-            RecurringTransactionRepository recurringTransactionsRepository = RecurringTransactionRepository.Instance;
-            auRecTransactionObj.Name = txtTransactionName.Text;
-            auRecTransactionObj.TypeName = comboBoxType.Text;
-            auRecTransactionObj.Amount = numericUpDownAmount.Value;
-            auRecTransactionObj.CreatedDate = transactionDateTimePick.Value;
-            auRecTransactionObj.Note = richTextBoxTransactionNote.Text;
-            bool result = false;
 
-            //Combo box type of transaction
-            if (auRecTransactionObj.TypeName.Equals("Income"))
-            {
-                //income-1
-                auRecTransactionObj.Type = true;
-            }
-            else
-            {
-                //expense-   0
-                auRecTransactionObj.Type = false;
-            }
+            RecurringTransactionRepository recurringTransactionRepository = RecurringTransactionRepository.Instance;
 
-            Contact contact = (Contact)comboBoxContact.SelectedItem;
+            recurringTransaction.Name = tbx_name.Text;
+            recurringTransaction.TypeName = cbx_type.Text;
+            recurringTransaction.Amount = nud_amount.Value;
+            recurringTransaction.CreatedDate = dtp_date.Value;
+            recurringTransaction.Note = rtbx_note.Text;
+            recurringTransaction.Type = recurringTransaction.TypeName.Equals("Income") ? true : false;
+
+            Contact contact = (Contact)cbx_contact.SelectedItem;
             if (contact == null)
             {
-                if (string.IsNullOrWhiteSpace(comboBoxContact.Text))
-                {
-                    auRecTransactionObj.ContactID = 0;
-                }
+                if (string.IsNullOrWhiteSpace(cbx_contact.Text)) recurringTransaction.ContactID = 0;
                 else
                 {
-                    ContactRepository contactsRepository = ContactRepository.Instance;
-                    auRecTransactionObj.ContactID = await Task.Run(() => contactsRepository.AddContact(new Contact { Name = comboBoxContact.Text, UserID = Instances.User.ID }));
+                    ContactRepository contactRepository = ContactRepository.Instance;
+                    recurringTransaction.ContactID = await Task.Run(() => contactRepository.AddContact(new Contact { Name = cbx_contact.Text, UserID = Instances.User.ID }));
                 }
             }
-            else
-            {
-                auRecTransactionObj.ContactID = contact.ID;
-            }
+            else recurringTransaction.ContactID = contact.ID;
 
-            if (chbx_infinite.Checked)
-            {
-                auRecTransactionObj.EndDate = DateTime.MinValue;
-            }
-            else
-            {
-                auRecTransactionObj.EndDate = dateTimePickerEndDate.Value;
-            }
-            auRecTransactionObj.Status = comboBoxTStatus.Text;
+            if (chbx_infinite.Checked) recurringTransaction.EndDate = DateTime.MinValue;
+            else recurringTransaction.EndDate = dtp_end_date.Value;
 
-            result = await Task.Run(() => recurringTransactionsRepository.EditTransaction(auRecTransactionObj));
+            recurringTransaction.Status = cbx_frequency.Text;
+
+            bool result = false;
+
+            result = await Task.Run(() => recurringTransactionRepository.EditTransaction(recurringTransaction));
             
-
-            //messageBox for edit and add transaction
-            if (auRecTransactionObj.ID > 0 && result)
+            if (recurringTransaction.ID > 0 && result)
             {
-                MessageBox.Show("Edited Successfully");
+                MessageBox.Show(Strings.EditRecurringTransactionOkay, Strings.Success);
                 Dispose();
             }
+            else MessageBox.Show(Strings.SomethingError, Strings.Error);
+
+        }
+        
+        private async void AddUpdateTransactionLoad(object sender, EventArgs e)
+        {
+
+            ContactRepository contactRepository = ContactRepository.Instance;
+
+            List<Contact> contactsList = await Task.Run(() => contactRepository.GetUserContacts(Instances.User.ID));
+
+            cbx_contact.DataSource = contactsList;
+            cbx_contact.DisplayMember = "Name";
+            
+            if (isRecurring) SelectRecurringTransactionContact(contactsList);
+            else SelectTransactionContact(contactsList);
+        }
+
+        private void SelectTransactionContact(List<Contact> ContactList)
+        {
+            if (transaction.ID > 0)
+            {
+                if (transaction.ContactID == 0) cbx_contact.Text = "";
+                else
+                {
+                    for (int i = 0; i < ContactList.Count; i++)
+                    {
+                        if (transaction.ContactID == ContactList[i].ID) cbx_contact.SelectedItem = cbx_contact.Items[i];
+                    }
+                }
+            }
+        }
+
+        private void SelectRecurringTransactionContact(List<Contact> ContactList)
+        {
+            if (recurringTransaction.ID > 0)
+            {
+                if (recurringTransaction.ContactID == 0) cbx_contact.Text = "";
+                else
+                {
+                    for (int i = 0; i < ContactList.Count; i++)
+                    {
+                        if (recurringTransaction.ContactID == ContactList[i].ID) cbx_contact.SelectedItem = cbx_contact.Items[i];
+                    }
+                }
+            }
+        }
+
+        private void RecurringCheckboxCheckedChanged(object sender, EventArgs e)
+        {
+            if (chbx_recurring.Checked == true)
+            {
+                gbx_recurring.Visible = true;
+                Height += 100;
+            }
             else
             {
-                MessageBox.Show("Error!");
-            }
-
-        }
-        //
-        private async void AddUpdateTransaction_Load(object sender, EventArgs e)
-        {
-
-            ContactRepository ContactRepo = ContactRepository.Instance;
-            // Gets the contact list 
-            List<Contact> ContactList = await Task.Run(() => ContactRepo.GetUserContacts(Instances.User.ID));
-            comboBoxContact.DataSource = ContactList;
-            comboBoxContact.DisplayMember = "Name";
-            
-            if (isRecurring)
-            {
-                SetRecTransactionContact(ContactList);
-            } else
-            {
-                SetTransactionContact(ContactList);
+                gbx_recurring.Visible = false;
+                Height -= 100;
             }
         }
 
-        private void SetTransactionContact(List<Contact> ContactList)
+        private void RecurringInfiniteCheckboxCheckedChanged(object sender, EventArgs e)
         {
-            if (auTransactionObj.ID > 0)
-            {
-                if (auTransactionObj.ContactID == 0)
-                {
-                    comboBoxContact.Text = "";
-                }
-                else
-                {
-                    for (int i = 0; i < ContactList.Count; i++)
-                    {
-                        if (auTransactionObj.ContactID == ContactList[i].ID)
-                        {
-                            comboBoxContact.SelectedItem = comboBoxContact.Items[i];
-                        }
-                    }
-                }
-            }
-        }
-
-        private void SetRecTransactionContact(List<Contact> ContactList)
-        {
-            if (auRecTransactionObj.ID > 0)
-            {
-                if (auRecTransactionObj.ContactID == 0)
-                {
-                    comboBoxContact.Text = "";
-                }
-                else
-                {
-                    for (int i = 0; i < ContactList.Count; i++)
-                    {
-                        if (auRecTransactionObj.ContactID == ContactList[i].ID)
-                        {
-                            comboBoxContact.SelectedItem = comboBoxContact.Items[i];
-                        }
-                    }
-                }
-            }
-        }
-
-        //Check box Recurring Transaction and visibility of the groupbox if checked
-        private void checkBoxTRecurring_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbx_recurring.Checked == true) groupBoxRecTrans.Visible = true;
-            else groupBoxRecTrans.Visible = false;
-
-        }
-
-        private void chbx_infinite_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chbx_infinite.Checked == true) dateTimePickerEndDate.Enabled = false;
-            else dateTimePickerEndDate.Enabled = true;
-        }
-
-        private void ResizePanel()
-        {
-            int x = ((Width - pl_main.Width) / 2);
-            int y = ((Height - pl_main.Height) / 2);
-
-            pl_main.Location = new Point(x, y);
-        }
-
-        private void AddEditTransactionSizeChanged(object sender, EventArgs e)
-        {
-            ResizePanel();
+            if (chbx_infinite.Checked == true) dtp_end_date.Enabled = false;
+            else dtp_end_date.Enabled = true;
         }
     }
 }

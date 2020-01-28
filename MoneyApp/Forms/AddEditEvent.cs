@@ -23,70 +23,71 @@ namespace MoneyApp.Forms
         {
             InitializeComponent();
 
-            btn_action.Text = "Add Event";
-            Text = "Add Event";
-            lblHeadingEvent.Text = "Add Event";
+            btn_action.Text = Strings.Add;
+            Text = Strings.AddEvent;
+            lbl_title.Text = Strings.AddEvent;
             cbx_frequency.SelectedIndex = 0;
             cbx_type.SelectedIndex = 0;
+            Height -= 110;
 
             temporaryEvent = new Event { UserID = Instances.User.ID };
 
-            ResizePanel();
         }
 
-        public AddEditEvent(Event temporaryEvent)
+        public AddEditEvent(Event parameterEvent)
         {
             InitializeComponent();
 
             Text = Strings.EditEvent;
-            lblHeadingEvent.Text = Strings.EditEvent;
+            lbl_title.Text = Strings.EditEvent;
             btn_action.Text = Strings.Edit;
-            gb_recurring.Visible = false;
-            cbx_recurring.Visible = false;
+            gbx_recurring.Visible = false;
+            chbx_recurring.Visible = false;
+            Height -= 115;
+            btn_action.Top -= 10;
 
-            this.temporaryEvent = temporaryEvent;
-            tbx_name.Text = temporaryEvent.Name;
-            cbx_type.Text = temporaryEvent.TypeName;
-            tbx_location.Text = temporaryEvent.Location;
-            dtp_date.Value = temporaryEvent.CreatedDate;
-            rtbx_note.Text = temporaryEvent.Note;
+            temporaryEvent = parameterEvent;
+            tbx_name.Text = parameterEvent.Name;
+            cbx_type.Text = parameterEvent.TypeName;
+            tbx_location.Text = parameterEvent.Location;
+            dtp_date.Value = parameterEvent.CreatedDate;
+            rtbx_note.Text = parameterEvent.Note;
 
-            ResizePanel();
         }
 
-        public AddEditEvent(RecurringEvent temporaryRecurringEvent)
+        public AddEditEvent(RecurringEvent parameterRecurringEvent)
         {
             InitializeComponent();
 
             Text = Strings.EditRecurringEvent;
-            lblHeadingEvent.Text = Strings.EditRecurringEvent;
+            lbl_title.Text = Strings.EditRecurringEvent;
             btn_action.Text = Strings.Edit;
-            gb_recurring.Visible = true;
-            cbx_recurring.Visible = false;
+            gbx_recurring.Visible = true;
+            chbx_recurring.Visible = false;
+            btn_action.Top -= 10;
             isRecurring = true;
 
-            this.temporaryRecurringEvent = temporaryRecurringEvent;
-            tbx_name.Text = temporaryRecurringEvent.Name;
-            cbx_type.Text = temporaryRecurringEvent.TypeName;
-            tbx_location.Text = temporaryRecurringEvent.Location;
-            dtp_date.Value = temporaryRecurringEvent.CreatedDate;
-            rtbx_note.Text = temporaryRecurringEvent.Note;
-            cbx_frequency.Text = temporaryRecurringEvent.Status;
+            temporaryRecurringEvent = parameterRecurringEvent;
+            tbx_name.Text = parameterRecurringEvent.Name;
+            cbx_type.Text = parameterRecurringEvent.TypeName;
+            tbx_location.Text = parameterRecurringEvent.Location;
+            dtp_date.Value = parameterRecurringEvent.CreatedDate;
+            rtbx_note.Text = parameterRecurringEvent.Note;
+            cbx_frequency.Text = parameterRecurringEvent.Status;
 
-            if (temporaryRecurringEvent.EndDate == DateTime.MinValue)
+            if (parameterRecurringEvent.EndDate == DateTime.MinValue)
             {
                 dtp_enddate.Enabled = false;
                 chbx_infinite.Checked = true;
             }
-            else dtp_enddate.Value = temporaryRecurringEvent.EndDate;
+            else dtp_enddate.Value = parameterRecurringEvent.EndDate;
             
-            ResizePanel();
         }
         
         private void ActionClick(object sender, EventArgs e)
         {
             if (isRecurring) UpdateRecurringEvent();
-            else AddUpadateNormalEvent();
+            else AddUpdateEvent();
         }
         
         private async void AddUpdateEventLoad(object sender, EventArgs e)
@@ -102,8 +103,16 @@ namespace MoneyApp.Forms
 
         private void RecurringCheckboxChanged(object sender, EventArgs e)
         {
-            if (cbx_recurring.Checked == true) gb_recurring.Visible = true;
-            else gb_recurring.Visible = false;
+            if (chbx_recurring.Checked == true)
+            {
+                gbx_recurring.Visible = true;
+                Height += 110;
+            }
+            else
+            {
+                gbx_recurring.Visible = false;
+                Height -= 110;
+            }
         }
 
         private void InfiniteCheckboxChanged(object sender, EventArgs e)
@@ -111,25 +120,12 @@ namespace MoneyApp.Forms
             if (chbx_infinite.Checked == true) dtp_enddate.Enabled = false;
             else dtp_enddate.Enabled = true;
         }
-
-        private void AddEditEventSizeChange(object sender, EventArgs e)
-        {
-            ResizePanel();
-        }
-
-        private void ResizePanel()
-        {
-            int x = ((Width - pl_main.Width) / 2);
-            int y = ((Height - pl_main.Height) / 2);
-
-            pl_main.Location = new Point(x, y);
-        }
-
-        private async void AddUpadateNormalEvent()
+        
+        private async void AddUpdateEvent()
         {
             if (tbx_name.Text.Equals(""))
             {
-                MessageBox.Show("Event is Empty! Please add a Event name.");
+                MessageBox.Show(Strings.ErrorEmptyName, Strings.Error);
                 return;
             }
             EventRepository eventRepository = EventRepository.Instance;
@@ -161,7 +157,7 @@ namespace MoneyApp.Forms
             }
             else temporaryEvent.ContactID = contact.ID;
 
-            if (cbx_recurring.Checked && temporaryEvent.ID == 0)
+            if (chbx_recurring.Checked && temporaryEvent.ID == 0)
             {
                 RecurringEvent temporaryRecurringEvent = new RecurringEvent
                 {
@@ -184,7 +180,7 @@ namespace MoneyApp.Forms
 
                 if (i == false)
                 {
-                    MessageBox.Show("Cannot Add Recurring Event!");
+                    MessageBox.Show(Strings.SomethingError);
                     return;
                 }
             }
@@ -194,25 +190,22 @@ namespace MoneyApp.Forms
 
             if (temporaryEvent.ID > 0 && result)
             {
-                MessageBox.Show("Edited Successfully");
+                MessageBox.Show(Strings.EditEventOkay, Strings.Success);
                 Dispose();
             }
             else if (result)
             {
-                MessageBox.Show("Added Successfully");
+                MessageBox.Show(Strings.AddEventOkay, Strings.Success);
                 Dispose();
             }
-            else
-            {
-                MessageBox.Show("Error!");
-            }
+            else MessageBox.Show(Strings.SomethingError, Strings.Error);
         }
 
         private async void UpdateRecurringEvent()
         {
             if (tbx_name.Text.Equals(""))
             {
-                MessageBox.Show("Event is Empty! Please add a Event name.");
+                MessageBox.Show(Strings.ErrorEmptyName);
                 return;
             }
 
@@ -225,7 +218,6 @@ namespace MoneyApp.Forms
             RecurringEvent recurringEvent = new RecurringEvent();
             recurringEvent.Status = cbx_frequency.Text;
             recurringEvent.EndDate = dtp_enddate.Value;
-            bool result = false;
 
             if (temporaryRecurringEvent.TypeName.Equals("Task")) temporaryRecurringEvent.Type = false;
             else temporaryRecurringEvent.Type = true;
@@ -247,14 +239,16 @@ namespace MoneyApp.Forms
 
             temporaryRecurringEvent.Status = cbx_frequency.Text;
 
+            bool result = false;
+
             result = await Task.Run(() => eventRepository.EditRecurringEvent(temporaryRecurringEvent));
 
             if (temporaryRecurringEvent.ID > 0 && result)
             {
-                MessageBox.Show("Edited Successfully");
+                MessageBox.Show(Strings.EditRecurringEventOkay, Strings.Success);
                 Dispose();
             }
-            else MessageBox.Show("Error!");
+            else MessageBox.Show(Strings.SomethingError, Strings.Error);
         }
 
         private void SetEventContact(List<Contact> ContactList)

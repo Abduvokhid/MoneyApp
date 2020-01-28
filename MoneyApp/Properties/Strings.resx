@@ -129,11 +129,23 @@
   <data name="AddEvent" xml:space="preserve">
     <value>Add event</value>
   </data>
+  <data name="AddEventOkay" xml:space="preserve">
+    <value>Event has been added successfully!</value>
+  </data>
+  <data name="AddTransaction" xml:space="preserve">
+    <value>Add transaction</value>
+  </data>
+  <data name="AddTransactionOkay" xml:space="preserve">
+    <value>Transaction has been added successfully!</value>
+  </data>
   <data name="ContactNameMaxLengthError" xml:space="preserve">
     <value>Contact name cannot contain more than 100 symbols!</value>
   </data>
   <data name="ContactNameWrong" xml:space="preserve">
     <value>Contact name cannot be empty!</value>
+  </data>
+  <data name="DeleteSuccess" xml:space="preserve">
+    <value>Deleted successfully!</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
@@ -147,16 +159,49 @@
   <data name="EditEvent" xml:space="preserve">
     <value>Edit event</value>
   </data>
+  <data name="EditEventOkay" xml:space="preserve">
+    <value>Event has been edited successfully!</value>
+  </data>
   <data name="EditRecurringEvent" xml:space="preserve">
     <value>Edit recurring event</value>
   </data>
+  <data name="EditRecurringEventOkay" xml:space="preserve">
+    <value>Recurring event has been edited successfully!</value>
+  </data>
+  <data name="EditRecurringTransaction" xml:space="preserve">
+    <value>Edit recurring transaction</value>
+  </data>
+  <data name="EditRecurringTransactionOkay" xml:space="preserve">
+    <value>Recurring transaction has been edited successfully!</value>
+  </data>
+  <data name="EditTransaction" xml:space="preserve">
+    <value>Edit transaction</value>
+  </data>
+  <data name="EditTransactionOkay" xml:space="preserve">
+    <value>Transaction has been edited successfully!</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>Error</value>
+  </data>
+  <data name="ErrorEmptyName" xml:space="preserve">
+    <value>Name cannot be empty!</value>
+  </data>
+  <data name="Events" xml:space="preserve">
+    <value>Events</value>
+  </data>
+  <data name="RecurringEvents" xml:space="preserve">
+    <value>Recurring events</value>
+  </data>
+  <data name="RecurringTransactions" xml:space="preserve">
+    <value>Recurring transactions</value>
   </data>
   <data name="SomethingError" xml:space="preserve">
     <value>Something went wrong!</value>
   </data>
   <data name="Success" xml:space="preserve">
     <value>Success</value>
+  </data>
+  <data name="Transactions" xml:space="preserve">
+    <value>Transactions</value>
   </data>
 </root>

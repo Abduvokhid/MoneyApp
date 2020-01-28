@@ -22,6 +22,8 @@ namespace MoneyApp
         private bool isFirst = true;
         private bool isOpen = false;
 
+        private int idleSeconds = 60;
+        
         public MoneyApp()
         {
             InitializeComponent();
@@ -30,9 +32,55 @@ namespace MoneyApp
             mc_calendar.SelectionStart = DateTime.Now;
         }
 
+        #region Auto log out methods
+        [DllImport("User32.dll")]
+        private static extern bool GetLastInputInfo(ref LASTINPUTINFO Dummy);
+        [DllImport("Kernel32.dll")]
+        private static extern uint GetLastError();
+
+        internal struct LASTINPUTINFO
+        {
+            public uint cbSize;
+            public uint dwTime;
+        }
+
+        public static long GetLastInputTime()
+        {
+            LASTINPUTINFO LastUserAction = new LASTINPUTINFO();
+            LastUserAction.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(LastUserAction);
+            if (!GetLastInputInfo(ref LastUserAction))
+            {
+                throw new Exception(GetLastError().ToString());
+            }
+
+            return LastUserAction.dwTime;
+        }
+
+        public static uint GetIdleTime()
+        {
+            LASTINPUTINFO LastUserAction = new LASTINPUTINFO();
+            LastUserAction.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(LastUserAction);
+            GetLastInputInfo(ref LastUserAction);
+            return ((uint)Environment.TickCount - LastUserAction.dwTime);
+        }
+
+        private void LogOutTimerTick(object sender, EventArgs e)
+        {
+            if (GetIdleTime() > idleSeconds * 1000)
+            {
+                tm_auto_log_out.Enabled = false;
+                bw_recurring.CancelAsync();
+                Instances.User = null;
+                Authorization auth = new Authorization();
+                auth.Activate();
+                auth.ShowDialog();
+            }
+        }
+        #endregion
+        
         private void MoneyAppActivated(object sender, EventArgs e)
         {
-            if (Instances.User == null) { Instances.User = new User { ID = 1, LastAccessDate = DateTime.Now, Name = "Abduvokhid" }; }
+            //if (Instances.User == null) { Instances.User = new User { ID = 7, LastAccessDate = DateTime.Now, Name = "Abduvokhid" }; }
             if (Instances.User == null)
             {
                 Authorization auth = new Authorization();
@@ -40,8 +88,11 @@ namespace MoneyApp
                 auth.ShowDialog();
             } else
             {
+                btn_first_name.Text = Instances.User.Name;
                 GenerateInfo();
+                if (!tm_auto_log_out.Enabled) tm_auto_log_out.Enabled = true;
                 if (!bw_recurring.IsBusy) bw_recurring.RunWorkerAsync();
+                ShowEventsForDate(mc_calendar.SelectionStart);
             }
         }
 
@@ -266,8 +317,13 @@ namespace MoneyApp
 
         private void ShowEventsForDate(DateTime d)
         {
+            pl_events.Controls.OfType<Panel>().ToList().ForEach(p => p.Dispose());
 
-            pl_right.Controls.OfType<Panel>().ToList().ForEach(p => p.Dispose());
+            pl_events.VerticalScroll.Maximum = 0;
+            pl_events.AutoScroll = false;
+            pl_events.HorizontalScroll.Maximum = 0;
+            pl_events.HorizontalScroll.Visible = false;
+            pl_events.AutoScroll = true;
 
             RecurringEventRepository recurringEventRepository = RecurringEventRepository.Instance;
             List<RecurringEvent> events = recurringEventRepository.GetRecurringEvents(Instances.User.ID);
@@ -293,36 +349,60 @@ namespace MoneyApp
                 }
             });
 
-            newList = newList.OrderBy(e => e.CreatedDate).ToList();
+            newList = newList.OrderBy(e => e.CreatedDate.TimeOfDay).ToList();
 
-            int now = 180;
+            if (newList.Count == 0) newList.Add(new RecurringEvent());
+
+            int now = 0;
 
             newList.ForEach(e =>
             {
                 Panel p = new Panel();
-                p.Width = pl_right.Width - 20;
-                p.Height = 25;
+                p.Width = pl_events.Width;
+                p.Height = 40;
                 p.Location = new Point(0, now);
                 now += p.Height;
 
                 Label name = new Label();
-                name.Text = e.Name;
+                name.TextAlign = ContentAlignment.MiddleLeft;
+                string nameText = "";
+                if (e.ID > 0)
+                {
+                    nameText = e.Name;
+                    if (e.Type) nameText += " at ";
+                    else nameText += " by ";
+                    nameText += e.CreatedDate.ToString("HH:mm");
+                } else
+                {
+                    nameText = d.Date == DateTime.Now.Date ? "No events for today!" : "No events for this day!";
+                    name.TextAlign = ContentAlignment.MiddleCenter;
+                }
+                name.Text = nameText;
                 name.ForeColor = Color.FromArgb(109, 116, 129);
-                name.Font = new Font("Arial", 10F, FontStyle.Regular, GraphicsUnit.Point, 204);
-                name.Location = new Point(10, 10);
+                name.Font = new Font("Roboto", 10F, FontStyle.Regular, GraphicsUnit.Point, 204);
+                name.Location = new Point(0, 0);
                 name.Size = new Size(p.Width, p.Height);
+                name.Padding = new Padding(15, 0, 0, 0);
                 p.Controls.Add(name);
 
                 Panel b = new Panel();
                 b.Width = p.Width;
                 b.Height = 1;
-                b.Location = new Point(0, p.Height - 1);
+                b.Location = new Point(0, 0);
                 b.BackColor = Color.FromArgb(228, 232, 241);
-                b.BringToFront();
                 p.Controls.Add(b);
+                b.BringToFront();
 
-                pl_right.Controls.Add(p);
+                pl_events.Controls.Add(p);
             });
+
+            Panel line = new Panel();
+            line.Width = pl_events.Width;
+            line.Height = 1;
+            line.Location = new Point(0, now);
+            line.BackColor = Color.FromArgb(228, 232, 241);
+            pl_events.Controls.Add(line);
+            line.BringToFront();
 
         }
 
@@ -392,7 +472,7 @@ namespace MoneyApp
         {
             if (isOpen)
             {
-                if (pl_user.Top > pl_left.Height - 120)
+                if (pl_user.Top > pl_left.Height - 80)
                 {
                     pl_user.Top -= 5;
                 } else
@@ -429,6 +509,15 @@ namespace MoneyApp
             Authorization auth = new Authorization();
             auth.Activate();
             auth.ShowDialog();
+        }
+
+        private void FormSizeChanged(object sender, EventArgs e)
+        {
+            pl_events.VerticalScroll.Maximum = 0;
+            pl_events.AutoScroll = false;
+            pl_events.HorizontalScroll.Maximum = 0;
+            pl_events.HorizontalScroll.Visible = false;
+            pl_events.AutoScroll = true;
         }
     }
 }

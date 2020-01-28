@@ -9,65 +9,63 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Strings = MoneyApp.Properties.Strings;
 
 namespace MoneyApp.Forms
 {
     public partial class ViewEvents : Form
     {
-        private EventRepository EventRepo;
-        private RecurringEventRepository recEventRepository;
+        private EventRepository eventRepository;
+        private RecurringEventRepository recurringEventRepository;
         private bool isRecurring = false;
 
 
         public ViewEvents()
         {
             InitializeComponent();
-            EventRepo = EventRepository.Instance;
+            Text = Strings.Events;
+            eventRepository = EventRepository.Instance;
             ResizeColumns();
         }
 
-        //Recurring Event
         public ViewEvents(bool recurring)
         {
             InitializeComponent();
             isRecurring = recurring;
+            Text = Strings.RecurringEvents;
             if (isRecurring == true)
             {
-
                 lv_events.Columns.Add("Status Type");
                 lv_events.Columns.Add("End Date");
-                recEventRepository = RecurringEventRepository.Instance;
-
+                recurringEventRepository = RecurringEventRepository.Instance;
             }
             ResizeColumns();
-            EventRepo = EventRepository.Instance;
+            eventRepository = EventRepository.Instance;
 
         }
 
-
-        //
-        private async void viewEventFormActivated(object sender, EventArgs e)
+        private async void ViewEventsActivated(object sender, EventArgs e)
         {
             if (isRecurring)
             {
-                List<RecurringEvent> EventList = await Task.Run(() => recEventRepository.GetRecurringEvents(Instances.User.ID));
+                List<RecurringEvent> EventList = await Task.Run(() => recurringEventRepository.GetRecurringEvents(Instances.User.ID));
 
-                //clear the list
                 lv_events.Items.Clear();
 
-                //for loop for every events in EventList
                 foreach (RecurringEvent events in EventList)
                 {
                     string EndDateText = (events.EndDate == DateTime.MinValue) ?
-                        "Not Applicable" : events.EndDate.ToString();
+                        "Never ends" : events.EndDate.ToString();
 
-                    //Creating row
-                    ListViewItem eventListViewItem = new ListViewItem(new string[] {events.Name,
-                    events.TypeName,
-                    events.Location,
-                    events.ContactName,
-                    events.CreatedDate.ToString(),
-                    events.Note,events.Status, EndDateText
+                    ListViewItem eventListViewItem = new ListViewItem(new string[] {
+                        events.Name,
+                        events.ContactName,
+                        events.TypeName,
+                        events.Location,
+                        events.Note,
+                        events.CreatedDate.ToString(),
+                        events.Status,
+                        EndDateText
                     });
 
                     eventListViewItem.Tag = events;
@@ -78,50 +76,37 @@ namespace MoneyApp.Forms
             }
             else
             {
-                List<Event> EventList = await Task.Run(() => EventRepo.GetUserEvents(Instances.User.ID));
+                List<Event> eventsList = await Task.Run(() => eventRepository.GetUserEvents(Instances.User.ID));
 
-                //clear the list
                 lv_events.Items.Clear();
 
-                //for loop for every transaction in transactionList
-                foreach (Event events in EventList)
+                foreach (Event events in eventsList)
                 {
-                    //Creating row
                     ListViewItem eventListViewItem = new ListViewItem(new string[] { events.Name, events.TypeName,
                     events.Location, events.ContactName, events.CreatedDate.ToString(), events.Note });
-                    //selection
                     eventListViewItem.Tag = events;
-                    //Display it in the list of Contacts
                     lv_events.Items.Add(eventListViewItem);
-
                 }
-
             }
-
-
         }
 
-        //Adding/ creating form, activating and showing it
-        private void btn_addEvent_Click(object sender, EventArgs e)
+        private void AddClick(object sender, EventArgs e)
         {
-            AddEditEvent addUpdateEvent = new AddEditEvent();
-            addUpdateEvent.Activate();
-            addUpdateEvent.ShowDialog();
+            AddEditEvent addEditEvent = new AddEditEvent();
+            addEditEvent.Activate();
+            addEditEvent.ShowDialog();
         }
 
-        //Editing event
-        private void btn_editEvent_Click(object sender, EventArgs e)
+        private void EditClick(object sender, EventArgs e)
         {
             if (lv_events.SelectedItems.Count > 0)
             {
                 if (isRecurring)
                 {
-
-                    RecurringEvent selectedEvent = (RecurringEvent)
-                        lv_events.SelectedItems[0].Tag;
-                    AddEditEvent addUpdateEvent = new AddEditEvent(selectedEvent);
-                    addUpdateEvent.Activate();
-                    addUpdateEvent.ShowDialog();
+                    RecurringEvent selectedEvent = (RecurringEvent)lv_events.SelectedItems[0].Tag;
+                    AddEditEvent addEditEvent = new AddEditEvent(selectedEvent);
+                    addEditEvent.Activate();
+                    addEditEvent.ShowDialog();
                 }
                 else
                 {
@@ -133,9 +118,7 @@ namespace MoneyApp.Forms
             }
         }
 
-
-        //Delete event
-        private async void btnDelete_Click(object sender, EventArgs e)
+        private async void DeleteClick(object sender, EventArgs e)
         {
             if (lv_events.SelectedItems.Count > 0)
             {
@@ -143,32 +126,20 @@ namespace MoneyApp.Forms
                 {
                     RecurringEvent selectedEvent = (RecurringEvent)lv_events.SelectedItems[0].Tag;
 
-                    bool eventResult = await Task.Run(() => recEventRepository.DeleteRecurringEvent(selectedEvent));
-                    if (eventResult)
-                    {
-                        MessageBox.Show("Successfull!");
+                    bool eventResult = await Task.Run(() => recurringEventRepository.DeleteRecurringEvent(selectedEvent));
 
-                    }
-                    else
-                        MessageBox.Show("Error!");
-
-
+                    if (eventResult) MessageBox.Show(Strings.DeleteSuccess, Strings.Success);
+                    else MessageBox.Show(Strings.SomethingError, Strings.Error);
                 }
                 else
                 {
                     Event selectedEvent = (Event)lv_events.SelectedItems[0].Tag;
 
-                    bool eventResult = await Task.Run(() => EventRepo.DeleteEvent(selectedEvent));
-                    if (eventResult)
-                    {
-                        MessageBox.Show("Successfull!");
+                    bool eventResult = await Task.Run(() => eventRepository.DeleteEvent(selectedEvent));
 
-                    }
-                    else
-                        MessageBox.Show("Error!");
+                    if (eventResult) MessageBox.Show(Strings.DeleteSuccess, Strings.Success);
+                    else MessageBox.Show(Strings.SomethingError, Strings.Error);
                 }
-
-
             }
         }
 
